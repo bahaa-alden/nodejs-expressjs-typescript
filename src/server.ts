@@ -49,13 +49,7 @@ class Server {
       console.log("Mongo Connection Disconnected");
       console.log("Trying to reconnect to Mongo ...");
       setTimeout(() => {
-        mongoose.connect(env_vars.mongoose.url, {
-          autoReconnect: true,
-          keepAlive: true,
-          socketTimeoutMS: 3000,
-          connectTimeoutMS: 3000,
-          useNewUrlParser: true,
-        });
+        mongoose.connect(env_vars.mongoose.url);
       }, 3000);
     });
 
@@ -67,13 +61,7 @@ class Server {
     });
 
     const run = async () => {
-      await mongoose.connect(env_vars.mongoose.url, {
-        autoReconnect: true,
-        keepAlive: true,
-        socketTimeoutMS: 3000,
-        connectTimeoutMS: 3000,
-        useNewUrlParser: true,
-      });
+      await mongoose.connect(env_vars.mongoose.url);
     };
     run().catch((error) => console.error(error));
   }

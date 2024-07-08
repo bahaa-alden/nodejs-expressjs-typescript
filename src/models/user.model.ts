@@ -1,24 +1,23 @@
-import { Schema, model, Error } from "mongoose";
+import { Schema, model, Error, Document as MongooseDocument } from "mongoose";
 import * as bcrypt from "bcrypt-nodejs";
-import Role from "./role.model";
-
-import { Types } from "mongoose";
+import IRole from "./role.model";
 
 export const DOCUMENT_NAME = "User";
 export const COLLECTION_NAME = "users";
 
-export default interface User {
-  _id?: Types.ObjectId;
-  name?: string;
-  email?: string;
-  password?: string;
-  role?: Role;
-  createdAt?: Date;
-  updatedAt?: Date;
+export default interface IUser extends MongooseDocument {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: IRole;
+  roleId: IRole["_id"];
+  createdAt: Date;
+  updatedAt: Date;
   comparePassword?(candidatePassword: string, callback: any);
 }
 
-const schema = new Schema<User>(
+const schema = new Schema<IUser>(
   {
     name: {
       type: Schema.Types.String,
@@ -28,9 +27,7 @@ const schema = new Schema<User>(
     },
     email: {
       type: Schema.Types.String,
-      unique: true,
       trim: true,
-      select: false,
       required: true,
     },
     password: {
@@ -38,20 +35,17 @@ const schema = new Schema<User>(
       select: false,
       required: true,
     },
-    role: {
+    roleId: {
       type: Schema.Types.ObjectId,
       ref: "Role",
       required: true,
-      select: false,
     },
   },
   {
-    versionKey: false,
     timestamps: true,
   }
 );
 
-schema.index({ _id: 1 });
 schema.index({ email: 1 });
 
 // hash password before save user
@@ -86,4 +80,11 @@ schema.methods.comparePassword = function (
   );
 };
 
-export const UserModel = model<User>(DOCUMENT_NAME, schema, COLLECTION_NAME);
+schema.virtual("role", {
+  localField: "roleId",
+  foreignField: "_id",
+  ref: "Role",
+  justOne: true,
+});
+
+export const User = model<IUser>(DOCUMENT_NAME, schema, COLLECTION_NAME);

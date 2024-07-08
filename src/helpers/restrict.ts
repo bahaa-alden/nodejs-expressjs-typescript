@@ -1,7 +1,6 @@
-import { NextFunction, Response } from 'express';
-
-import { RoleCode } from '../models/role.model';
-import { RoleRequest } from '../types/app-request';
+import { NextFunction, Response } from "express";
+import { RoleRequest } from "../types/app-request";
+import { RoleCode } from "../utils/enum";
 
 export default (...roleCodes: RoleCode[]) =>
   (req: RoleRequest, res: Response, next: NextFunction) => {

@@ -1,20 +1,21 @@
-import { Schema, model, Types } from "mongoose";
-import User from "./user.model";
+import { Schema, model, Document as MongooseDocument } from "mongoose";
+import IUser from "./user.model";
 
 export const DOCUMENT_NAME = "Task";
 export const COLLECTION_NAME = "tasks";
 
-export default interface Task {
-  _id: Types.ObjectId;
+export default interface ITask extends MongooseDocument {
+  id: string;
   title: string;
   description: string;
-  completed?: boolean;
-  author: User;
-  createdAt?: Date;
-  updatedAt?: Date;
+  completed: boolean;
+  authorId: IUser["_id"];
+  author: IUser;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const schema = new Schema<Task>(
+const schema = new Schema<ITask>(
   {
     title: {
       type: Schema.Types.String,
@@ -33,7 +34,7 @@ const schema = new Schema<Task>(
       required: true,
       default: false,
     },
-    author: {
+    authorId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -50,6 +51,14 @@ schema.index(
   { title: "text", description: "text" },
   { weights: { title: 3, description: 1 }, background: false }
 );
-schema.index({ _id: 1, status: 1 });
 
-export const TaskModel = model<Task>(DOCUMENT_NAME, schema, COLLECTION_NAME);
+schema.index({ status: 1 });
+
+schema.virtual("author", {
+  localField: "authorId",
+  foreignField: "_id",
+  ref: "User",
+  justOne: true,
+});
+
+export const Task = model<ITask>(DOCUMENT_NAME, schema, COLLECTION_NAME);

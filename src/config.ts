@@ -1,17 +1,19 @@
 import * as dotenv from "dotenv";
 import * as path from "path";
-import * as Joi from "joi";
+import * as z from "joi";
 
 dotenv.config({ path: path.join(__dirname, "../.env") });
 
-const envVarsSchema = Joi.object()
+const envVarsSchema = z
+  .object()
   .keys({
-    NODE_ENV: Joi.string().valid("taskion", "development", "test").required(),
-    LOG_DIR: Joi.string().required(),
-    PORT: Joi.number().default(3000),
-    MONGODB_URL: Joi.string().required().description("Mongo DB url"),
-    JWT_SECRET: Joi.string().required().description("JWT secret key"),
-    JWT_ACCESS_EXPIRATION_MINUTES: Joi.number()
+    NODE_ENV: z.string().valid("taskion", "development", "test").required(),
+    LOG_DIR: z.string().required(),
+    PORT: z.number().default(3000),
+    MONGODB_URL: z.string().required().description("Mongo DB url"),
+    JWT_SECRET: z.string().required().description("JWT secret key"),
+    JWT_ACCESS_EXPIRATION_MINUTES: z
+      .number()
       .default(30)
       .description("minutes after which access tokens expire"),
   })

@@ -1,22 +1,18 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model, Document as MongooseDocument } from "mongoose";
+import { RoleCode } from "../utils/enum";
 
 export const DOCUMENT_NAME = "Role";
 export const COLLECTION_NAME = "roles";
 
-export enum RoleCode {
-  USER = "USER",
-  ADMIN = "ADMIN",
-}
-
-export default interface Role {
-  _id: Types.ObjectId;
-  code: string;
+export default interface IRole extends MongooseDocument {
+  id: string;
+  code: RoleCode;
   status?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-const schema = new Schema<Role>(
+const schema = new Schema<IRole>(
   {
     code: {
       type: Schema.Types.String,
@@ -36,4 +32,4 @@ const schema = new Schema<Role>(
 
 schema.index({ code: 1, status: 1 });
 
-export const RoleModel = model<Role>(DOCUMENT_NAME, schema, COLLECTION_NAME);
+export const Role = model<IRole>(DOCUMENT_NAME, schema, COLLECTION_NAME);

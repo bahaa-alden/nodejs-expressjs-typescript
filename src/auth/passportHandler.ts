@@ -1,16 +1,15 @@
 import * as passport from "passport";
 import { AuthFailureError } from "../core/ApiError";
 import * as passportLocal from "passport-local";
-import { UserRepo } from "../repository/user.repo";
 import * as passportJwt from "passport-jwt";
 import { JwtPayload } from "../core/JWT";
 import { env_vars } from "../config";
+import { userRepository } from "../repositories/user.repository";
 
 const LocalStrategy = passportLocal.Strategy;
 const JwtStrategy = passportJwt.Strategy;
 const ExtractJwt = passportJwt.ExtractJwt;
 
-const userRepo = new UserRepo();
 // local passport strategy for login
 
 passport.use(
@@ -18,7 +17,7 @@ passport.use(
   new LocalStrategy(
     { usernameField: "email", passwordField: "password" },
     async (email, password, done) => {
-      const user = await userRepo.findOneByEmail(email);
+      const user = await userRepository.findByEmail(email);
       if (!user) done(new AuthFailureError("Invalid email or password."));
       user.comparePassword(password, (err: Error, isMatch: boolean) => {
         if (err) {
@@ -43,7 +42,9 @@ passport.use(
       secretOrKey: env_vars.jwt.secret,
     },
     async (jwtToken: JwtPayload, done) => {
-      const user = await userRepo.findOneByEmail(jwtToken.email.toLowerCase());
+      const user = await userRepository.findByEmail(
+        jwtToken.email.toLowerCase()
+      );
       if (!user) return done(new AuthFailureError());
       return done(undefined, user);
     }

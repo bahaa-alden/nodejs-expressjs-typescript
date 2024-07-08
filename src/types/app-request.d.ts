@@ -1,8 +1,12 @@
 import { Request } from "express";
 import User from "../models/user.model";
+import { RoleCode } from "../utils/enum";
 
 declare interface RoleRequest extends Request {
-  currentRoleCodes: string[];
+  currentRoleCodes: RoleCode[];
+  body: B;
+  query: Q;
+  params: P;
 }
 
 declare interface ProtectedRequest extends RoleRequest {

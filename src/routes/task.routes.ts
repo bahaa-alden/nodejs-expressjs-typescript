@@ -5,7 +5,7 @@ import validator, { ValidationSource } from "../helpers/validator";
 import taskSchema from "../schemas/task.schema";
 import { Authorization } from "../auth/authorization";
 import restrict from "../helpers/restrict";
-import { RoleCode } from "../models/role.model";
+import { RoleCode } from "../utils/enum";
 
 export class TaskRoutes {
   public router: Router;

@@ -1,28 +1,37 @@
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import * as passport from "passport";
-import { UserRepo } from "../repository/user.repo";
-import { UnprocessableEntityError } from "../core/ApiError";
-import { RoleCode } from "../models/role.model";
+import { InternalError, UnprocessableEntityError } from "../core/ApiError";
 import { SuccessResponse } from "../core/ApiResponse";
 import asyncHandler from "../helpers/asyncHandler";
 import { env_vars } from "../config";
 import User from "../models/user.model";
 import * as _ from "lodash";
+import { userRepository } from "../repositories/user.repository";
+import { roleRepository } from "../repositories/role.repository.";
+import { RoleCode } from "../utils/enum";
 
 export class UserController {
-  userRepo = new UserRepo();
-
   // SignUp user handler
   public registerUser = asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
       const { email, password, name } = req.body;
-      const exist = await this.userRepo.exists(email);
+
+      const exist = await userRepository.exists(email);
+
       if (exist) throw new UnprocessableEntityError("User already exist");
-      const { user } = await this.userRepo.create(
-        { email, password, name },
-        RoleCode.USER
-      );
+
+      const role = await roleRepository.findOneBy({ code: RoleCode.USER });
+
+      if (!role) throw new InternalError("Role must be defined");
+
+      const user = await userRepository.insert({
+        name,
+        email,
+        password,
+        roleId: role.id,
+      });
+
       const token = jwt.sign({ email: req.body.email }, env_vars.jwt.secret, {
         expiresIn: env_vars.jwt.accessExpiration,
       });

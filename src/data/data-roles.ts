@@ -1,4 +1,4 @@
-import { RoleCode } from "../models/role.model";
+import { RoleCode } from "../utils/enum";
 
 export default [
   {
