@@ -48,6 +48,10 @@ Tasks Manager is a Node.js application built with Express.js, MongoDB, Passport.
 yarn build
 yarn start
 ```
+or
+```bash
+yarn watch
+```
 
 ## API Endpoints
 
