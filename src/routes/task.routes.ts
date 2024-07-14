@@ -1,17 +1,15 @@
 import { Router } from "express";
-import { TaskController } from "../controllers/task.controller";
-import { AuthController } from "../controllers/auth.controller";
 import validator, { ValidationSource } from "../helpers/validator";
 import taskSchema from "../schemas/task.schema";
-import { Authorization } from "../auth/authorization";
 import restrict from "../helpers/restrict";
 import { RoleCode } from "../utils/enum";
+import authSchema from "../schemas/auth.schema";
+import { authController } from "../controllers/auth.controller";
+import { authorizationMiddleware } from "../auth/authorization";
+import { taskController } from "../controllers/task.controller";
 
 export class TaskRoutes {
   public router: Router;
-  public taskController: TaskController = new TaskController();
-  public authController: AuthController = new AuthController();
-  public authorization = new Authorization();
 
   constructor() {
     this.router = Router();
@@ -20,48 +18,49 @@ export class TaskRoutes {
 
   routes() {
     // protect routes
-    this.router.use(this.authController.authenticateJWT);
+    this.router.use(
+      validator(authSchema.auth, ValidationSource.HEADER),
+      authController.authenticateJWT
+    );
 
     // only for users
     this.router.use(restrict(RoleCode.USER));
-    this.router.use(this.authorization.authorization);
+    this.router.use(authorizationMiddleware.authorization);
 
     // GET ALL TASKS
     this.router.get(
       "/",
       validator(taskSchema.taskAll, ValidationSource.QUERY),
-      this.taskController.getTasks
+      taskController.getTasks
     );
 
     // GET TASK BY ID
     this.router.get(
       "/:id",
       validator(taskSchema.taskId, ValidationSource.PARAM),
-      this.taskController.getTask
+      taskController.getTask
     );
 
     // CREATE TASK
     this.router.post(
       "/",
-      this.authController.authenticateJWT,
       validator(taskSchema.taskCreate),
-      this.taskController.createTask
+      taskController.createTask
     );
 
     // UPDATE TASK BY ID
-    this.router.put(
+    this.router.patch(
       "/:id",
       validator(taskSchema.taskId, ValidationSource.PARAM),
-      this.authController.authenticateJWT,
-      this.taskController.updateTask
+      taskController.updateTask
     );
 
     // DELETE TASK BY ID
     this.router.delete(
       "/:id",
       validator(taskSchema.taskId, ValidationSource.PARAM),
-      this.authController.authenticateJWT,
-      this.taskController.deleteTask
+      taskController.deleteTask
     );
   }
 }
+export const taskRoutes = new TaskRoutes();

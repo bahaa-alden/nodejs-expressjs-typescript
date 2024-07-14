@@ -10,6 +10,7 @@ import * as _ from "lodash";
 import { userRepository } from "../repositories/user.repository";
 import { roleRepository } from "../repositories/role.repository.";
 import { RoleCode } from "../utils/enum";
+import { ProtectedRequest } from "../types/app-request";
 
 export class UserController {
   // SignUp user handler
@@ -63,4 +64,10 @@ export class UserController {
       }
     )(req, res, next);
   }
+
+  // return authenticated user details
+  public me(req: ProtectedRequest, res: Response, next: NextFunction) {
+    new SuccessResponse("success", req.user).send(res);
+  }
 }
+export const userController = new UserController();

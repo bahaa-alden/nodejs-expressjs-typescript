@@ -1,4 +1,5 @@
 import { Response } from "express";
+import { ZodIssue } from "zod";
 
 // Helper code for the API consumer to understand the error and handle is accordingly
 enum StatusCode {
@@ -23,7 +24,8 @@ abstract class ApiResponse {
   constructor(
     protected statusCode: StatusCode,
     protected status: ResponseStatus,
-    protected message: string
+    protected message: string,
+    protected errors?: ZodIssue[]
   ) {}
 
   protected prepare<T extends ApiResponse>(
@@ -81,8 +83,8 @@ export class UnprocessableEntityResponse extends ApiResponse {
 }
 
 export class BadRequestResponse extends ApiResponse {
-  constructor(message = "Bad Parameters") {
-    super(StatusCode.FAILURE, ResponseStatus.BAD_REQUEST, message);
+  constructor(message = "Bad Parameters", errors: ZodIssue[]) {
+    super(StatusCode.FAILURE, ResponseStatus.BAD_REQUEST, message, errors);
   }
 }
 

@@ -1,31 +1,24 @@
 import * as dotenv from "dotenv";
 import * as path from "path";
-import * as z from "joi";
+import { object, string, nativeEnum } from "zod";
+import { Env } from "./utils/enum";
 
 dotenv.config({ path: path.join(__dirname, "../.env") });
 
-const envVarsSchema = z
-  .object()
-  .keys({
-    NODE_ENV: z.string().valid("taskion", "development", "test").required(),
-    LOG_DIR: z.string().required(),
-    PORT: z.number().default(3000),
-    MONGODB_URL: z.string().required().description("Mongo DB url"),
-    JWT_SECRET: z.string().required().description("JWT secret key"),
-    JWT_ACCESS_EXPIRATION_MINUTES: z
-      .number()
-      .default(30)
-      .description("minutes after which access tokens expire"),
-  })
-  .unknown();
+const numericIdRegex = /^\d+$/u;
 
-const { value: envVars, error } = envVarsSchema
-  .prefs({ errors: { label: "key" } })
-  .validate(process.env);
+const envVarsSchema = object({
+  NODE_ENV: nativeEnum(Env).default(Env.development),
+  LOG_DIR: string(),
+  PORT: string().regex(numericIdRegex).default("3000"),
+  MONGODB_URL: string({ message: "Mongo DB url is required" }),
+  JWT_SECRET: string({ message: "JWT secret key is required" }),
+  JWT_ACCESS_EXPIRATION: string().describe(
+    "minutes after which access tokens expire"
+  ),
+}).passthrough();
 
-if (error) {
-  throw new Error(`Config validation error: ${error.message}`);
-}
+const envVars = envVarsSchema.parse(process.env);
 
 export const env_vars = {
   env: envVars.NODE_ENV,

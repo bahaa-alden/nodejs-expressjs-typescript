@@ -8,6 +8,7 @@ import {
   UnprocessableEntityResponse,
 } from "./ApiResponse";
 import { env_vars } from "../config";
+import { ZodIssue } from "zod";
 
 export enum ErrorType {
   BAD_TOKEN = "BadTokenError",
@@ -24,7 +25,11 @@ export enum ErrorType {
 }
 
 export abstract class ApiError extends Error {
-  constructor(public type: ErrorType, public message: string = "error") {
+  constructor(
+    public type: ErrorType,
+    public message: string = "error",
+    public errors?: ZodIssue[]
+  ) {
     super(type);
   }
 
@@ -41,7 +46,7 @@ export abstract class ApiError extends Error {
       case ErrorType.NO_DATA:
         return new NotFoundResponse(err.message).send(res);
       case ErrorType.BAD_REQUEST:
-        return new BadRequestResponse(err.message).send(res);
+        return new BadRequestResponse(err.message, err.errors).send(res);
       case ErrorType.FORBIDDEN:
         return new ForbiddenResponse(err.message).send(res);
       case ErrorType.UNPROCESSABLE:
@@ -75,8 +80,8 @@ export class UnprocessableEntityError extends ApiError {
 }
 
 export class BadRequestError extends ApiError {
-  constructor(message = "Bad Request") {
-    super(ErrorType.BAD_REQUEST, message);
+  constructor(message = "Bad Request", errors: ZodIssue[]) {
+    super(ErrorType.BAD_REQUEST, message, errors);
   }
 }
 

@@ -7,7 +7,7 @@ export class TaskRepository extends BaseRepository<ITask> {
   }
 
   async findByIdForAuthor(id: string, authorId: string): Promise<ITask | null> {
-    return this.model.findOne({ id, authorId }).populate("author");
+    return this.model.findOne({ _id: id, authorId }).populate("author");
   }
 
   async findForAuthor(

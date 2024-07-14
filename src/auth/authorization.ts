@@ -4,7 +4,7 @@ import { roleRepository } from "../repositories/role.repository.";
 import { ProtectedRequest } from "../types/app-request";
 
 // Authorization by role
-export class Authorization {
+export class AuthorizationMiddleware {
   public authorization = asyncHandler(
     async (req: ProtectedRequest, res, next) => {
       if (!req.user || !req.user.role || !req.currentRoleCodes)
@@ -26,3 +26,4 @@ export class Authorization {
     }
   );
 }
+export const authorizationMiddleware = new AuthorizationMiddleware();

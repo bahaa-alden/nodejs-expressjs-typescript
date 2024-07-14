@@ -1,21 +1,29 @@
-import * as Joi from "joi";
-import { JoiObjectId } from "../helpers/validator";
+import { boolean, number, object, string } from "zod";
+import { zodObjectId } from "../helpers/validator";
+
+const taskIdSchema = object({
+  id: zodObjectId,
+});
+
+const taskAllSchema = object({
+  page: number().min(1).optional(),
+  limit: number().min(1).optional(),
+});
+
+const taskCreateSchema = object({
+  title: string().min(3).max(500),
+  description: string().min(3).max(2000),
+});
+
+const taskUpdateSchema = object({
+  title: string().min(3).max(500).optional(),
+  description: string().min(3).max(2000).optional(),
+  completed: boolean().optional(),
+});
 
 export default {
-  taskId: Joi.object().keys({
-    id: JoiObjectId().required(),
-  }),
-  taskAll: Joi.object().keys({
-    page: Joi.number().optional().min(1),
-    limit: Joi.number().optional().min(1),
-  }),
-  taskCreate: Joi.object().keys({
-    title: Joi.string().required().min(3).max(500),
-    description: Joi.string().required().min(3).max(2000),
-  }),
-  taskUpdate: Joi.object().keys({
-    title: Joi.string().optional().min(3).max(500),
-    description: Joi.string().optional().min(3).max(2000),
-    completed: Joi.boolean().optional(),
-  }),
+  taskId: taskIdSchema,
+  taskAll: taskAllSchema,
+  taskCreate: taskCreateSchema,
+  taskUpdate: taskUpdateSchema,
 };

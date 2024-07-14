@@ -3,8 +3,8 @@ import * as mongoose from "mongoose";
 import * as compression from "compression";
 import * as cors from "cors";
 
-import { TaskRoutes } from "./routes/task.routes";
-import { UserRoutes } from "./routes/user.routes";
+import { taskRoutes } from "./routes/task.routes";
+import { userRoutes } from "./routes/user.routes";
 import { env_vars } from "./config";
 import helmet from "helmet";
 import * as passport from "passport";
@@ -22,8 +22,8 @@ class Server {
   }
 
   public routes(): void {
-    this.app.use("/api/v1/users", new UserRoutes().router);
-    this.app.use("/api/v1/tasks", new TaskRoutes().router);
+    this.app.use("/api/v1/users", userRoutes.router);
+    this.app.use("/api/v1/tasks", taskRoutes.router);
     this.app.use(errHandler);
   }
 
