@@ -2,21 +2,26 @@ import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import * as passport from "passport";
 import { InternalError, UnprocessableEntityError } from "../core/ApiError";
-import { SuccessResponse } from "../core/ApiResponse";
-import asyncHandler from "../helpers/asyncHandler";
+import asyncHandler from "../middlewares/asyncHandler";
 import { env_vars } from "../config";
 import User from "../models/user.model";
 import * as _ from "lodash";
 import { userRepository } from "../repositories/user.repository";
 import { roleRepository } from "../repositories/role.repository.";
 import { RoleCode } from "../utils/enum";
-import { ProtectedRequest } from "../types/app-request";
+import { ParsedRequest } from "app-request";
+import { ISignupSchema, ICredentialSchema } from "../schemas/auth.schema";
 
 export class UserController {
   // SignUp user handler
   public registerUser = asyncHandler(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const { email, password, name } = req.body;
+    async (
+      req: ParsedRequest<ISignupSchema>,
+      res: Response,
+      next: NextFunction
+    ) => {
+      console.log(req.valid);
+      const { email, password, name } = req.valid.body;
 
       const exist = await userRepository.exists(email);
 
@@ -36,15 +41,22 @@ export class UserController {
       const token = jwt.sign({ email: req.body.email }, env_vars.jwt.secret, {
         expiresIn: env_vars.jwt.accessExpiration,
       });
-      new SuccessResponse("user created", {
-        token,
-        user: _.omit(user, ["password"]),
-      }).send(res);
+      res.created({
+        message: "user created",
+        data: {
+          token,
+          user: _.omit(user, ["password"]),
+        },
+      });
     }
   );
 
   // passport local strategy handler
-  public authenticateUser(req: Request, res: Response, next: NextFunction) {
+  public authenticateUser(
+    req: ParsedRequest<ICredentialSchema>,
+    res: Response,
+    next: NextFunction
+  ) {
     passport.authenticate(
       "local",
       { session: false },
@@ -52,22 +64,22 @@ export class UserController {
         if (err) return next(err);
         if (user) {
           const token = jwt.sign(
-            { email: req.body.email },
+            { email: req.valid.body.email },
             env_vars.jwt.secret,
             {
               expiresIn: env_vars.jwt.accessExpiration,
             }
           );
           const userRes = _.pick(user, ["_id", "name", "email", "role"]);
-          new SuccessResponse("loggenin", { token, user: userRes }).send(res);
+          res.ok({ message: "loggenin", data: { token, user: userRes } });
         }
       }
     )(req, res, next);
   }
 
   // return authenticated user details
-  public me(req: ProtectedRequest, res: Response, next: NextFunction) {
-    new SuccessResponse("success", req.user).send(res);
+  public me(req: Request, res: Response, next: NextFunction) {
+    res.ok({ message: "success", data: req.user });
   }
 }
 export const userController = new UserController();

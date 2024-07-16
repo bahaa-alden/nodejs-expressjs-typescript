@@ -1,55 +1,62 @@
 import { Response } from "express";
-import { PaginateRequest, ProtectedRequest } from "../types/app-request";
-import Task from "../models/task.model";
 import { InternalError, NotFoundError } from "../core/ApiError";
-import { NoContentMsgResponse, SuccessResponse } from "../core/ApiResponse";
-import asyncHandler from "../helpers/asyncHandler";
+import { SuccessResponse } from "../core/ApiResponse";
+import asyncHandler from "../middlewares/asyncHandler";
 import { NextFunction } from "express-serve-static-core";
 import { taskRepository } from "../repositories/task.repository.";
+import { ParsedRequest } from "app-request";
+import {
+  ITaskAllSchema,
+  ITaskIdSchema,
+  ITaskCreateSchema,
+  ITaskUpdateSchema,
+} from "../schemas/task.schema";
 
 export class TaskController {
   // get all tasks handler by author
   public getTasks = asyncHandler(
     async (
-      req: PaginateRequest,
+      req: ParsedRequest<void, ITaskAllSchema>,
       res: Response,
       next: NextFunction
     ): Promise<void> => {
-      const { page, limit } = req.query;
+      const { page, limit } = req.valid.query;
       const tasks = await taskRepository.findForAuthor(
         page,
         limit,
         req.user.id
       );
 
-      new SuccessResponse("success", tasks).send(res);
+      res.ok({ message: "success", data: tasks });
     }
   );
 
   // get task handler by Id for authenticated user
   public getTask = asyncHandler(
-    async (req: ProtectedRequest, res: Response): Promise<void> => {
+    async (
+      req: ParsedRequest<void, void, ITaskIdSchema>,
+      res: Response
+    ): Promise<void> => {
       const task = await taskRepository.findByIdForAuthor(
-        req.params.id,
+        req.valid.params.id,
         req.user.id
       );
 
       if (task === null) {
         throw new NotFoundError("Task not Found");
       }
-      new SuccessResponse("success", task).send(res);
+      res.ok({ message: "success", data: task });
     }
   );
 
   //  create task handler
   public createTask = asyncHandler(
     async (
-      req: ProtectedRequest,
+      req: ParsedRequest<ITaskCreateSchema>,
       res: Response,
       next: NextFunction
     ): Promise<void> => {
-      const newTask: Task = req.body;
-      newTask.authorId = req.user;
+      const newTask = { ...req.valid.body, authorId: req.user.id };
       const task = await taskRepository.insert(newTask);
       if (task === null) {
         throw new InternalError();
@@ -62,14 +69,14 @@ export class TaskController {
 
   public updateTask = asyncHandler(
     async (
-      req: ProtectedRequest,
+      req: ParsedRequest<ITaskUpdateSchema, void, ITaskIdSchema>,
       res: Response,
       next: NextFunction
     ): Promise<void> => {
-      const updateBody: Task = req.body;
+      const updateBody = req.valid.body;
 
       const task = await taskRepository.findByIdForAuthor(
-        req.params.id,
+        req.valid.params.id,
         req.user.id
       );
       if (task === null) {
@@ -78,22 +85,25 @@ export class TaskController {
 
       const data = await taskRepository.patchById(task.id, updateBody);
 
-      new SuccessResponse("Task has been updated", data).send(res);
+      res.ok({ message: "Task has been updated", data });
     }
   );
 
   // delete task handler by Id for authenticated user
   public deleteTask = asyncHandler(
-    async (req: ProtectedRequest, res: Response): Promise<void> => {
+    async (
+      req: ParsedRequest<void, void, ITaskIdSchema>,
+      res: Response
+    ): Promise<void> => {
       const task = await taskRepository.findByIdForAuthor(
-        req.params.id,
+        req.valid.params.id,
         req.user.id
       );
       if (task === null) {
         throw new NotFoundError("Task not Found");
       }
       await taskRepository.deleteById(task.id);
-      new NoContentMsgResponse("Task deleted Successfully").send(res);
+      res.noContent({ message: "Task deleted Successfully" });
     }
   );
 }

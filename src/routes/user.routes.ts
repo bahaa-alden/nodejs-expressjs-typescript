@@ -1,5 +1,5 @@
 import { Router } from "express";
-import validator, { ValidationSource } from "../helpers/validator";
+import validator from "../middlewares/validator";
 import authSchema from "../schemas/auth.schema";
 import { userController } from "../controllers/user.controller";
 import { authController } from "../controllers/auth.controller";
@@ -15,7 +15,7 @@ export class UserRoutes {
     // ME
     this.router.get(
       "/me",
-      validator(authSchema.auth, ValidationSource.HEADER),
+      validator({ headers: authSchema.auth }),
       authController.authenticateJWT,
       userController.me
     );
@@ -23,14 +23,14 @@ export class UserRoutes {
     // REGISTER
     this.router.post(
       "/register",
-      validator(authSchema.signup),
+      validator({ body: authSchema.signup }),
       userController.registerUser
     );
 
     // LOGIN
     this.router.post(
       "/login",
-      validator(authSchema.credential),
+      validator({ body: authSchema.credential }),
       userController.authenticateUser
     );
   }

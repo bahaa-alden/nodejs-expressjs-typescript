@@ -1,6 +1,7 @@
 import { Schema, model, Error, Document as MongooseDocument } from "mongoose";
 import * as bcrypt from "bcrypt-nodejs";
 import IRole from "./role.model";
+import { omit } from "lodash";
 
 export const DOCUMENT_NAME = "User";
 export const COLLECTION_NAME = "users";
@@ -14,7 +15,10 @@ export default interface IUser extends MongooseDocument {
   roleId: IRole["_id"];
   createdAt: Date;
   updatedAt: Date;
-  comparePassword?(candidatePassword: string, callback: any);
+  comparePassword?(
+    candidatePassword: string,
+    callback: (err: Error, isMatch: boolean) => void
+  ): void;
 }
 
 const schema = new Schema<IUser>(
@@ -43,6 +47,10 @@ const schema = new Schema<IUser>(
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: (_, ret) => omit(ret, ["__v", "_id"]),
+    },
   }
 );
 

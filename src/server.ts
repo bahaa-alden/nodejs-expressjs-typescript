@@ -8,7 +8,8 @@ import { userRoutes } from "./routes/user.routes";
 import { env_vars } from "./config";
 import helmet from "helmet";
 import * as passport from "passport";
-import errHandler from "./helpers/errHandler";
+import errHandler from "./middlewares/errHandler";
+import customResponses from "./middlewares/custom.middleware";
 
 class Server {
   public app: express.Application;
@@ -28,6 +29,7 @@ class Server {
   }
 
   public config(): void {
+    this.app.use(customResponses);
     this.app.set("port", process.env.PORT || 3000);
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));

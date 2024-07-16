@@ -1,5 +1,6 @@
 import { Schema, model, Document as MongooseDocument } from "mongoose";
 import IUser from "./user.model";
+import { omit } from "lodash";
 
 export const DOCUMENT_NAME = "Task";
 export const COLLECTION_NAME = "tasks";
@@ -44,6 +45,10 @@ const schema = new Schema<ITask>(
   {
     versionKey: false,
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: (_, ret) => omit(ret, ["__v", "_id"]),
+    },
   }
 );
 

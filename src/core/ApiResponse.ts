@@ -7,10 +7,12 @@ enum StatusCode {
   FAILURE = "10001",
   RETRY = "10002",
   INVALID_ACCESS_TOKEN = "10003",
+  CREATED = "10004",
 }
 
 enum ResponseStatus {
   SUCCESS = 200,
+  CREATED = 201,
   NO_CONTENT = 204,
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
@@ -99,6 +101,13 @@ export class SuccessMsgResponse extends ApiResponse {
     super(StatusCode.SUCCESS, ResponseStatus.SUCCESS, message);
   }
 }
+
+export class CreatedMsgResponse extends ApiResponse {
+  constructor(message: string) {
+    super(StatusCode.CREATED, ResponseStatus.CREATED, message);
+  }
+}
+
 export class NoContentMsgResponse<T> extends ApiResponse {
   constructor(message: string) {
     super(StatusCode.SUCCESS, ResponseStatus.NO_CONTENT, message);
@@ -118,5 +127,15 @@ export class SuccessResponse<T> extends ApiResponse {
 
   send(res: Response, headers: { [key: string]: string } = {}): Response {
     return super.prepare<SuccessResponse<T>>(res, this, headers);
+  }
+}
+
+export class CreatedResponse<T> extends ApiResponse {
+  constructor(message: string, private data: T) {
+    super(StatusCode.CREATED, ResponseStatus.CREATED, message);
+  }
+
+  send(res: Response, headers: { [key: string]: string } = {}): Response {
+    return super.prepare<CreatedResponse<T>>(res, this, headers);
   }
 }

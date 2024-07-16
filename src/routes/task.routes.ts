@@ -1,12 +1,12 @@
 import { Router } from "express";
-import validator, { ValidationSource } from "../helpers/validator";
+import validator from "../middlewares/validator";
 import taskSchema from "../schemas/task.schema";
-import restrict from "../helpers/restrict";
+import restrict from "../middlewares/restrict";
 import { RoleCode } from "../utils/enum";
-import authSchema from "../schemas/auth.schema";
-import { authController } from "../controllers/auth.controller";
 import { authorizationMiddleware } from "../auth/authorization";
 import { taskController } from "../controllers/task.controller";
+import { authController } from "../controllers/auth.controller";
+import authSchema from "../schemas/auth.schema";
 
 export class TaskRoutes {
   public router: Router;
@@ -19,7 +19,7 @@ export class TaskRoutes {
   routes() {
     // protect routes
     this.router.use(
-      validator(authSchema.auth, ValidationSource.HEADER),
+      validator({ headers: authSchema.auth }),
       authController.authenticateJWT
     );
 
@@ -30,35 +30,35 @@ export class TaskRoutes {
     // GET ALL TASKS
     this.router.get(
       "/",
-      validator(taskSchema.taskAll, ValidationSource.QUERY),
+      validator({ query: taskSchema.taskAll }),
       taskController.getTasks
     );
 
     // GET TASK BY ID
     this.router.get(
       "/:id",
-      validator(taskSchema.taskId, ValidationSource.PARAM),
+      validator({ params: taskSchema.taskId }),
       taskController.getTask
     );
 
     // CREATE TASK
     this.router.post(
       "/",
-      validator(taskSchema.taskCreate),
+      validator({ body: taskSchema.taskCreate }),
       taskController.createTask
     );
 
     // UPDATE TASK BY ID
     this.router.patch(
       "/:id",
-      validator(taskSchema.taskId, ValidationSource.PARAM),
+      validator({ params: taskSchema.taskId, body: taskSchema.taskUpdate }),
       taskController.updateTask
     );
 
     // DELETE TASK BY ID
     this.router.delete(
       "/:id",
-      validator(taskSchema.taskId, ValidationSource.PARAM),
+      validator({ params: taskSchema.taskId }),
       taskController.deleteTask
     );
   }
