@@ -1,6 +1,7 @@
 import { Schema, model, Document as MongooseDocument } from "mongoose";
 import IUser from "./user.model";
 import { omit } from "lodash";
+import { Types } from "mongoose";
 
 export const DOCUMENT_NAME = "Task";
 export const COLLECTION_NAME = "tasks";
@@ -14,32 +15,37 @@ export default interface ITask extends MongooseDocument {
   author: IUser;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: Date | null;
 }
 
 const schema = new Schema<ITask>(
   {
     title: {
-      type: Schema.Types.String,
+      type: String,
       required: true,
       maxlength: 500,
       trim: true,
     },
     description: {
-      type: Schema.Types.String,
+      type: String,
       required: true,
       maxlength: 2000,
       trim: true,
     },
     completed: {
-      type: Schema.Types.Boolean,
+      type: Boolean,
       required: true,
       default: false,
     },
     authorId: {
-      type: Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: "User",
       required: true,
       index: true,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
     },
   },
   {
@@ -47,7 +53,7 @@ const schema = new Schema<ITask>(
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: (_, ret) => omit(ret, ["__v", "_id"]),
+      transform: (_, ret) => omit(ret, ["__v", "_id", "deletedAt"]),
     },
   }
 );

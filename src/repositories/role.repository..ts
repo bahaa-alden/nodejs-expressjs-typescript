@@ -8,7 +8,11 @@ export class RoleRepository extends BaseRepository<IRole> {
   }
 
   async findByCodes(codes: RoleCode[]): Promise<IRole[]> {
-    return this.model.find({ code: { $in: codes }, status: true });
+    return this.model.find({
+      code: { $in: codes },
+      status: true,
+      deletedAt: null,
+    });
   }
 }
 

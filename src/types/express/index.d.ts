@@ -1,6 +1,6 @@
-import { IUser } from "@models/user.model";
 import { RoleCode } from "@utils/enum";
 import { ZodIssue } from "zod";
+import IUser from "../../models/user.model";
 
 export type HeaderObject = {
   [key: string]: string;

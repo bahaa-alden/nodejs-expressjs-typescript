@@ -77,7 +77,6 @@ export default (props: ValidProps) =>
         req.valid.body = validationResult.data;
       }
       if (props.headers && "headers" in req) {
-        console.log(req.headers);
         const validationResult = await props.headers.safeParseAsync(
           req.headers
         );

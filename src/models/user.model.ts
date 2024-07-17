@@ -2,6 +2,7 @@ import { Schema, model, Error, Document as MongooseDocument } from "mongoose";
 import * as bcrypt from "bcrypt-nodejs";
 import IRole from "./role.model";
 import { omit } from "lodash";
+import { Types } from "mongoose";
 
 export const DOCUMENT_NAME = "User";
 export const COLLECTION_NAME = "users";
@@ -15,6 +16,7 @@ export default interface IUser extends MongooseDocument {
   roleId: IRole["_id"];
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: null | Date;
   comparePassword?(
     candidatePassword: string,
     callback: (err: Error, isMatch: boolean) => void
@@ -24,32 +26,36 @@ export default interface IUser extends MongooseDocument {
 const schema = new Schema<IUser>(
   {
     name: {
-      type: Schema.Types.String,
+      type: String,
       trim: true,
       maxlength: 200,
       required: true,
     },
     email: {
-      type: Schema.Types.String,
+      type: String,
       trim: true,
       required: true,
     },
     password: {
-      type: Schema.Types.String,
+      type: String,
       select: false,
       required: true,
     },
     roleId: {
-      type: Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: "Role",
       required: true,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
     },
   },
   {
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: (_, ret) => omit(ret, ["__v", "_id"]),
+      transform: (_, ret) => omit(ret, ["__v", "_id", "password", "deletedAt"]),
     },
   }
 );

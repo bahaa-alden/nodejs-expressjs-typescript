@@ -1,16 +1,24 @@
 import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import * as passport from "passport";
-import { InternalError, UnprocessableEntityError } from "../core/ApiError";
+import {
+  InternalError,
+  NotFoundError,
+  UnprocessableEntityError,
+} from "../core/ApiError";
 import asyncHandler from "../middlewares/asyncHandler";
 import { env_vars } from "../config";
 import User from "../models/user.model";
-import * as _ from "lodash";
 import { userRepository } from "../repositories/user.repository";
 import { roleRepository } from "../repositories/role.repository.";
 import { RoleCode } from "../utils/enum";
 import { ParsedRequest } from "app-request";
 import { ISignupSchema, ICredentialSchema } from "../schemas/auth.schema";
+import {
+  IUserAllSchema,
+  IUserIdSchema,
+  IUserUpdateSchema,
+} from "../schemas/user.schema";
 
 export class UserController {
   // SignUp user handler
@@ -20,7 +28,6 @@ export class UserController {
       res: Response,
       next: NextFunction
     ) => {
-      console.log(req.valid);
       const { email, password, name } = req.valid.body;
 
       const exist = await userRepository.exists(email);
@@ -45,7 +52,7 @@ export class UserController {
         message: "user created",
         data: {
           token,
-          user: _.omit(user, ["password"]),
+          user,
         },
       });
     }
@@ -70,8 +77,7 @@ export class UserController {
               expiresIn: env_vars.jwt.accessExpiration,
             }
           );
-          const userRes = _.pick(user, ["_id", "name", "email", "role"]);
-          res.ok({ message: "loggenin", data: { token, user: userRes } });
+          res.ok({ message: "loggenin", data: { token, user } });
         }
       }
     )(req, res, next);
@@ -81,5 +87,98 @@ export class UserController {
   public me(req: Request, res: Response, next: NextFunction) {
     res.ok({ message: "success", data: req.user });
   }
+
+  public async updateMe(
+    req: ParsedRequest<IUserUpdateSchema>,
+    res: Response,
+    next: NextFunction
+  ) {
+    const updateBody = req.valid.body;
+
+    const exist = await userRepository.exists(updateBody.email);
+
+    if (exist) throw new UnprocessableEntityError("User already exist");
+
+    const data = await userRepository.patchById(req.user.id, updateBody);
+
+    res.ok({ message: "User has been updated", data });
+  }
+
+  public deleteMe = asyncHandler(
+    async (req: ParsedRequest<void>, res: Response, next: NextFunction) => {
+      await userRepository.deleteById(req.user.id);
+
+      res.noContent({ message: "User has been updated" });
+    }
+  );
+
+  public get = asyncHandler(
+    async (
+      req: ParsedRequest<void, IUserAllSchema>,
+      res: Response,
+      next: NextFunction
+    ): Promise<void> => {
+      const { page, limit } = req.valid.query;
+      const users = await userRepository.findForUser(page, limit);
+      res.ok({ message: "success", data: users });
+    }
+  );
+
+  public getOne = asyncHandler(
+    async (
+      req: ParsedRequest<void, void, IUserIdSchema>,
+      res: Response,
+      next: NextFunction
+    ) => {
+      const user = await userRepository.findById(req.valid.params.id);
+
+      if (!user) {
+        throw new NotFoundError("user not found");
+      }
+      res.ok({ message: "Get User Successfully", data: user });
+    }
+  );
+
+  public updateOne = asyncHandler(
+    async (
+      req: ParsedRequest<IUserUpdateSchema, void, IUserIdSchema>,
+      res: Response,
+      next: NextFunction
+    ) => {
+      const updateBody = req.valid.body;
+
+      const user = await userRepository.findById(req.valid.params.id);
+
+      if (!user) {
+        throw new NotFoundError("user not found");
+      }
+
+      const exist = await userRepository.exists(updateBody.email);
+
+      if (exist) throw new UnprocessableEntityError("User already exist");
+
+      const data = await userRepository.patchById(req.user.id, updateBody);
+
+      res.ok({ message: "User has been updated", data });
+    }
+  );
+
+  public deleteOne = asyncHandler(
+    async (
+      req: ParsedRequest<void, void, IUserIdSchema>,
+      res: Response,
+      next: NextFunction
+    ) => {
+      const user = await userRepository.findById(req.valid.params.id);
+
+      if (!user) {
+        throw new NotFoundError("user not found");
+      }
+
+      await userRepository.deleteById(req.user.id);
+
+      res.noContent({ message: "User has been updated" });
+    }
+  );
 }
 export const userController = new UserController();
