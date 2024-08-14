@@ -75,7 +75,7 @@ export class UserRoutes {
     );
 
     // DELETE USER BY ID
-    this.router.patch(
+    this.router.delete(
       "/:id",
       validator({ params: userSchema.userId }),
       userController.deleteOne

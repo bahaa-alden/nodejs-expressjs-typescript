@@ -175,7 +175,7 @@ export class UserController {
         throw new NotFoundError("user not found");
       }
 
-      await userRepository.deleteById(req.user.id);
+      await userRepository.deleteById(user.id);
 
       res.noContent({ message: "User has been updated" });
     }
