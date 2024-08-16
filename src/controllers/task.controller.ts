@@ -1,6 +1,5 @@
 import { Response } from "express";
 import { InternalError, NotFoundError } from "../core/ApiError";
-import { SuccessResponse } from "../core/ApiResponse";
 import asyncHandler from "../middlewares/asyncHandler";
 import { NextFunction } from "express-serve-static-core";
 import { taskRepository } from "../repositories/task.repository.";
@@ -61,7 +60,7 @@ export class TaskController {
       if (task === null) {
         throw new InternalError();
       }
-      new SuccessResponse("success", task).send(res);
+      res.ok({ message: "Task has been created", data: task });
     }
   );
 
