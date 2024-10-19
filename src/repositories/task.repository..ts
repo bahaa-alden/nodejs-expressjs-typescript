@@ -1,5 +1,20 @@
+import { FilterQuery } from "mongoose";
 import ITask, { Task } from "../models/task.model";
-import { BaseRepository } from "./base.repository";
+import { OrderDirection, OrderOptions } from "../utils/order";
+import { BaseRepository, FindOptions } from "./base.repository";
+
+export interface TaskOrderOptions extends OrderOptions {
+  column: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TaskFilterOptions {
+  authorId?: string;
+}
+
+export interface FindTaskOptions extends FindOptions<TaskFilterOptions> {
+  order: TaskOrderOptions;
+}
 
 export class TaskRepository extends BaseRepository<ITask> {
   constructor() {
@@ -13,27 +28,39 @@ export class TaskRepository extends BaseRepository<ITask> {
       .populate("author");
   }
 
-  async findForAuthor(
-    pageNumber: number,
-    take: number,
-    authorId: string
-  ): Promise<ITask[]> {
-    const limit = take || 100;
-    const skip = (pageNumber - 1) * take || 0;
+  async findForAuthor(options: FindTaskOptions): Promise<ITask[]> {
+    const { pagination, order, filter } = options;
+    const query: FilterQuery<ITask> = { deletedAt: null };
+
+    if (filter?.authorId) {
+      query.authorId = filter.authorId;
+    }
+
     return await this.model
-      .find({ authorId, deletedAt: null })
-      .skip(skip)
-      .limit(limit)
-      .sort({ createdAt: -1 });
+      .find(query)
+      .skip(pagination.pageSize * (pagination.page - 1))
+      .limit(pagination.pageSize)
+      .sort({
+        [order.column]: order.direction === OrderDirection.asc ? 1 : -1,
+      });
   }
 
-  async findForUser(pageNumber: number, limit: number): Promise<ITask[]> {
+  async findForUser(options: FindTaskOptions): Promise<ITask[]> {
+    const { pagination, order, filter } = options;
+    const query: FilterQuery<ITask> = { deletedAt: null };
+
+    if (filter?.authorId) {
+      query.authorId = filter.authorId;
+    }
+
     return this.model
-      .find({ deletedAt: null })
-      .skip(limit * (pageNumber - 1))
-      .limit(limit)
+      .find(query)
+      .skip(pagination.pageSize * (pagination.page - 1))
+      .limit(pagination.pageSize)
       .populate("author")
-      .sort({ createdAt: -1 });
+      .sort({
+        [order.column]: order.direction === OrderDirection.asc ? 1 : -1,
+      });
   }
 }
 

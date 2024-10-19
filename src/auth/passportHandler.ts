@@ -19,15 +19,17 @@ passport.use(
     async (email, password, done) => {
       const user = await userRepository.findByEmail(email);
       if (!user) done(new AuthFailureError("Invalid email or password."));
-      user.comparePassword(password, (err: Error, isMatch: boolean) => {
-        if (err) {
-          return done(new AuthFailureError(err.message));
-        }
-        if (isMatch) {
-          return done(undefined, user);
-        }
-        return done(new AuthFailureError("Invalid email or password."));
-      });
+      else {
+        user.comparePassword(password, (err: Error, isMatch: boolean) => {
+          if (err) {
+            return done(new AuthFailureError(err.message));
+          }
+          if (isMatch) {
+            return done(undefined, user);
+          }
+          return done(new AuthFailureError("Invalid email or password."));
+        });
+      }
     }
   )
 );

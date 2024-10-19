@@ -1,6 +1,6 @@
-import { boolean, object, string, TypeOf } from "zod";
+import { boolean, object, string, type TypeOf } from "zod";
 import { zodObjectId } from "../middlewares/validator";
-import { numericId } from "./common";
+import { orderColumn, orderDirection, page, pageSize } from "./common";
 
 const taskIdSchema = object({
   id: zodObjectId,
@@ -9,8 +9,11 @@ const taskIdSchema = object({
 export type ITaskIdSchema = TypeOf<typeof taskIdSchema>;
 
 const taskAllSchema = object({
-  page: numericId.optional(),
-  limit: numericId.optional(),
+  page,
+  pageSize,
+  orderColumn,
+  orderDirection,
+  authorId: string().optional(),
 });
 
 export type ITaskAllSchema = TypeOf<typeof taskAllSchema>;

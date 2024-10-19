@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, ParsedRequest } from "express";
 import * as jwt from "jsonwebtoken";
 import * as passport from "passport";
 import {
@@ -9,16 +9,20 @@ import {
 import asyncHandler from "../middlewares/asyncHandler";
 import { env_vars } from "../config";
 import User from "../models/user.model";
-import { userRepository } from "../repositories/user.repository";
+import {
+  FindUserOptions,
+  userRepository,
+} from "../repositories/user.repository";
 import { roleRepository } from "../repositories/role.repository.";
 import { RoleCode } from "../utils/enum";
-import { ParsedRequest } from "app-request";
 import { ISignupSchema, ICredentialSchema } from "../schemas/auth.schema";
 import {
   IUserAllSchema,
   IUserIdSchema,
   IUserUpdateSchema,
 } from "../schemas/user.schema";
+import { defaultOrderParams } from "../utils/order";
+import { defaultPaginationParams } from "../utils/pagination";
 
 export class UserController {
   // SignUp user handler
@@ -95,9 +99,11 @@ export class UserController {
   ) {
     const updateBody = req.valid.body;
 
-    const exist = await userRepository.exists(updateBody.email);
+    if (updateBody.email) {
+      const exist = await userRepository.exists(updateBody.email);
 
-    if (exist) throw new UnprocessableEntityError("User already exist");
+      if (exist) throw new UnprocessableEntityError("User already exist");
+    }
 
     const data = await userRepository.patchById(req.user.id, updateBody);
 
@@ -118,8 +124,20 @@ export class UserController {
       res: Response,
       next: NextFunction
     ): Promise<void> => {
-      const { page, limit } = req.valid.query;
-      const users = await userRepository.findForUser(page, limit);
+      const options: FindUserOptions = {
+        filter: {},
+        order: defaultOrderParams(
+          req.valid.query.orderColumn,
+          req.valid.query.orderDirection
+        ),
+        pagination: defaultPaginationParams(
+          req.valid.query.page,
+          req.valid.query.pageSize
+        ),
+        search: req.valid.query.search,
+      };
+
+      const users = await userRepository.findForUser(options);
       res.ok({ message: "success", data: users });
     }
   );
@@ -153,9 +171,11 @@ export class UserController {
         throw new NotFoundError("user not found");
       }
 
-      const exist = await userRepository.exists(updateBody.email);
+      if (updateBody.email) {
+        const exist = await userRepository.exists(updateBody.email);
 
-      if (exist) throw new UnprocessableEntityError("User already exist");
+        if (exist) throw new UnprocessableEntityError("User already exist");
+      }
 
       const data = await userRepository.patchById(req.user.id, updateBody);
 

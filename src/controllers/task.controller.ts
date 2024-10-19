@@ -1,15 +1,20 @@
-import { Response } from "express";
+import { Response, ParsedRequest } from "express";
 import { InternalError, NotFoundError } from "../core/ApiError";
 import asyncHandler from "../middlewares/asyncHandler";
 import { NextFunction } from "express-serve-static-core";
-import { taskRepository } from "../repositories/task.repository.";
-import { ParsedRequest } from "app-request";
+import {
+  FindTaskOptions,
+  taskRepository,
+} from "../repositories/task.repository.";
 import {
   ITaskAllSchema,
   ITaskIdSchema,
   ITaskCreateSchema,
   ITaskUpdateSchema,
 } from "../schemas/task.schema";
+import { defaultOrderParams } from "../utils/order";
+import { defaultPaginationParams } from "../utils/pagination";
+import { RoleCode } from "../utils/enum";
 
 export class TaskController {
   // get all tasks handler by author
@@ -19,12 +24,23 @@ export class TaskController {
       res: Response,
       next: NextFunction
     ): Promise<void> => {
-      const { page, limit } = req.valid.query;
-      const tasks = await taskRepository.findForAuthor(
-        page,
-        limit,
-        req.user.id
-      );
+      const options: FindTaskOptions = {
+        filter: {
+          authorId:
+            req.user.role.code === RoleCode.USER
+              ? req.user.id
+              : req.valid.query.authorId,
+        },
+        order: defaultOrderParams(
+          req.valid.query.orderColumn,
+          req.valid.query.orderDirection
+        ),
+        pagination: defaultPaginationParams(
+          req.valid.query.page,
+          req.valid.query.pageSize
+        ),
+      };
+      const tasks = await taskRepository.findForAuthor(options);
 
       res.ok({ message: "success", data: tasks });
     }

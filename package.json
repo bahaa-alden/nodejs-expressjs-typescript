@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "yarn serve",
-    "build": "yarn build-ts && yarn tslint",
+    "build": "yarn build-ts",
+    "preserve": "yarn build",
     "serve": "node dist/server.js",
     "watch-node": "sleep 5 && nodemon dist/server.js",
     "build-ts": "tsc",
@@ -27,6 +28,7 @@
     "@types/passport-jwt": "^3.0.1",
     "@types/passport-local": "^1.0.33",
     "@types/uuid": "^3.4.4",
+    "bcrypt": "^5.1.1",
     "bcrypt-nodejs": "0.0.3",
     "compression": "^1.7.3",
     "cors": "^2.8.5",
@@ -46,6 +48,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "concurrently": "^7.6.0",
     "tslint": "^5.12.1"
   },

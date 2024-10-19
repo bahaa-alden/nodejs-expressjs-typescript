@@ -1,8 +1,7 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Response, ParsedRequest } from "express";
 import { isValidObjectId } from "mongoose";
 import { AnyZodObject, string, ZodEffects } from "zod";
 import asyncHandler from "./asyncHandler";
-import { ParsedRequest } from "app-request";
 import { BadRequestError } from "../core/ApiError";
 
 export enum ValidationSource {

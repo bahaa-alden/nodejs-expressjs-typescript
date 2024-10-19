@@ -1,4 +1,4 @@
-import { ParsedRequest } from "app-request";
+import { ParsedRequest } from "express";
 import { AuthFailureError } from "../core/ApiError";
 import asyncHandler from "../middlewares/asyncHandler";
 import { roleRepository } from "../repositories/role.repository.";

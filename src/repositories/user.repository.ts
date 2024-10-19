@@ -1,18 +1,43 @@
-import { BaseRepository } from "./base.repository";
+import { BaseRepository, FindOptions } from "./base.repository";
 import IUser, { User } from "../models/user.model";
+import { OrderDirection, OrderOptions } from "../utils/order";
+import { FilterQuery } from "mongoose";
+
+export interface UserOrderOptions extends OrderOptions {
+  column: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface UserFilterOptions {}
+
+export interface FindUserOptions extends FindOptions<UserFilterOptions> {
+  order: UserOrderOptions;
+}
 
 export class UserRepository extends BaseRepository<IUser> {
   constructor() {
     super(User);
   }
 
-  async findForUser(pageNumber: number, limit: number): Promise<IUser[]> {
+  async findForUser(options: FindUserOptions): Promise<IUser[]> {
+    const { pagination, order, search } = options;
+    const query: FilterQuery<IUser> = { deletedAt: null };
+
+    if (search) {
+      query.$or = [
+        { email: { $regex: new RegExp(search, "i") } },
+        { name: { $regex: new RegExp(search, "i") } },
+      ];
+    }
+
     return await this.model
-      .find({ deletedAt: null })
-      .skip(limit * (pageNumber - 1))
-      .limit(limit)
+      .find(query)
+      .skip(pagination.pageSize * (pagination.page - 1))
+      .limit(pagination.pageSize)
       .populate("role")
-      .sort({ createdAt: -1 });
+      .sort({
+        [order.column]: order.direction === OrderDirection.asc ? 1 : -1,
+      });
   }
 
   async exists(email: string): Promise<boolean> {

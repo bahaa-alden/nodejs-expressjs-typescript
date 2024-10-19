@@ -1,6 +1,6 @@
 import { ZodIssue } from "zod";
-import IUser from "../../models/user.model";
-import { RoleCode } from "../../utils/enum";
+import IUser from "../../src/models/user.model";
+import { RoleCode } from "../../src/utils/enum";
 
 export type HeaderObject = {
   [key: string]: string;
@@ -24,7 +24,7 @@ export type ResponsePayload = {
   message: string;
 };
 
-declare module "express-serve-static-core" {
+declare module "express" {
   interface Request {
     body: BodyObject;
     user: IUser;
@@ -40,5 +40,9 @@ declare module "express-serve-static-core" {
     created(payload: ResponsePayload): Response<any, Record<string, any>>;
 
     noContent(payload?: ResponsePayload): Response<any, Record<string, any>>;
+  }
+
+  interface ParsedRequest<B = any, Q = any, P = any, H = any> extends Request {
+    valid: { body: B; query: Q; params: P; headers: H };
   }
 }

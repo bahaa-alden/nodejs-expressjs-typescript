@@ -12,13 +12,13 @@
     "outDir": "./dist",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "typeRoots": ["node_modules/@types", "@types"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "@types"],
   "exclude": ["node_modules", "dist"]
 }

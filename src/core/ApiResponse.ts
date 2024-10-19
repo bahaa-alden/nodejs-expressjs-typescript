@@ -26,7 +26,7 @@ abstract class ApiResponse {
   constructor(
     protected statusCode: StatusCode,
     protected status: ResponseStatus,
-    protected message: string,
+    protected message?: string,
     protected errors?: ZodIssue[]
   ) {}
 
@@ -85,7 +85,7 @@ export class UnprocessableEntityResponse extends ApiResponse {
 }
 
 export class BadRequestResponse extends ApiResponse {
-  constructor(message = "Bad Parameters", errors: ZodIssue[]) {
+  constructor(message = "Bad Parameters", errors?: ZodIssue[]) {
     super(StatusCode.FAILURE, ResponseStatus.BAD_REQUEST, message, errors);
   }
 }
@@ -109,7 +109,7 @@ export class CreatedMsgResponse extends ApiResponse {
 }
 
 export class NoContentMsgResponse<T> extends ApiResponse {
-  constructor(message: string) {
+  constructor(message?: string) {
     super(StatusCode.SUCCESS, ResponseStatus.NO_CONTENT, message);
   }
 }

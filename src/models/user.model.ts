@@ -1,5 +1,5 @@
 import { Schema, model, Error, Document as MongooseDocument } from "mongoose";
-import * as bcrypt from "bcrypt-nodejs";
+import * as bcrypt from "bcrypt";
 import IRole from "./role.model";
 import { omit } from "lodash";
 import { Types } from "mongoose";
@@ -17,7 +17,7 @@ export default interface IUser extends MongooseDocument {
   createdAt: Date;
   updatedAt: Date;
   deletedAt: null | Date;
-  comparePassword?(
+  comparePassword(
     candidatePassword: string,
     callback: (err: Error, isMatch: boolean) => void
   ): void;
@@ -62,22 +62,19 @@ const schema = new Schema<IUser>(
 
 schema.index({ email: 1 });
 
-// hash password before save user
-schema.pre("save", function save(next) {
-  const user = this;
-  if (!this.isModified("password")) return next();
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      return next(err);
-    }
-    bcrypt.hash(this.password, salt, undefined, (err: Error, hash) => {
-      if (err) {
-        return next(err);
-      }
-      user.password = hash;
-      next();
-    });
-  });
+schema.pre("save", async function save(next) {
+  // If the password is not modified, skip hashing
+  if (!this.isModified("password")) {
+    return next();
+  }
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 // check password

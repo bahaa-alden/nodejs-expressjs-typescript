@@ -15,7 +15,7 @@ const customResponses = (req: Request, res: Response, next: NextFunction) => {
   };
 
   res.noContent = function (payload?) {
-    return new NoContentMsgResponse(payload.message).send(res);
+    return new NoContentMsgResponse(payload?.message).send(res);
   };
 
   next();

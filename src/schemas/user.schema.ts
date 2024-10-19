@@ -1,6 +1,6 @@
 import { object, string, TypeOf } from "zod";
 import { zodObjectId } from "../middlewares/validator";
-import { numericId } from "./common";
+import { orderColumn, orderDirection, page, pageSize } from "./common";
 
 const userIdSchema = object({
   id: zodObjectId,
@@ -16,8 +16,11 @@ const userUpdateSchema = object({
 export type IUserUpdateSchema = TypeOf<typeof userUpdateSchema>;
 
 const userAllSchema = object({
-  page: numericId.optional(),
-  limit: numericId.optional(),
+  page,
+  pageSize,
+  orderColumn,
+  orderDirection,
+  search: string().optional(),
 });
 
 export type IUserAllSchema = TypeOf<typeof userAllSchema>;
