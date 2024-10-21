@@ -7,13 +7,13 @@ Tasks Manager is a Node.js application built with Express.js, MongoDB, Passport.
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/bahaa-alden/tasks-manager.git
+   git clone https://github.com/bahaa-alden/nodejs-expressjs-typescript.git
    ```
 
 2. **Install Dependencies**
 
    ```bash
-   cd tasks-manager
+   cd nodejs-expressjs-typescript
    yarn install
    ```
 
@@ -48,7 +48,9 @@ Tasks Manager is a Node.js application built with Express.js, MongoDB, Passport.
 yarn build
 yarn start
 ```
+
 or
+
 ```bash
 yarn watch
 ```

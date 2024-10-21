@@ -1,5 +1,5 @@
 {
-  "name": "tasks-manager",
+  "name": "nodejs-expressjs-typescript",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -56,6 +56,6 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bahaa-alden/tasks-manager.git"
+    "url": "https://github.com/bahaa-alden/nodejs-expressjs-typescript.git"
   }
 }
