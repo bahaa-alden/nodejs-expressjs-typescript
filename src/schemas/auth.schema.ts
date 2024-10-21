@@ -1,5 +1,5 @@
-import { object, string, TypeOf } from "zod";
-import { zodAuthBearer } from "../middlewares/validator";
+import { object, string, TypeOf } from 'zod';
+import { zodAuthBearer } from '../middlewares/validator';
 
 const credentialSchema = object({
   email: string().email(),

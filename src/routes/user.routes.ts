@@ -1,12 +1,12 @@
-import { Router } from "express";
-import validator from "../middlewares/validator";
-import authSchema from "../schemas/auth.schema";
-import { userController } from "../controllers/user.controller";
-import userSchema from "../schemas/user.schema";
-import { RoleCode } from "../utils/enum";
-import restrict from "../middlewares/restrict";
-import { authorizationMiddleware } from "../auth/authorization";
-import { authController } from "../controllers/auth.controller";
+import { Router } from 'express';
+import validator from '../middlewares/validator';
+import authSchema from '../schemas/auth.schema';
+import { userController } from '../controllers/user.controller';
+import userSchema from '../schemas/user.schema';
+import { RoleCode } from '../utils/enum';
+import restrict from '../middlewares/restrict';
+import { authorizationMiddleware } from '../auth/authorization';
+import { authController } from '../controllers/auth.controller';
 
 export class UserRoutes {
   router: Router;
@@ -18,36 +18,36 @@ export class UserRoutes {
   routes() {
     // REGISTER
     this.router.post(
-      "/register",
+      '/register',
       validator({ body: authSchema.signup }),
-      userController.registerUser
+      userController.registerUser,
     );
 
     // LOGIN
     this.router.post(
-      "/login",
+      '/login',
       validator({ body: authSchema.credential }),
-      userController.authenticateUser
+      userController.authenticateUser,
     );
 
     // protect routes
     this.router.use(
       validator({ headers: authSchema.auth }),
-      authController.authenticateJWT
+      authController.authenticateJWT,
     );
 
     // ME
-    this.router.get("/me", userController.me);
+    this.router.get('/me', userController.me);
 
     // UPDATE ME
     this.router.patch(
-      "/me",
+      '/me',
       validator({ body: userSchema.updateUser }),
-      userController.updateMe
+      userController.updateMe,
     );
 
     // DELETE ME
-    this.router.delete("/me", userController.deleteMe);
+    this.router.delete('/me', userController.deleteMe);
 
     // only for admins
     this.router.use(restrict(RoleCode.ADMIN));
@@ -55,30 +55,30 @@ export class UserRoutes {
 
     // Get All Users
     this.router.get(
-      "/",
+      '/',
       validator({ query: userSchema.userAll }),
-      userController.get
+      userController.get,
     );
 
     // Get User BY ID
     this.router.get(
-      "/:id",
+      '/:id',
       validator({ params: userSchema.userId, body: userSchema.updateUser }),
-      userController.getOne
+      userController.getOne,
     );
 
     // UPDATE User BY ID
     this.router.patch(
-      "/:id",
+      '/:id',
       validator({ params: userSchema.userId, body: userSchema.updateUser }),
-      userController.updateOne
+      userController.updateOne,
     );
 
     // DELETE USER BY ID
     this.router.delete(
-      "/:id",
+      '/:id',
       validator({ params: userSchema.userId }),
-      userController.deleteOne
+      userController.deleteOne,
     );
   }
 }

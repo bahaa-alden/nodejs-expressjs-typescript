@@ -12,6 +12,7 @@
     "watch-ts": "tsc -w",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "add:roles": "node ./dist/data/import-dev-data.js --import",
     "drop:roles": "node ./dist/data/import-dev-data.js --delete",
     "seed:roles": "yarn drop:roles && yarn add:roles"

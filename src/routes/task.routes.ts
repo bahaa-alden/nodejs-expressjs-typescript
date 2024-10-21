@@ -1,12 +1,12 @@
-import { Router } from "express";
-import validator from "../middlewares/validator";
-import taskSchema from "../schemas/task.schema";
-import restrict from "../middlewares/restrict";
-import { RoleCode } from "../utils/enum";
-import { authorizationMiddleware } from "../auth/authorization";
-import { taskController } from "../controllers/task.controller";
-import { authController } from "../controllers/auth.controller";
-import authSchema from "../schemas/auth.schema";
+import { Router } from 'express';
+import validator from '../middlewares/validator';
+import taskSchema from '../schemas/task.schema';
+import restrict from '../middlewares/restrict';
+import { RoleCode } from '../utils/enum';
+import { authorizationMiddleware } from '../auth/authorization';
+import { taskController } from '../controllers/task.controller';
+import { authController } from '../controllers/auth.controller';
+import authSchema from '../schemas/auth.schema';
 
 export class TaskRoutes {
   public router: Router;
@@ -20,7 +20,7 @@ export class TaskRoutes {
     // protect routes
     this.router.use(
       validator({ headers: authSchema.auth }),
-      authController.authenticateJWT
+      authController.authenticateJWT,
     );
 
     // only for users
@@ -29,37 +29,37 @@ export class TaskRoutes {
 
     // GET ALL TASKS
     this.router.get(
-      "/",
+      '/',
       validator({ query: taskSchema.taskAll }),
-      taskController.getTasks
+      taskController.getTasks,
     );
 
     // GET TASK BY ID
     this.router.get(
-      "/:id",
+      '/:id',
       validator({ params: taskSchema.taskId }),
-      taskController.getTask
+      taskController.getTask,
     );
 
     // CREATE TASK
     this.router.post(
-      "/",
+      '/',
       validator({ body: taskSchema.taskCreate }),
-      taskController.createTask
+      taskController.createTask,
     );
 
     // UPDATE TASK BY ID
     this.router.patch(
-      "/:id",
+      '/:id',
       validator({ params: taskSchema.taskId, body: taskSchema.taskUpdate }),
-      taskController.updateTask
+      taskController.updateTask,
     );
 
     // DELETE TASK BY ID
     this.router.delete(
-      "/:id",
+      '/:id',
       validator({ params: taskSchema.taskId }),
-      taskController.deleteTask
+      taskController.deleteTask,
     );
   }
 }

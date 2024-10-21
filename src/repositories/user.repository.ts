@@ -1,7 +1,7 @@
-import { BaseRepository, FindOptions } from "./base.repository";
-import IUser, { User } from "../models/user.model";
-import { OrderDirection, OrderOptions } from "../utils/order";
-import { FilterQuery } from "mongoose";
+import { BaseRepository, FindOptions } from './base.repository';
+import IUser, { User } from '../models/user.model';
+import { OrderDirection, OrderOptions } from '../utils/order';
+import { FilterQuery } from 'mongoose';
 
 export interface UserOrderOptions extends OrderOptions {
   column: string;
@@ -25,8 +25,8 @@ export class UserRepository extends BaseRepository<IUser> {
 
     if (search) {
       query.$or = [
-        { email: { $regex: new RegExp(search, "i") } },
-        { name: { $regex: new RegExp(search, "i") } },
+        { email: { $regex: new RegExp(search, 'i') } },
+        { name: { $regex: new RegExp(search, 'i') } },
       ];
     }
 
@@ -34,7 +34,7 @@ export class UserRepository extends BaseRepository<IUser> {
       .find(query)
       .skip(pagination.pageSize * (pagination.page - 1))
       .limit(pagination.pageSize)
-      .populate("role")
+      .populate('role')
       .sort({
         [order.column]: order.direction === OrderDirection.asc ? 1 : -1,
       });
@@ -55,7 +55,7 @@ export class UserRepository extends BaseRepository<IUser> {
       .findById(id)
       .where({ deletedAt: null })
       .populate({
-        path: "role",
+        path: 'role',
         match: { status: true },
         select: { code: 1 },
       });
@@ -65,9 +65,9 @@ export class UserRepository extends BaseRepository<IUser> {
     return await this.model
       .findById(id)
       .where({ deletedAt: null })
-      .select("+email +password +roleId")
+      .select('+email +password +roleId')
       .populate({
-        path: "role",
+        path: 'role',
         match: { status: true },
       });
   }
@@ -77,9 +77,9 @@ export class UserRepository extends BaseRepository<IUser> {
     return await this.model
       .findOne({ email: email })
       .where({ deletedAt: null })
-      .select("+email +password +roleId +name")
+      .select('+email +password +roleId +name')
       .populate({
-        path: "role",
+        path: 'role',
         match: { status: true },
         select: { code: 1 },
       });

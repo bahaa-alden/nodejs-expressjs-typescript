@@ -15,7 +15,7 @@ export interface PaginationOptions {
 
 export const defaultPaginationParams = (
   page: number,
-  pageSize: number
+  pageSize: number,
 ): PaginationOptions => ({
   page,
   pageSize,

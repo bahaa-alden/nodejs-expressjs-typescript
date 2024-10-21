@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 import {
   SuccessResponse,
   CreatedResponse,
   NoContentMsgResponse,
-} from "../core/ApiResponse";
+} from '../core/ApiResponse';
 
 const customResponses = (req: Request, res: Response, next: NextFunction) => {
   res.ok = function (payload) {

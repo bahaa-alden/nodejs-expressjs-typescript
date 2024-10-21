@@ -1,5 +1,5 @@
-import { nativeEnum, object, string, enum as zenum } from "zod";
-import { OrderDirection } from "../utils/order";
+import { nativeEnum, object, string, enum as zenum } from 'zod';
+import { OrderDirection } from '../utils/order';
 
 const numericIdRegex = /^\d+$/u;
 
@@ -21,17 +21,17 @@ export const uuid = string().uuid();
 
 export const page = numericId
   .optional()
-  .default("1")
+  .default('1')
   .refine((number) => number >= 0);
 
 export const pageSize = numericId
   .optional()
-  .default("100")
+  .default('100')
   .refine((number) => number > 0);
 
-export const orderColumn = zenum(["id", "createdAt"])
+export const orderColumn = zenum(['id', 'createdAt'])
   .optional()
-  .default("createdAt");
+  .default('createdAt');
 
 export const orderDirection = nativeEnum(OrderDirection)
   .optional()

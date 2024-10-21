@@ -1,7 +1,7 @@
-import { FilterQuery } from "mongoose";
-import ITask, { Task } from "../models/task.model";
-import { OrderDirection, OrderOptions } from "../utils/order";
-import { BaseRepository, FindOptions } from "./base.repository";
+import { FilterQuery } from 'mongoose';
+import ITask, { Task } from '../models/task.model';
+import { OrderDirection, OrderOptions } from '../utils/order';
+import { BaseRepository, FindOptions } from './base.repository';
 
 export interface TaskOrderOptions extends OrderOptions {
   column: string;
@@ -25,7 +25,7 @@ export class TaskRepository extends BaseRepository<ITask> {
     return this.model
       .findOne({ _id: id, authorId })
       .where({ deletedAt: null })
-      .populate("author");
+      .populate('author');
   }
 
   async findForAuthor(options: FindTaskOptions): Promise<ITask[]> {
@@ -57,7 +57,7 @@ export class TaskRepository extends BaseRepository<ITask> {
       .find(query)
       .skip(pagination.pageSize * (pagination.page - 1))
       .limit(pagination.pageSize)
-      .populate("author")
+      .populate('author')
       .sort({
         [order.column]: order.direction === OrderDirection.asc ? 1 : -1,
       });

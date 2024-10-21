@@ -1,11 +1,11 @@
-import { Schema, model, Error, Document as MongooseDocument } from "mongoose";
-import * as bcrypt from "bcrypt";
-import IRole from "./role.model";
-import { omit } from "lodash";
-import { Types } from "mongoose";
+import { Schema, model, Error, Document as MongooseDocument } from 'mongoose';
+import * as bcrypt from 'bcrypt';
+import IRole from './role.model';
+import { omit } from 'lodash';
+import { Types } from 'mongoose';
 
-export const DOCUMENT_NAME = "User";
-export const COLLECTION_NAME = "users";
+export const DOCUMENT_NAME = 'User';
+export const COLLECTION_NAME = 'users';
 
 export default interface IUser extends MongooseDocument {
   id: string;
@@ -13,13 +13,13 @@ export default interface IUser extends MongooseDocument {
   email: string;
   password: string;
   role: IRole;
-  roleId: IRole["_id"];
+  roleId: IRole['_id'];
   createdAt: Date;
   updatedAt: Date;
   deletedAt: null | Date;
   comparePassword(
     candidatePassword: string,
-    callback: (err: Error, isMatch: boolean) => void
+    callback: (err: Error, isMatch: boolean) => void,
   ): void;
 }
 
@@ -43,7 +43,7 @@ const schema = new Schema<IUser>(
     },
     roleId: {
       type: Types.ObjectId,
-      ref: "Role",
+      ref: 'Role',
       required: true,
     },
     deletedAt: {
@@ -55,16 +55,16 @@ const schema = new Schema<IUser>(
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: (_, ret) => omit(ret, ["__v", "_id", "password", "deletedAt"]),
+      transform: (_, ret) => omit(ret, ['__v', '_id', 'password', 'deletedAt']),
     },
-  }
+  },
 );
 
 schema.index({ email: 1 });
 
-schema.pre("save", async function save(next) {
+schema.pre('save', async function save(next) {
   // If the password is not modified, skip hashing
-  if (!this.isModified("password")) {
+  if (!this.isModified('password')) {
     return next();
   }
 
@@ -80,21 +80,21 @@ schema.pre("save", async function save(next) {
 // check password
 schema.methods.comparePassword = function (
   candidatePassword: string,
-  callback: any
+  callback: any,
 ) {
   bcrypt.compare(
     candidatePassword,
     this.password,
     (err: Error, isMatch: boolean) => {
       callback(err, isMatch);
-    }
+    },
   );
 };
 
-schema.virtual("role", {
-  localField: "roleId",
-  foreignField: "_id",
-  ref: "Role",
+schema.virtual('role', {
+  localField: 'roleId',
+  foreignField: '_id',
+  ref: 'Role',
   justOne: true,
 });
 

@@ -1,17 +1,17 @@
-import { ParsedRequest } from "express";
-import { AuthFailureError } from "../core/ApiError";
-import asyncHandler from "../middlewares/asyncHandler";
-import { roleRepository } from "../repositories/role.repository.";
+import { ParsedRequest } from 'express';
+import { AuthFailureError } from '../core/ApiError';
+import asyncHandler from '../middlewares/asyncHandler';
+import { roleRepository } from '../repositories/role.repository.';
 
 // Authorization by role
 export class AuthorizationMiddleware {
   public authorization = asyncHandler(async (req: ParsedRequest, res, next) => {
     if (!req.user || !req.user.role || !req.currentRoleCodes)
-      throw new AuthFailureError("Permission denied");
+      throw new AuthFailureError('Permission denied');
 
     const { user } = req;
     const roles = await roleRepository.findByCodes(req.currentRoleCodes);
-    if (!roles) throw new AuthFailureError("Permission denied");
+    if (!roles) throw new AuthFailureError('Permission denied');
     let authorized = false;
     roles.forEach((role) => {
       if (role.code === user.role.code) {
@@ -19,7 +19,7 @@ export class AuthorizationMiddleware {
         return;
       }
     });
-    if (!authorized) throw new AuthFailureError("Permission denied");
+    if (!authorized) throw new AuthFailureError('Permission denied');
 
     return next();
   });

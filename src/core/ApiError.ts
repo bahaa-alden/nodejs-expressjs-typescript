@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Response } from 'express';
 import {
   AuthFailureResponse,
   InternalErrorResponse,
@@ -6,29 +6,31 @@ import {
   BadRequestResponse,
   ForbiddenResponse,
   UnprocessableEntityResponse,
-} from "./ApiResponse";
-import { env_vars } from "../config";
-import { ZodIssue } from "zod";
+  ConflictResponse,
+} from './ApiResponse';
+import { env_vars } from '../config';
+import { ZodIssue } from 'zod';
 
 export enum ErrorType {
-  BAD_TOKEN = "BadTokenError",
-  TOKEN_EXPIRED = "TokenExpiredError",
-  UNAUTHORIZED = "AuthFailureError",
-  ACCESS_TOKEN = "AccessTokenError",
-  INTERNAL = "InternalError",
-  NOT_FOUND = "NotFoundError",
-  NO_ENTRY = "NoEntryError",
-  NO_DATA = "NoDataError",
-  BAD_REQUEST = "BadRequestError",
-  FORBIDDEN = "ForbiddenError",
-  UNPROCESSABLE = "UnprocessableEntityError",
+  BAD_TOKEN = 'BadTokenError',
+  TOKEN_EXPIRED = 'TokenExpiredError',
+  UNAUTHORIZED = 'AuthFailureError',
+  ACCESS_TOKEN = 'AccessTokenError',
+  INTERNAL = 'InternalError',
+  NOT_FOUND = 'NotFoundError',
+  NO_ENTRY = 'NoEntryError',
+  NO_DATA = 'NoDataError',
+  BAD_REQUEST = 'BadRequestError',
+  FORBIDDEN = 'ForbiddenError',
+  UNPROCESSABLE = 'UnprocessableEntityError',
+  CONFLICT = 'ConflictError',
 }
 
 export abstract class ApiError extends Error {
   constructor(
     public type: ErrorType,
-    public message: string = "error",
-    public errors?: ZodIssue[]
+    public message: string = 'error',
+    public errors?: ZodIssue[],
   ) {
     super(type);
   }
@@ -51,10 +53,12 @@ export abstract class ApiError extends Error {
         return new ForbiddenResponse(err.message).send(res);
       case ErrorType.UNPROCESSABLE:
         return new UnprocessableEntityResponse(err.message).send(res);
+      case ErrorType.CONFLICT:
+        return new ConflictResponse(err.message).send(res);
       default: {
         let message = err.message;
-        if (env_vars.env === "production")
-          message = "Something wrong happened.";
+        if (env_vars.env === 'production')
+          message = 'Something wrong happened.';
         return new InternalErrorResponse(message).send(res);
       }
     }
@@ -62,37 +66,43 @@ export abstract class ApiError extends Error {
 }
 
 export class AuthFailureError extends ApiError {
-  constructor(message = "Invalid Credentials") {
+  constructor(message = 'Invalid Credentials') {
     super(ErrorType.UNAUTHORIZED, message);
   }
 }
 
 export class InternalError extends ApiError {
-  constructor(message = "Internal error") {
+  constructor(message = 'Internal error') {
     super(ErrorType.INTERNAL, message);
   }
 }
 
 export class UnprocessableEntityError extends ApiError {
-  constructor(message = "Unprocessable Entity") {
+  constructor(message = 'Unprocessable Entity') {
     super(ErrorType.UNPROCESSABLE, message);
   }
 }
 
 export class BadRequestError extends ApiError {
-  constructor(message = "Bad Request", errors: ZodIssue[]) {
+  constructor(message = 'Bad Request', errors: ZodIssue[]) {
     super(ErrorType.BAD_REQUEST, message, errors);
   }
 }
 
+export class ConflictError extends ApiError {
+  constructor(message = 'Conflict') {
+    super(ErrorType.CONFLICT, message);
+  }
+}
+
 export class NotFoundError extends ApiError {
-  constructor(message = "Not Found") {
+  constructor(message = 'Not Found') {
     super(ErrorType.NOT_FOUND, message);
   }
 }
 
 export class ForbiddenError extends ApiError {
-  constructor(message = "Permission denied") {
+  constructor(message = 'Permission denied') {
     super(ErrorType.FORBIDDEN, message);
   }
 }
@@ -104,25 +114,25 @@ export class NoEntryError extends ApiError {
 }
 
 export class BadTokenError extends ApiError {
-  constructor(message = "Token is not valid") {
+  constructor(message = 'Token is not valid') {
     super(ErrorType.BAD_TOKEN, message);
   }
 }
 
 export class TokenExpiredError extends ApiError {
-  constructor(message = "Token is expired") {
+  constructor(message = 'Token is expired') {
     super(ErrorType.TOKEN_EXPIRED, message);
   }
 }
 
 export class NoDataError extends ApiError {
-  constructor(message = "No data available") {
+  constructor(message = 'No data available') {
     super(ErrorType.NO_DATA, message);
   }
 }
 
 export class AccessTokenError extends ApiError {
-  constructor(message = "Invalid access token") {
+  constructor(message = 'Invalid access token') {
     super(ErrorType.ACCESS_TOKEN, message);
   }
 }

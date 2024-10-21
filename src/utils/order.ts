@@ -4,13 +4,13 @@ export interface OrderOptions {
 }
 
 export enum OrderDirection {
-  asc = "asc",
-  desc = "desc",
+  asc = 'asc',
+  desc = 'desc',
 }
 
 export const defaultOrderParams = (
   column: string,
-  direction: string
+  direction: string,
 ): OrderOptions => ({
   column,
   direction: direction as OrderDirection,

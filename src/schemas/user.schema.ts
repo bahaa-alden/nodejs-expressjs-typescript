@@ -1,6 +1,6 @@
-import { object, string, TypeOf } from "zod";
-import { zodObjectId } from "../middlewares/validator";
-import { orderColumn, orderDirection, page, pageSize } from "./common";
+import { object, string, TypeOf } from 'zod';
+import { zodObjectId } from '../middlewares/validator';
+import { orderColumn, orderDirection, page, pageSize } from './common';
 
 const userIdSchema = object({
   id: zodObjectId,

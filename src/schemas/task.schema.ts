@@ -1,6 +1,6 @@
-import { boolean, object, string, type TypeOf } from "zod";
-import { zodObjectId } from "../middlewares/validator";
-import { orderColumn, orderDirection, page, pageSize } from "./common";
+import { boolean, object, string, type TypeOf } from 'zod';
+import { zodObjectId } from '../middlewares/validator';
+import { orderColumn, orderDirection, page, pageSize } from './common';
 
 const taskIdSchema = object({
   id: zodObjectId,

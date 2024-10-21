@@ -1,9 +1,9 @@
-import { Schema, model, Document as MongooseDocument } from "mongoose";
-import { RoleCode } from "../utils/enum";
-import { omit } from "lodash";
+import { Schema, model, Document as MongooseDocument } from 'mongoose';
+import { RoleCode } from '../utils/enum';
+import { omit } from 'lodash';
 
-export const DOCUMENT_NAME = "Role";
-export const COLLECTION_NAME = "roles";
+export const DOCUMENT_NAME = 'Role';
+export const COLLECTION_NAME = 'roles';
 
 export default interface IRole extends MongooseDocument {
   id: string;
@@ -34,9 +34,9 @@ const schema = new Schema<IRole>(
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: (_, ret) => omit(ret, ["__v", "_id", "deletedAt"]),
+      transform: (_, ret) => omit(ret, ['__v', '_id', 'deletedAt']),
     },
-  }
+  },
 );
 
 export const Role = model<IRole>(DOCUMENT_NAME, schema, COLLECTION_NAME);

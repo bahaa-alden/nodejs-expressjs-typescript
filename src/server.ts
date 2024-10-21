@@ -1,16 +1,16 @@
-import * as express from "express";
-import * as mongoose from "mongoose";
-import * as compression from "compression";
-import * as cors from "cors";
+import * as express from 'express';
+import * as mongoose from 'mongoose';
+import * as compression from 'compression';
+import * as cors from 'cors';
 
-import { taskRoutes } from "./routes/task.routes";
-import { userRoutes } from "./routes/user.routes";
-import { env_vars } from "./config";
-import helmet from "helmet";
-import * as passport from "passport";
-import errHandler from "./middlewares/errHandler";
-import customResponses from "./middlewares/custom.middleware";
-import Logger from "./core/Logger";
+import { taskRoutes } from './routes/task.routes';
+import { userRoutes } from './routes/user.routes';
+import { env_vars } from './config';
+import helmet from 'helmet';
+import * as passport from 'passport';
+import errHandler from './middlewares/errHandler';
+import customResponses from './middlewares/custom.middleware';
+import Logger from './core/Logger';
 
 class Server {
   public app: express.Application;
@@ -24,14 +24,14 @@ class Server {
   }
 
   public routes(): void {
-    this.app.use("/api/v1/users", userRoutes.router);
-    this.app.use("/api/v1/tasks", taskRoutes.router);
+    this.app.use('/api/v1/users', userRoutes.router);
+    this.app.use('/api/v1/tasks', taskRoutes.router);
     this.app.use(errHandler);
   }
 
   public config(): void {
     this.app.use(customResponses);
-    this.app.set("port", env_vars.port || 3000);
+    this.app.set('port', env_vars.port || 3000);
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(compression());
@@ -42,25 +42,25 @@ class Server {
 
   private mongo() {
     const connection = mongoose.connection;
-    connection.on("connected", () => {
-      Logger.info("Mongo Connection Established");
+    connection.on('connected', () => {
+      Logger.info('Mongo Connection Established');
     });
-    connection.on("reconnected", () => {
-      Logger.info("Mongo Connection Reestablished");
+    connection.on('reconnected', () => {
+      Logger.info('Mongo Connection Reestablished');
     });
-    connection.on("disconnected", () => {
-      Logger.info("Mongo Connection Disconnected");
-      Logger.info("Trying to reconnect to Mongo ...");
+    connection.on('disconnected', () => {
+      Logger.info('Mongo Connection Disconnected');
+      Logger.info('Trying to reconnect to Mongo ...');
       setTimeout(() => {
         mongoose.connect(env_vars.mongoose.url);
       }, 3000);
     });
 
-    connection.on("close", () => {
-      Logger.info("Mongo Connection Closed");
+    connection.on('close', () => {
+      Logger.info('Mongo Connection Closed');
     });
-    connection.on("error", (error: Error) => {
-      Logger.info("Mongo Connection ERROR: " + error);
+    connection.on('error', (error: Error) => {
+      Logger.info('Mongo Connection ERROR: ' + error);
     });
 
     const run = async () => {
@@ -70,9 +70,9 @@ class Server {
   }
 
   public start(): void {
-    this.app.listen(this.app.get("port"), () => {
+    this.app.listen(this.app.get('port'), () => {
       Logger.info(
-        `API is running at http://localhost: ${this.app.get("port")}`
+        `API is running at http://localhost: ${this.app.get('port')}`,
       );
     });
   }
