@@ -76,7 +76,7 @@ export class TaskController {
       if (task === null) {
         throw new InternalError();
       }
-      res.ok({ message: "Task has been created", data: task });
+      res.created({ message: "Task has been created", data: task });
     }
   );
 
