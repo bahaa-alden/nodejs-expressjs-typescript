@@ -14,6 +14,7 @@ const taskAllSchema = object({
   orderColumn,
   orderDirection,
   authorId: string().optional(),
+  completed: boolean().optional(),
 });
 
 export type ITaskAllSchema = TypeOf<typeof taskAllSchema>;

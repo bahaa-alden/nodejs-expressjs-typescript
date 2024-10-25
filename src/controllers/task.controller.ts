@@ -31,6 +31,7 @@ export class TaskController {
             req.user.role.code === RoleCode.USER
               ? req.user.id
               : req.valid.query.authorId,
+          completed: req.valid.query.completed,
         },
         order: defaultOrderParams(
           req.valid.query.orderColumn,

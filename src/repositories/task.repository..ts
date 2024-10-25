@@ -10,6 +10,7 @@ export interface TaskOrderOptions extends OrderOptions {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TaskFilterOptions {
   authorId?: string;
+  completed?: boolean;
 }
 
 export interface FindTaskOptions extends FindOptions<TaskFilterOptions> {
