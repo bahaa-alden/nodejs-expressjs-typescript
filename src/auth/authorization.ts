@@ -1,7 +1,7 @@
 import { ParsedRequest } from 'express';
 import { AuthFailureError } from '../core/ApiError';
 import asyncHandler from '../middlewares/asyncHandler';
-import { roleRepository } from '../repositories/role.repository.';
+import { roleRepository } from '../database//repositories/role.repository';
 
 // Authorization by role
 export class AuthorizationMiddleware {

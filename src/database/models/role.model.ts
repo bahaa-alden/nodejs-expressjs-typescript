@@ -1,11 +1,8 @@
-import { Schema, model, Document as MongooseDocument } from 'mongoose';
-import { RoleCode } from '../utils/enum';
+import { model, Schema, type Document as MongooseDocument } from 'mongoose';
 import { omit } from 'lodash';
+import { RoleCode } from '../../utils/enum';
 
-export const DOCUMENT_NAME = 'Role';
-export const COLLECTION_NAME = 'roles';
-
-export default interface IRole extends MongooseDocument {
+export interface IRole extends MongooseDocument {
   id: string;
   code: RoleCode;
   status: boolean;
@@ -14,7 +11,7 @@ export default interface IRole extends MongooseDocument {
   deletedAt: Date | null;
 }
 
-const schema = new Schema<IRole>(
+const roleSchema = new Schema<IRole>(
   {
     code: {
       type: String,
@@ -31,6 +28,7 @@ const schema = new Schema<IRole>(
     },
   },
   {
+    collection: 'Role',
     timestamps: true,
     toJSON: {
       virtuals: true,
@@ -39,4 +37,4 @@ const schema = new Schema<IRole>(
   },
 );
 
-export const Role = model<IRole>(DOCUMENT_NAME, schema, COLLECTION_NAME);
+export default model<IRole>('Role', roleSchema);

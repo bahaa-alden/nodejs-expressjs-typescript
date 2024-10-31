@@ -7,8 +7,8 @@ import { env_vars } from '../config';
 import {
   FindUserOptions,
   userRepository,
-} from '../repositories/user.repository';
-import { roleRepository } from '../repositories/role.repository.';
+} from '../database//repositories/user.repository';
+import { roleRepository } from '../database/repositories/role.repository';
 import { RoleCode } from '../utils/enum';
 import { ISignupSchema, ICredentialSchema } from '../schemas/auth.schema';
 import {
@@ -19,7 +19,7 @@ import {
 import { defaultOrderParams } from '../utils/order';
 import { defaultPaginationParams } from '../utils/pagination';
 import { existRecord, needRecord } from '../utils/record';
-import IUser from '../models/user.model';
+import { IUser } from '../database/models/user.model';
 
 export class UserController {
   // SignUp user handler

@@ -1,5 +1,5 @@
-import IRole, { Role } from '../models/role.model';
-import { RoleCode } from '../utils/enum';
+import Role, { IRole } from '../models/role.model';
+import { RoleCode } from '../../utils/enum';
 import { BaseRepository } from './base.repository';
 
 export class RoleRepository extends BaseRepository<IRole> {

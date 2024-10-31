@@ -1,13 +1,11 @@
-import { Schema, model, Error, Document as MongooseDocument } from 'mongoose';
-import * as bcrypt from 'bcrypt';
-import IRole from './role.model';
+import { model, Schema, type Document as MongooseDocument } from 'mongoose';
 import { omit } from 'lodash';
+import { Error } from 'mongoose';
+import * as bcrypt from 'bcrypt';
+import { IRole } from './role.model';
 import { Types } from 'mongoose';
 
-export const DOCUMENT_NAME = 'User';
-export const COLLECTION_NAME = 'users';
-
-export default interface IUser extends MongooseDocument {
+export interface IUser extends MongooseDocument {
   id: string;
   name: string;
   email: string;
@@ -23,7 +21,7 @@ export default interface IUser extends MongooseDocument {
   ): void;
 }
 
-const schema = new Schema<IUser>(
+const userSchema = new Schema<IUser>(
   {
     name: {
       type: String,
@@ -52,6 +50,7 @@ const schema = new Schema<IUser>(
     },
   },
   {
+    collection: 'User',
     timestamps: true,
     toJSON: {
       virtuals: true,
@@ -60,9 +59,9 @@ const schema = new Schema<IUser>(
   },
 );
 
-schema.index({ email: 1 });
+userSchema.index({ email: 1 });
 
-schema.pre('save', async function save(next) {
+userSchema.pre('save', async function save(next) {
   // If the password is not modified, skip hashing
   if (!this.isModified('password')) {
     return next();
@@ -78,7 +77,7 @@ schema.pre('save', async function save(next) {
 });
 
 // check password
-schema.methods.comparePassword = function (
+userSchema.methods.comparePassword = function (
   candidatePassword: string,
   callback: any,
 ) {
@@ -91,11 +90,11 @@ schema.methods.comparePassword = function (
   );
 };
 
-schema.virtual('role', {
+userSchema.virtual('role', {
   localField: 'roleId',
   foreignField: '_id',
   ref: 'Role',
   justOne: true,
 });
 
-export const User = model<IUser>(DOCUMENT_NAME, schema, COLLECTION_NAME);
+export default model<IUser>('User', userSchema);

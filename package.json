@@ -13,6 +13,8 @@
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "generate:resource:document": "hygen generate document-resource",
+    "postgenerate:resource:document": "yarn tslint",
     "add:roles": "node ./dist/data/import-dev-data.js --import",
     "drop:roles": "node ./dist/data/import-dev-data.js --delete",
     "seed:roles": "yarn drop:roles && yarn add:roles"
@@ -36,6 +38,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.17.3",
     "helmet": "^7.1.0",
+    "hygen": "^6.2.11",
     "lodash": "^4.17.21",
     "mongoose": "^8.4.5",
     "nodemon": "^2.0.20",

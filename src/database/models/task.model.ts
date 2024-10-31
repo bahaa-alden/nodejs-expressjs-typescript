@@ -1,12 +1,8 @@
-import { Schema, model, Document as MongooseDocument } from 'mongoose';
-import IUser from './user.model';
+import { model, Schema, Types, type Document as MongooseDocument } from 'mongoose';
 import { omit } from 'lodash';
-import { Types } from 'mongoose';
+import { IUser } from './user.model';
 
-export const DOCUMENT_NAME = 'Task';
-export const COLLECTION_NAME = 'tasks';
-
-export default interface ITask extends MongooseDocument {
+export interface ITask extends MongooseDocument {
   id: string;
   title: string;
   description: string;
@@ -18,7 +14,7 @@ export default interface ITask extends MongooseDocument {
   deletedAt: Date | null;
 }
 
-const schema = new Schema<ITask>(
+const taskSchema = new Schema<ITask>(
   {
     title: {
       type: String,
@@ -49,7 +45,7 @@ const schema = new Schema<ITask>(
     },
   },
   {
-    versionKey: false,
+    collection: 'Task',
     timestamps: true,
     toJSON: {
       virtuals: true,
@@ -58,18 +54,18 @@ const schema = new Schema<ITask>(
   },
 );
 
-schema.index(
+taskSchema.index(
   { title: 'text', description: 'text' },
   { weights: { title: 3, description: 1 }, background: false },
 );
 
-schema.index({ status: 1 });
+taskSchema.index({ status: 1 });
 
-schema.virtual('author', {
+taskSchema.virtual('author', {
   localField: 'authorId',
   foreignField: '_id',
   ref: 'User',
   justOne: true,
 });
 
-export const Task = model<ITask>(DOCUMENT_NAME, schema, COLLECTION_NAME);
+export default model<ITask>('Task', taskSchema);

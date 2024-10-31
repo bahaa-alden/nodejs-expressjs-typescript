@@ -1,6 +1,6 @@
 import { Model, Document as MongooseDocument, FilterQuery } from 'mongoose';
-import { PaginationOptions } from '../utils/pagination';
-import { OrderOptions } from '../utils/order';
+import { PaginationOptions } from '../../utils/pagination';
+import { OrderOptions } from '../../utils/order';
 
 export interface FindOptions<T> {
   order: OrderOptions;

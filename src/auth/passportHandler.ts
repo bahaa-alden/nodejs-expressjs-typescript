@@ -4,7 +4,7 @@ import * as passportLocal from 'passport-local';
 import * as passportJwt from 'passport-jwt';
 import { JwtPayload } from '../core/JWT';
 import { env_vars } from '../config';
-import { userRepository } from '../repositories/user.repository';
+import { userRepository } from '../database//repositories/user.repository';
 
 const LocalStrategy = passportLocal.Strategy;
 const JwtStrategy = passportJwt.Strategy;

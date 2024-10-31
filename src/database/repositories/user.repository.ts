@@ -1,7 +1,7 @@
 import { BaseRepository, FindOptions } from './base.repository';
-import IUser, { User } from '../models/user.model';
-import { OrderDirection, OrderOptions } from '../utils/order';
+import { OrderDirection, OrderOptions } from '../../utils/order';
 import { FilterQuery } from 'mongoose';
+import User, { IUser } from '../models/user.model';
 
 export interface UserOrderOptions extends OrderOptions {
   column: string;

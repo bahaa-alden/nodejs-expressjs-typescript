@@ -1,6 +1,6 @@
 ﻿import * as dotenv from 'dotenv';
 import * as mongoose from 'mongoose';
-import { Role } from '../models/role.model';
+import Role from '../database//models/role.model';
 import dataRoles from './data-roles';
 
 dotenv.config({ path: '../../.env' });

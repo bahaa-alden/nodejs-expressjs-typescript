@@ -5,7 +5,7 @@ import { NextFunction } from 'express-serve-static-core';
 import {
   FindTaskOptions,
   taskRepository,
-} from '../repositories/task.repository.';
+} from '../database//repositories/task.repository.';
 import {
   ITaskAllSchema,
   ITaskIdSchema,

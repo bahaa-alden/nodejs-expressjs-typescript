@@ -1,7 +1,7 @@
 import { FilterQuery } from 'mongoose';
-import ITask, { Task } from '../models/task.model';
-import { OrderDirection, OrderOptions } from '../utils/order';
+import { OrderDirection, OrderOptions } from '../../utils/order';
 import { BaseRepository, FindOptions } from './base.repository';
+import Task, { ITask } from '../models/task.model';
 
 export interface TaskOrderOptions extends OrderOptions {
   column: string;
