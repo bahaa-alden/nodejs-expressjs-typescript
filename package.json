@@ -15,6 +15,8 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "generate:resource:document": "hygen generate document-resource",
     "postgenerate:resource:document": "yarn tslint",
+    "add:property:document": "hygen property add-to-document",
+    "postadd:property:document": "yarn format",
     "add:roles": "node ./dist/data/import-dev-data.js --import",
     "drop:roles": "node ./dist/data/import-dev-data.js --delete",
     "seed:roles": "yarn drop:roles && yarn add:roles"

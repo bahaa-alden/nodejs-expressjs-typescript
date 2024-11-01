@@ -51,9 +51,7 @@ export class CarController {
       res: Response,
     ): Promise<void> => {
       const car = needRecord(
-        await carRepository.findById(
-          req.valid.params.id,
-        ),
+        await carRepository.findById(req.valid.params.id),
         new NotFoundError('Car not found'),
       );
 
@@ -87,9 +85,7 @@ export class CarController {
       const updateBody = req.valid.body;
 
       const car = needRecord(
-        await carRepository.findById(
-          req.valid.params.id,
-        ),
+        await carRepository.findById(req.valid.params.id),
         new NotFoundError('Car not found'),
       );
 
@@ -106,9 +102,7 @@ export class CarController {
       res: Response,
     ): Promise<void> => {
       const car = needRecord(
-        await carRepository.findById(
-          req.valid.params.id,
-        ),
+        await carRepository.findById(req.valid.params.id),
         new NotFoundError('Car not found'),
       );
 

@@ -18,13 +18,11 @@ const carAllSchema = object({
 
 export type ICarAllSchema = TypeOf<typeof carAllSchema>;
 
-const carCreateSchema = object({
-}).strict();
+const carCreateSchema = object({}).strict();
 
 export type ICarCreateSchema = TypeOf<typeof carCreateSchema>;
 
-const carUpdateSchema = object({
-}).strict();
+const carUpdateSchema = object({}).strict();
 
 export type ICarUpdateSchema = TypeOf<typeof carUpdateSchema>;
 
