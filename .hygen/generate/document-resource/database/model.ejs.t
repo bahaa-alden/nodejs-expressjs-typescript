@@ -7,10 +7,12 @@ import { omit } from 'lodash'
 
 export interface I<%= name %> extends MongooseDocument {
   id: string
+  // <creating-property-interface />
   deletedAt: Date | null
 }
 
 const <%= h.inflection.camelize(name, true) %>Schema: Schema = new Schema<I<%= name %>>({
+  // <creating-property-schema />
   deletedAt: {
     type: Date,
     default: null,

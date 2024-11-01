@@ -1,9 +1,15 @@
-import { model, Schema, Types, type Document as MongooseDocument } from 'mongoose';
+import {
+  model,
+  Schema,
+  Types,
+  type Document as MongooseDocument,
+} from 'mongoose';
 import { omit } from 'lodash';
 import { IUser } from './user.model';
 
 export interface ITask extends MongooseDocument {
   id: string;
+  // <creating-property-interface />
   title: string;
   description: string;
   completed: boolean;
@@ -16,6 +22,7 @@ export interface ITask extends MongooseDocument {
 
 const taskSchema = new Schema<ITask>(
   {
+    // <creating-property-schema />
     title: {
       type: String,
       required: true,

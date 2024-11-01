@@ -9,6 +9,7 @@ const userIdSchema = object({
 export type IUserIdSchema = TypeOf<typeof userIdSchema>;
 
 const userUpdateSchema = object({
+  // <creating-property-update-schema />
   name: string().optional(),
   email: string().email().optional(),
 }).strict();

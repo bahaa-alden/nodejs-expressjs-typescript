@@ -7,6 +7,7 @@ import { Types } from 'mongoose';
 
 export interface IUser extends MongooseDocument {
   id: string;
+  // <creating-property-interface />
   name: string;
   email: string;
   password: string;
@@ -23,6 +24,7 @@ export interface IUser extends MongooseDocument {
 
 const userSchema = new Schema<IUser>(
   {
+    // <creating-property-schema />
     name: {
       type: String,
       trim: true,

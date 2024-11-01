@@ -20,6 +20,7 @@ const taskAllSchema = object({
 export type ITaskAllSchema = TypeOf<typeof taskAllSchema>;
 
 const taskCreateSchema = object({
+  // <creating-property-create-schema />
   title: string().min(3).max(500),
   description: string().min(3).max(2000),
 }).strict();
@@ -27,6 +28,7 @@ const taskCreateSchema = object({
 export type ITaskCreateSchema = TypeOf<typeof taskCreateSchema>;
 
 const taskUpdateSchema = object({
+  // <creating-property-update-schema />
   title: string().min(3).max(500).optional(),
   description: string().min(3).max(2000).optional(),
   completed: boolean().optional(),

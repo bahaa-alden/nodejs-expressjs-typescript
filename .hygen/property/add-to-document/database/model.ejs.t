@@ -5,12 +5,12 @@ after:  \<creating\-property\-schema \/\>
 ---
 <% if (kind === 'reference') { -%>
   <% if (referenceType === 'oneToOne' || referenceType === 'manyToOne') { -%>
-  <%= property %>: {
+  <%= property %>Id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: '<%= type %>',
     },
   <% } else if (referenceType === 'oneToMany' || referenceType === 'manyToMany') { -%>
-    <%= property %>: {
+    <%= h.inflection.camelize(h.inflection.singularize(property), true) %>Ids: {
       type: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: '<%= type %>',

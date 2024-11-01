@@ -14,7 +14,7 @@
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "generate:resource:document": "hygen generate document-resource",
-    "postgenerate:resource:document": "yarn tslint",
+    "postgenerate:resource:document": "yarn format",
     "add:property:document": "hygen property add-to-document",
     "postadd:property:document": "yarn format",
     "add:roles": "node ./dist/data/import-dev-data.js --import",

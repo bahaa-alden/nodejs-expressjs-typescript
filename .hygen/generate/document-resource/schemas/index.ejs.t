@@ -22,11 +22,13 @@ const <%= h.inflection.camelize(name, true) %>AllSchema = object({
 export type I<%= h.inflection.capitalize(name) %>AllSchema = TypeOf<typeof <%= h.inflection.camelize(name, true) %>AllSchema>;
 
 const <%= h.inflection.camelize(name, true) %>CreateSchema = object({
+  // <creating-property-create-schema />
 }).strict();
 
 export type I<%= h.inflection.capitalize(name) %>CreateSchema = TypeOf<typeof <%= h.inflection.camelize(name, true) %>CreateSchema>;
 
 const <%= h.inflection.camelize(name, true) %>UpdateSchema = object({
+  // <creating-property-update-schema />
 }).strict();
 
 export type I<%= h.inflection.capitalize(name) %>UpdateSchema = TypeOf<typeof <%= h.inflection.camelize(name, true) %>UpdateSchema>;

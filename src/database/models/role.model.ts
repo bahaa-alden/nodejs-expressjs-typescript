@@ -4,6 +4,7 @@ import { RoleCode } from '../../utils/enum';
 
 export interface IRole extends MongooseDocument {
   id: string;
+  // <creating-property-interface />
   code: RoleCode;
   status: boolean;
   createdAt: Date;
@@ -13,6 +14,7 @@ export interface IRole extends MongooseDocument {
 
 const roleSchema = new Schema<IRole>(
   {
+    // <creating-property-schema />
     code: {
       type: String,
       required: true,
