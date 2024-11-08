@@ -18,6 +18,11 @@ after:  \<creating\-property\-schema \/\>
       }]
     },
   <% } -%>
+<% } else if (kind === 'enum') { -%>
+  <%= h.inflection.camelize(h.inflection.singularize(property), true) %>: {
+      type: String,
+      enum: Object.values(<%= enumType %>),
+    },
 <% } else { -%>
     <%= property %>: {
       <% if (type === 'string') { -%>

@@ -1,32 +1,43 @@
-import { object, string, type TypeOf } from 'zod';
+import { CarCategory } from './../utils/enum';
+import { type TypeOf, z } from 'zod';
 import { zodObjectId } from '../middlewares/validator';
 import { orderColumn, orderDirection, page, pageSize } from './common';
 
-const carIdSchema = object({
+const carIdSchema = z.object({
   id: zodObjectId,
 });
 
 export type ICarIdSchema = TypeOf<typeof carIdSchema>;
 
-const carAllSchema = object({
+const carAllSchema = z.object({
   page,
   pageSize,
   orderColumn,
   orderDirection,
-  search: string().optional(),
+  search: z.string().optional(),
 });
 
 export type ICarAllSchema = TypeOf<typeof carAllSchema>;
 
-const carCreateSchema = object({
-  // <creating-property-create-schema />
-}).strict();
+const carCreateSchema = z
+  .object({
+    // <creating-property-create-schema />
+    subCategory: z.nativeEnum(CarCategory).optional(),
+
+    category: z.nativeEnum(CarCategory).optional(),
+  })
+  .strict();
 
 export type ICarCreateSchema = TypeOf<typeof carCreateSchema>;
 
-const carUpdateSchema = object({
-  // <creating-property-update-schema />
-}).strict();
+const carUpdateSchema = z
+  .object({
+    // <creating-property-update-schema />
+    subCategory: z.nativeEnum(CarCategory).optional(),
+
+    category: z.nativeEnum(CarCategory).optional(),
+  })
+  .strict();
 
 export type ICarUpdateSchema = TypeOf<typeof carUpdateSchema>;
 

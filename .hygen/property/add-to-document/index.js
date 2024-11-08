@@ -53,6 +53,7 @@ module.exports = {
                   message: 'Primitive (string, number, etc)',
                   value: 'primitive',
                 },
+                { message: 'Enum type', value: 'enum' },
                 { message: 'Reference to entity', value: 'reference' },
                 {
                   message: 'Duplication data from entity',
@@ -109,8 +110,53 @@ module.exports = {
                         });
                       }),
                     );
+                } else if (values.kind === 'enum') {
+                  return prompter
+                    .prompt({
+                      type: 'input',
+                      name: 'enumType',
+                      message: "Enum name (e.g. 'FileStatus')",
+                      validate: (input) => {
+                        if (!input.trim()) {
+                          return 'Enum name is required';
+                        }
+                        return true;
+                      },
+                      format: (input) => {
+                        return input.trim();
+                      },
+                    })
+                    .then(
+                      collectPromisesResults((referenceValues) => {
+                        return prompter.prompt({
+                          type: 'select',
+                          name: 'isEnumDefined',
+                          message: 'Is this enum already defined',
+                          choices: [
+                            {
+                              message: `Yes`,
+                              value: 'yes',
+                            },
+                            {
+                              message: `No`,
+                              value: 'no',
+                            },
+                          ],
+                        });
+                      }),
+                    )
+                    .then(
+                      collectPromisesResults((values) => {
+                        if (values.isEnumDefined === 'no') {
+                          return prompter.prompt({
+                            type: 'input',
+                            name: 'enumValue',
+                            message: 'Enter an initial value for this enum',
+                          });
+                        }
+                      }),
+                    );
                 }
-
                 return prompter.prompt({
                   type: 'select',
                   name: 'type',
@@ -125,8 +171,8 @@ module.exports = {
         collectPromisesResults(() => {
           return prompter.prompt({
             type: 'confirm',
-            name: 'isAddToDto',
-            message: 'Add to DTO?',
+            name: 'isAddToValidation',
+            message: 'Add to Validation Schema?',
             initial: true,
           });
         }),
@@ -146,7 +192,6 @@ module.exports = {
           if (!values.isOptional) {
             return { isNullable: false };
           }
-
           return prompter.prompt({
             type: 'confirm',
             name: 'isNullable',

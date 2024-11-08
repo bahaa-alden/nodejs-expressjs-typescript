@@ -1,3 +1,4 @@
+import { UserStatus } from './../../utils/enum';
 import { model, Schema, type Document as MongooseDocument } from 'mongoose';
 import { omit } from 'lodash';
 import { Error } from 'mongoose';
@@ -8,6 +9,7 @@ import { Types } from 'mongoose';
 export interface IUser extends MongooseDocument {
   id: string;
   // <creating-property-interface />
+  status?: UserStatus;
   name: string;
   email: string;
   password: string;
@@ -25,6 +27,10 @@ export interface IUser extends MongooseDocument {
 const userSchema = new Schema<IUser>(
   {
     // <creating-property-schema />
+    status: {
+      type: String,
+      enum: Object.values(UserStatus),
+    },
     name: {
       type: String,
       trim: true,

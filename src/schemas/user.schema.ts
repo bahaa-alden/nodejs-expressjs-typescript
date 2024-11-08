@@ -1,27 +1,32 @@
-import { object, string, TypeOf } from 'zod';
+import { UserStatus } from './../utils/enum';
+import { z, TypeOf } from 'zod';
 import { zodObjectId } from '../middlewares/validator';
 import { orderColumn, orderDirection, page, pageSize } from './common';
 
-const userIdSchema = object({
+const userIdSchema = z.object({
   id: zodObjectId,
 });
 
 export type IUserIdSchema = TypeOf<typeof userIdSchema>;
 
-const userUpdateSchema = object({
-  // <creating-property-update-schema />
-  name: string().optional(),
-  email: string().email().optional(),
-}).strict();
+const userUpdateSchema = z
+  .object({
+    // <creating-property-update-schema />
+    status: z.nativeEnum(UserStatus).optional(),
+
+    name: z.string().optional(),
+    email: z.string().email().optional(),
+  })
+  .strict();
 
 export type IUserUpdateSchema = TypeOf<typeof userUpdateSchema>;
 
-const userAllSchema = object({
+const userAllSchema = z.object({
   page,
   pageSize,
   orderColumn,
   orderDirection,
-  search: string().optional(),
+  search: z.string().optional(),
 });
 
 export type IUserAllSchema = TypeOf<typeof userAllSchema>;
