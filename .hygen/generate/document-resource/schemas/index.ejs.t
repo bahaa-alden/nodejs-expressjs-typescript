@@ -1,7 +1,7 @@
 ---
 to: "src/schemas/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.schema.ts"
 ---
-import { object, string, type TypeOf } from 'zod';
+import { object, z, string, type TypeOf } from 'zod';
 import { zodObjectId } from '../middlewares/validator';
 import { orderColumn, orderDirection, page, pageSize } from './common';
 

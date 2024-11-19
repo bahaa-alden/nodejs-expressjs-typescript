@@ -55,17 +55,18 @@ module.exports = {
                 },
                 { message: 'Enum type', value: 'enum' },
                 { message: 'Reference to entity', value: 'reference' },
-                {
-                  message: 'Duplication data from entity',
-                  value: 'duplication',
-                },
+                { message: 'Empty object', value: 'object' },
+                // {
+                //   message: 'Duplication data from entity',
+                //   value: 'duplication',
+                // },
               ],
             })
             .then(
               collectPromisesResults((values) => {
                 if (
-                  values.kind === 'reference' ||
-                  values.kind === 'duplication'
+                  values.kind === 'reference'
+                  // || values.kind === 'duplication'
                 ) {
                   return prompter
                     .prompt({
@@ -151,7 +152,8 @@ module.exports = {
                           return prompter.prompt({
                             type: 'input',
                             name: 'enumValue',
-                            message: 'Enter an initial value for this enum',
+                            message:
+                              'Enter an initial value for this enum like : VALUE1 VALUE2 ...',
                           });
                         }
                       }),
@@ -165,6 +167,17 @@ module.exports = {
                 });
               }),
             );
+        }),
+      )
+      .then(
+        collectPromisesResults((values) => {
+          if (values.kind === 'enum' || values.kind === 'primitive')
+            return prompter.prompt({
+              type: 'confirm',
+              name: 'isArray',
+              message: 'do you want it to be a Array?',
+              initial: true,
+            });
         }),
       )
       .then(

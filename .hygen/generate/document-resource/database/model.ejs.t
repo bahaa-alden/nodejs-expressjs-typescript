@@ -18,7 +18,7 @@ const <%= h.inflection.camelize(name, true) %>Schema: Schema = new Schema<I<%= h
     default: null,
   },
 }, {
-  collection: '<%= h.inflection.pluralize(name) %>',
+  collection: '<%= h.inflection.capitalize(name) %>',
   timestamps: true,
   toJSON: {
     virtuals: true,

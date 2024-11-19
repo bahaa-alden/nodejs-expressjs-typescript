@@ -12,7 +12,7 @@ after:  \<creating\-property\-interface \/\>
   <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: Array<I<%= type %>> <% if (isNullable) { -%> | null<% } -%>;
   <% } -%>
 <% } else if (kind === 'enum') { -%>
-  <%= h.inflection.camelize(h.inflection.singularize(property), true) %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: <%= enumType %> <% if (isNullable) { -%> | null<% } -%>;
+  <%= h.inflection.camelize(h.inflection.singularize(property), true) %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: <%= enumType %><% if (isArray) {-%> [ ]<% }-%> <% if (isNullable) { -%> | null<% } -%>;
 <% } else { -%>
-  <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: <%= type %> <% if (isNullable) { -%> | null<% } -%>;
+  <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: <%= type %><% if (isArray) {-%> [ ]<% }-%> <% if (isNullable) { -%> | null<% } -%>;
 <% } -%>

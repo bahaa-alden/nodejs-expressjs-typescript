@@ -11,8 +11,8 @@ after:  // <creating-property-create-schema />
     <%= h.inflection.camelize(h.inflection.singularize(property), true) %>Ids: zodObjectId.array()<% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,
     <% } -%>
   <% } else if (kind === 'enum') { -%>
-    <%= h.inflection.camelize(h.inflection.singularize(property), true) %>: z.nativeEnum(<%= enumType %>)<% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,
+    <%= h.inflection.camelize(h.inflection.singularize(property), true) %>: z<% if (isArray) {-%>.array( z<% }-%>.nativeEnum(<%= enumType %>)<% if (isArray) {-%>) <% }-%><% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,
   <% } else { -%>    
-    <%= h.inflection.camelize(h.inflection.singularize(property), true) %>: z.<%= type %>()<% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,
+    <%= h.inflection.camelize(h.inflection.singularize(property), true) %>: <% if (isArray) {-%>z.array( z<% }-%>z.<%= type %>()<% if (isArray) {-%>) <% }-%><% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,
   <% } -%>
 <% } -%>

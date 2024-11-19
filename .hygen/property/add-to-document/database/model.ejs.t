@@ -19,12 +19,13 @@ after:  \<creating\-property\-schema \/\>
     },
   <% } -%>
 <% } else if (kind === 'enum') { -%>
-  <%= h.inflection.camelize(h.inflection.singularize(property), true) %>: {
+  <%= h.inflection.camelize(h.inflection.singularize(property), true) %>:<% if (isArray) {-%>[ <% }-%>{
       type: String,
       enum: Object.values(<%= enumType %>),
-    },
+    }<% if (isArray) {-%>] <% }-%>
+    ,
 <% } else { -%>
-    <%= property %>: {
+    <%= property %>:<% if (isArray) {-%> [ <% }-%> {
       <% if (type === 'string') { -%>
       type: String,
       <% } else if (type === 'number') { -%>
@@ -32,5 +33,7 @@ after:  \<creating\-property\-schema \/\>
     <% } else if (type === 'boolean') { -%>
       type: Boolean,
       <% } -%>
-    },
+    }
+    <% if (isArray) {-%>] <% }-%>
+    ,
 <% } -%>

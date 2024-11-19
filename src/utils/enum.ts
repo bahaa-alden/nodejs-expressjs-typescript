@@ -16,3 +16,4 @@ export enum Env {
   development = 'development',
   test = 'test',
 }
+// <creating-enum-type />

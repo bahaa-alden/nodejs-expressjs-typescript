@@ -10,7 +10,7 @@ import <%= h.inflection.capitalize(name) %>, { type I<%= h.inflection.capitalize
 export interface <%= h.inflection.capitalize(name) %>FilterOptions {}
 
 export interface <%= h.inflection.capitalize(name) %>FindOptions extends FindOptions<<%= h.inflection.capitalize(name) %>FilterOptions> {
-  order: <%= h.inflection.capitalize(name) %>OrderOptions
+  order: OrderOptions
 }
 
 export class <%= h.inflection.capitalize(name) %>Repository extends BaseRepository<I<%= h.inflection.capitalize(name) %>> {

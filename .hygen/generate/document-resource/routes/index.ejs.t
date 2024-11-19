@@ -27,7 +27,7 @@ export class <%= h.inflection.capitalize(name) %>Routes {
     );
 
     // ONLY FOR <%= h.inflection.pluralize(role).toUpperCase() %>
-    this.router.use(restrict(RoleCode.<%= h.inflection.pluralize(role).toUpperCase() %>));
+    this.router.use(restrict(RoleCode.<%= role.toUpperCase() %>));
     this.router.use(authorizationMiddleware.authorization);
 
     // GET ALL <%= h.inflection.pluralize(name).toUpperCase() %>
