@@ -17,11 +17,8 @@
     "postgenerate:resource:document": "yarn format",
     "add:property:document": "hygen property add-to-document",
     "postadd:property:document": "yarn format",
-<<<<<<< HEAD
     "add:property:object": "hygen property add-to-object",
     "postadd:property:object": "npm run format",
-=======
->>>>>>> 1b61c3501ee02caa862f09896e9d9c63129d9dfc
     "add:roles": "node ./dist/data/import-dev-data.js --import",
     "drop:roles": "node ./dist/data/import-dev-data.js --delete",
     "seed:roles": "yarn drop:roles && yarn add:roles"
