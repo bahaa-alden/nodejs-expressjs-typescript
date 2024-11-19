@@ -25,19 +25,19 @@ module.exports = {
       .then(
         collectPromisesResults(() => {
           return prompter.prompt({
-            type: 'input',
+            type: 'select',
             name: 'role',
             message: "role name (e.g. 'ADMIN/USER')",
-            validate: (input) => {
-              if (!input.trim()) {
-                return 'role is required';
-              }
-
-              return true;
-            },
-            format: (input) => {
-              return input.trim();
-            },
+            choices: [
+              {
+                message: 'admin',
+                value: 'ADMIN',
+              },
+              {
+                message: 'user',
+                value: 'USER',
+              },
+            ],
           });
         }),
       ),
