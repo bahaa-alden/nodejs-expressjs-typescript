@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "lib": ["es5", "es6"],
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es6",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "typeRoots": ["node_modules/@types", "@types"]
+  },
+  "include": ["src/**/*", "@types"],
+  "exclude": ["node_modules", "dist"]
+}
