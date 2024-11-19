@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as mongoose from 'mongoose';
 import * as compression from 'compression';
 import * as cors from 'cors';
-//R
+//R <dont remove this line>
 import { userRoutes } from './routes/user.routes';
 import { env_vars } from './config';
 import helmet from 'helmet';
@@ -24,7 +24,7 @@ class Server {
 
   public routes(): void {
     this.app.use('/api/v1/users', userRoutes.router);
-//Router   
+    //ROUTES <dont remove this line>
     this.app.use(errHandler);
   }
 
