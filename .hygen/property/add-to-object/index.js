@@ -73,21 +73,18 @@ module.exports = {
                 },
                 { message: 'Enum type', value: 'enum' },
                 { message: 'Reference to entity', value: 'reference' },
-                {
-                  message: 'Duplication data from entity',
-                  value: 'duplication',
-                },
-                {
-                  message: 'Object',
-                  value: 'object',
-                },
+                { message: 'Empty object', value: 'object' },
+                // {
+                //   message: 'Duplication data from entity',
+                //   value: 'duplication',
+                // },
               ],
             })
             .then(
               collectPromisesResults((values) => {
                 if (
-                  values.kind === 'reference' ||
-                  values.kind === 'duplication'
+                  values.kind === 'reference'
+                  // || values.kind === 'duplication'
                 ) {
                   return prompter
                     .prompt({
@@ -149,16 +146,38 @@ module.exports = {
                       },
                     })
                     .then(
-                      collectPromisesResults((values) => {
+                      collectPromisesResults((referenceValues) => {
                         return prompter.prompt({
-                          type: 'input',
-                          name: 'enumValue',
-                          message:
-                            'Enter an initial value for this enum like : ADMIN USER',
+                          type: 'select',
+                          name: 'isEnumDefined',
+                          message: 'Is this enum already defined',
+                          choices: [
+                            {
+                              message: `Yes`,
+                              value: 'yes',
+                            },
+                            {
+                              message: `No`,
+                              value: 'no',
+                            },
+                          ],
                         });
                       }),
+                    )
+                    .then(
+                      collectPromisesResults((values) => {
+                        if (values.isEnumDefined === 'no') {
+                          return prompter.prompt({
+                            type: 'input',
+                            name: 'enumValue',
+                            message:
+                              'Enter an initial value for this enum like : VALUE1 VALUE2 ...',
+                          });
+                        }
+                      }),
                     );
-                } else if (values.kind === 'primitive')
+                }
+                if (values.kind === 'primitive')
                   return prompter.prompt({
                     type: 'select',
                     name: 'type',
@@ -171,49 +190,57 @@ module.exports = {
       )
       .then(
         collectPromisesResults((values) => {
-          if (values.kind === 'reference')
+          if (values.kind !== 'reference')
             return prompter.prompt({
               type: 'confirm',
-              name: 'deleteChildren',
-              message: 'do you delete children when the parent is deleted?',
+              name: 'isArray',
+              message: 'do you want it to be a Array?',
               initial: true,
             });
         }),
       )
       .then(
         collectPromisesResults((values) => {
-          if (
-            values.referenceType !== 'manyToMany' &&
-            values.referenceType !== 'oneToMany' &&
-            values.kind !== 'object'
-          )
+          if (values.kind === 'primitive' && values.type === 'string')
             return prompter.prompt({
               type: 'confirm',
-              name: 'isRequired',
-              message: 'do you make it required?',
+              name: 'isText',
+              message: 'do you want it to be a index?',
               initial: true,
             });
-          return;
+        }),
+      )
+      .then(
+        collectPromisesResults(() => {
+          return prompter.prompt({
+            type: 'confirm',
+            name: 'isAddToValidation',
+            message: 'Add to Validation Schema?',
+            initial: true,
+          });
+        }),
+      )
+      .then(
+        collectPromisesResults(() => {
+          return prompter.prompt({
+            type: 'confirm',
+            name: 'isOptional',
+            message: 'Is the property optional?',
+            initial: true,
+          });
         }),
       )
       .then(
         collectPromisesResults((values) => {
-          if (values.kind === 'primitive')
-            return prompter.prompt({
-              type: 'confirm',
-              name: 'isUnique',
-              message: 'do you make it unique?',
-              initial: true,
-            });
-          return;
-        }),
-      )
-      .then(
-        collectPromisesResults((values) => {
-          if (!values.type) {
-            values.type = 'user';
+          if (!values.isOptional) {
+            return { isNullable: false };
           }
-          return;
+          return prompter.prompt({
+            type: 'confirm',
+            name: 'isNullable',
+            message: 'Can the property be nullable??',
+            initial: true,
+          });
         }),
       ),
 };

@@ -1,12 +1,12 @@
 ---
 inject: true
-to: "./utils/enum.js"
-after:  "<creating-enum-type />"
+to: src/utils/enum.ts
+after:  \<creating\-enum\-type \/\>
 ---
-<% if (kind === 'enum') { -%>
-exports.<%= enumType.replaceAll(' ','_')  %> = {
+<% if (kind === 'enum' && isEnumDefined === 'no') { -%>
+export enum <%= enumType %> {
 <% enumValue.split(" ").forEach(element => { -%>
-  <%= element %> : '<%= element %>',
+  <%= element %> = '<%= element %>',
 <% })  -%>
 }
-<%  } -%>
+<% } -%>

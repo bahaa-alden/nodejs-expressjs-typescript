@@ -12,7 +12,9 @@ after:  // <creating-property-update-schema />
     <% } -%>
   <% } else if (kind === 'enum') { -%>
     <%= h.inflection.camelize(h.inflection.singularize(property), true) %>: z<% if (isArray) {-%>.array( z<% }-%>.nativeEnum(<%= enumType %>)<% if (isArray) {-%>) <% }-%>.optional()<% if (isNullable) { -%>.nullable()<% } -%>,
+  <%} else if (kind === 'object') { -%>
+    <%= h.inflection.camelize(h.inflection.singularize(property), true) %>: <% if (isArray) {-%>z.array( <% }-%><%= h.inflection.camelize(property, true) %>UpdateSchema<% if (isArray) {-%>) <% }-%><% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,
   <% } else { -%>       
-    <%= h.inflection.camelize(h.inflection.singularize(property), true) %>: <% if (isArray) {-%>z.array( z<% }-%>z.<%= type %>()<% if (isArray) {-%>) <% }-%><% if (isOptional) { -%>.optional()<% } -%>.optional()<% if (isNullable) { -%>.nullable()<% } -%>,
+    <%= h.inflection.camelize(h.inflection.singularize(property), true) %>: <% if (isArray) {-%>z.array( <% }-%>z.<%= type %>()<% if (isArray) {-%>) <% }-%><% if (isOptional) { -%>.optional()<% } -%>.optional()<% if (isNullable) { -%>.nullable()<% } -%>,
   <% } -%>
 <% } -%>

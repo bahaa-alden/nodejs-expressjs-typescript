@@ -159,19 +159,20 @@ module.exports = {
                       }),
                     );
                 }
-                return prompter.prompt({
-                  type: 'select',
-                  name: 'type',
-                  message: 'Property type',
-                  choices: ['string', 'number', 'boolean'],
-                });
+                if (values.kind === 'primitive')
+                  return prompter.prompt({
+                    type: 'select',
+                    name: 'type',
+                    message: 'Property type',
+                    choices: ['string', 'number', 'boolean'],
+                  });
               }),
             );
         }),
       )
       .then(
         collectPromisesResults((values) => {
-          if (values.kind === 'enum' || values.kind === 'primitive')
+          if (values.kind !== 'reference')
             return prompter.prompt({
               type: 'confirm',
               name: 'isArray',
