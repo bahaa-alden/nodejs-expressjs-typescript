@@ -28,6 +28,10 @@ after:  \<creating\-property\-schema \/\>
     <%= property %>:<% if (isArray) {-%> [ <% }-%> {
       <% if (type === 'string') { -%>
       type: String,
+      <% if (isText) { -%>
+       index: 'text',
+      <% } -%>
+
       <% } else if (type === 'number') { -%>
       type: Number,
     <% } else if (type === 'boolean') { -%>

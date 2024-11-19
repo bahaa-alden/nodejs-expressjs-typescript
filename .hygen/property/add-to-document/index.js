@@ -181,6 +181,17 @@ module.exports = {
         }),
       )
       .then(
+        collectPromisesResults((values) => {
+          if (values.kind === 'primitive' && values.type === 'string')
+            return prompter.prompt({
+              type: 'confirm',
+              name: 'isText',
+              message: 'do you want it to be a index?',
+              initial: true,
+            });
+        }),
+      )
+      .then(
         collectPromisesResults(() => {
           return prompter.prompt({
             type: 'confirm',
