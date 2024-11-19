@@ -5,23 +5,23 @@ import { type FilterQuery } from 'mongoose'
 import { type PaginatedList } from '../../utils/pagination'
 import { OrderDirection, type OrderOptions } from '../../utils/order'
 import { BaseRepository, type FindOptions } from './base.repository'
-import <%= name %>, { type I<%= name %> } from '../models/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.model'
+import <%= h.inflection.capitalize(name) %>, { type I<%= h.inflection.capitalize(name) %> } from '../models/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.model'
 
-export interface <%= name %>FilterOptions {}
+export interface <%= h.inflection.capitalize(name) %>FilterOptions {}
 
-export interface <%= name %>FindOptions extends FindOptions<<%= name %>FilterOptions> {
-  order: OrderOptions
+export interface <%= h.inflection.capitalize(name) %>FindOptions extends FindOptions<<%= h.inflection.capitalize(name) %>FilterOptions> {
+  order: <%= h.inflection.capitalize(name) %>OrderOptions
 }
 
-export class <%= name %>Repository extends BaseRepository<I<%= name %>> {
+export class <%= h.inflection.capitalize(name) %>Repository extends BaseRepository<I<%= h.inflection.capitalize(name) %>> {
   constructor() {
-    super(<%= name %>)
+    super(<%= h.inflection.capitalize(name) %>)
   }
 
-  async findForAdmin(options: <%= name %>FindOptions): Promise<PaginatedList<I<%= name %>>> {
+  async findForAdmin(options: <%= h.inflection.capitalize(name) %>FindOptions): Promise<PaginatedList<I<%= h.inflection.capitalize(name) %>>> {
     const { order, pagination, search } = options
 
-    const query: FilterQuery<I<%= name %>> = { deletedAt: null }
+    const query: FilterQuery<I<%= h.inflection.capitalize(name) %>> = { deletedAt: null }
     if (search) {
       query.$or = []
     }
@@ -37,4 +37,4 @@ export class <%= name %>Repository extends BaseRepository<I<%= name %>> {
   }
 }
 
-export const <%= h.inflection.camelize(name, true) %>Repository = new <%= name %>Repository()
+export const <%= h.inflection.camelize(name, true) %>Repository = new <%= h.inflection.capitalize(name) %>Repository()

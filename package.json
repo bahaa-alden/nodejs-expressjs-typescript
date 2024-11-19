@@ -12,7 +12,7 @@
     "watch-ts": "tsc -w",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\"",
     "generate:resource:document": "hygen generate document-resource",
     "postgenerate:resource:document": "yarn format",
     "add:property:document": "hygen property add-to-document",

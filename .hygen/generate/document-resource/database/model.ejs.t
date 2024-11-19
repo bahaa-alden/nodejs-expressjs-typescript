@@ -5,20 +5,20 @@ async: true
 import { model, Schema, type Document as MongooseDocument } from 'mongoose'
 import { omit } from 'lodash'
 
-export interface I<%= name %> extends MongooseDocument {
+export interface I<%= h.inflection.capitalize(name) %> extends MongooseDocument {
   id: string
   // <creating-property-interface />
   deletedAt: Date | null
 }
 
-const <%= h.inflection.camelize(name, true) %>Schema: Schema = new Schema<I<%= name %>>({
+const <%= h.inflection.camelize(name, true) %>Schema: Schema = new Schema<I<%= h.inflection.capitalize(name) %>>({
   // <creating-property-schema />
   deletedAt: {
     type: Date,
     default: null,
   },
 }, {
-  collection: '<%= name %>',
+  collection: '<%= h.inflection.pluralize(name) %>',
   timestamps: true,
   toJSON: {
     virtuals: true,
@@ -29,4 +29,4 @@ const <%= h.inflection.camelize(name, true) %>Schema: Schema = new Schema<I<%= n
   },
 })
 
-export default model<I<%= name %>>('<%= name %>', <%= h.inflection.camelize(name, true) %>Schema)
+export default model<I<%= h.inflection.capitalize(name) %>>('<%= h.inflection.capitalize(name) %>', <%= h.inflection.camelize(name, true) %>Schema)
