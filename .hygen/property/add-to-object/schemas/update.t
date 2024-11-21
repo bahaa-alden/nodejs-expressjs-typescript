@@ -13,6 +13,6 @@ after: // <creating-property-update-schema\-<%= object %> />
   <% } else if (kind === 'enum') { -%>
     <%= property %>: z<% if (isArray) {-%>.array( z<% }-%>.nativeEnum(<%= enumType %>)<% if (isArray) {-%>) <% }-%>.optional()<% if (isNullable) { -%>.nullable()<% } -%>,
   <% } else { -%>       
-    <%= property %>: <% if (isArray) {-%>z.array( <% }-%>z.<%= type %>()<% if (isArray) {-%>) <% }-%><% if (isOptional) { -%>.optional()<% } -%>.optional()<% if (isNullable) { -%>.nullable()<% } -%>,
+    <%= property %>: <% if (isArray) {-%>z.array( <% }-%>z.<%= type %>()<% if (isArray) {-%>) <% }-%><% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,
   <% } -%>
 <% } -%>

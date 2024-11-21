@@ -1,13 +1,13 @@
 ---
-to: "src/routes/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.routes.ts"
+to: "src/routes/<%= name %>.routes.ts"
 ---
 import { Router } from 'express';
 import validator from '../middlewares/validator';
-import <%= name %>Schema from '../schemas/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.schema';
+import <%= name %>Schema from '../schemas/<%= name %>.schema';
 import restrict from '../middlewares/restrict';
 import { RoleCode } from '../utils/enum';
 import { authorizationMiddleware } from '../auth/authorization';
-import { <%= name %>Controller } from '../controllers/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.controller';
+import { <%= name %>Controller } from '../controllers/<%= name %>.controller';
 import authSchema from '../schemas/auth.schema';
 import { authController } from '../controllers/auth.controller';
 const {<%=  allRole %>}= RoleCode; 
