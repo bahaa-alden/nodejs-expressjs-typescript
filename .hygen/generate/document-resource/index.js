@@ -1,4 +1,4 @@
-const { RoleCode } = require('../../../src/utils/enum');
+const { RoleCode } = require('../../../dist/utils/enum');
 const collectPromisesResults = (callback) => async (prevValues) => {
   const results = await callback(prevValues);
 

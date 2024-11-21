@@ -10,6 +10,7 @@ import { authorizationMiddleware } from '../auth/authorization';
 import { <%= name %>Controller } from '../controllers/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.controller';
 import authSchema from '../schemas/auth.schema';
 import { authController } from '../controllers/auth.controller';
+const {<%=  allRole %>}= RoleCode; 
 
 export class <%= Name %>Routes {
   public router: Router;
@@ -26,13 +27,11 @@ export class <%= Name %>Routes {
       authController.authenticateJWT,
     );
 
-    // ONLY FOR <%= h.inflection.pluralize(role).toUpperCase() %>
-    this.router.use(restrict(RoleCode.<%= role.toUpperCase() %>));
-    this.router.use(authorizationMiddleware.authorization);
-
     // GET ALL <%= h.inflection.pluralize(name).toUpperCase() %>
     this.router.get(
       '/',
+      restrict(<%= roleGet %>),
+      authorizationMiddleware.authorization,
       validator({ query: <%= name %>Schema.<%= name %>All }),
       <%= name %>Controller.get<%= Name %>s,
     );
@@ -40,6 +39,8 @@ export class <%= Name %>Routes {
     // GET <%= name.toUpperCase() %> BY ID
     this.router.get(
       '/:id',
+      restrict(<%= roleGet %>),
+      authorizationMiddleware.authorization,
       validator({ params: <%= name %>Schema.<%= name %>Id }),
       <%= name %>Controller.get<%= Name %>,
     );
@@ -47,6 +48,8 @@ export class <%= Name %>Routes {
     // CREATE <%= name.toUpperCase() %>
     this.router.post(
       '/',
+      restrict(<%= rolePost %>),
+      authorizationMiddleware.authorization,
       validator({ body: <%= name %>Schema.<%= name %>Create }),
       <%= name %>Controller.create<%= Name %>,
     );
@@ -54,6 +57,8 @@ export class <%= Name %>Routes {
     // UPDATE <%= name.toUpperCase() %> BY ID
     this.router.patch(
       '/:id',
+      restrict(<%= roleUpdate %>),
+      authorizationMiddleware.authorization,
       validator({ params: <%= name %>Schema.<%= name %>Id, body: <%= name %>Schema.<%= name %>Update }),
       <%= name %>Controller.update<%= Name %>,
     );
@@ -61,6 +66,8 @@ export class <%= Name %>Routes {
     // DELETE <%= name.toUpperCase() %> BY ID
     this.router.delete(
       '/:id',
+      restrict(<%= roleDelete %>),
+      authorizationMiddleware.authorization,     
       validator({ params: <%= name %>Schema.<%= name %>Id }),
       <%= name %>Controller.delete<%= Name %>,
     );
