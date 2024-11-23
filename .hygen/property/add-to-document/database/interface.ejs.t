@@ -1,20 +1,20 @@
 ---
 inject: true
-to: src/database/models/<%=h.inflection.transform(name, ['underscore', 'dasherize']) %>.model.ts
+to: src/database/models/<%= name %>.model.ts
 after:  \<creating\-property\-interface \/\>
 ---
 <% if (kind === 'reference') { -%>
   <% if (referenceType === 'oneToOne' || referenceType === 'manyToOne') { -%>
-  <%= property %>Id<% if (!isAddToValidation || isOptional) { -%>?<% } -%>: I<%= h.inflection.capitalize(type) %>['_id'] <% if (isNullable) { -%> | null<% } -%>;
-  <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: I<%= h.inflection.capitalize(type) %><% if (isNullable) { -%> | null<% } -%>;
+  <%= property %>Id<% if (!isAddToValidation || isOptional) { -%>?<% } -%>: I<%= Type %>['_id'] <% if (isNullable) { -%> | null<% } -%>;
+  <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: I<%= Type %><% if (isNullable) { -%> | null<% } -%>;
   <% } else if (referenceType === 'oneToMany' || referenceType === 'manyToMany') { -%>
-  <%= h.inflection.camelize(h.inflection.singularize(property), true) %>Ids<% if (!isAddToValidation || isOptional) { -%>?<% } -%>: Array<I<%= h.inflection.capitalize(type) %>['_id']> <% if (isNullable) { -%> | null<% } -%>;
-  <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: Array<I<%= h.inflection.capitalize(type) %>> <% if (isNullable) { -%> | null<% } -%>;
+  <%= property %>Ids<% if (!isAddToValidation || isOptional) { -%>?<% } -%>: Array<I<%= Type %>['_id']> <% if (isNullable) { -%> | null<% } -%>;
+  <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: Array<I<%= Type %>> <% if (isNullable) { -%> | null<% } -%>;
   <% } -%>
 <% } else if (kind === 'enum') { -%>
-  <%= h.inflection.camelize(h.inflection.singularize(property), true) %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: <%= enumType %><% if (isArray) {-%> [ ]<% }-%> <% if (isNullable) { -%> | null<% } -%>;
+  <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: <%= enumType %><% if (isArray) {-%> [ ]<% }-%> <% if (isNullable) { -%> | null<% } -%>;
 <% } else if (kind === 'object') { -%>
-  <%= h.inflection.camelize(h.inflection.singularize(property), true) %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: I<%= h.inflection.capitalize(property) %><% if (isArray) {-%> [ ]<% }-%> <% if (isNullable) { -%> | null<% } -%>;
+  <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: I<%= Property %><% if (isArray) {-%> [ ]<% }-%> <% if (isNullable) { -%> | null<% } -%>;
 <% } else  { -%>
   <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: <%= type %><% if (isArray) {-%> [ ]<% }-%> <% if (isNullable) { -%> | null<% } -%>;
 <% } -%>

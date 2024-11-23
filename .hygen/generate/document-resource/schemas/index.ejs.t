@@ -1,17 +1,17 @@
 ---
-to: "src/schemas/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.schema.ts"
+to: "src/schemas/<%= name %>.schema.ts"
 ---
 import { object, z, string, type TypeOf } from 'zod';
 import { zodObjectId } from '../middlewares/validator';
 import { orderColumn, orderDirection, page, pageSize } from './common';
 
-const <%= h.inflection.camelize(name, true) %>IdSchema = object({
+const <%= name %>IdSchema = object({
   id: zodObjectId,
 });
 
-export type I<%= h.inflection.capitalize(name) %>IdSchema = TypeOf<typeof <%= h.inflection.camelize(name, true) %>IdSchema>;
+export type I<%= Name %>IdSchema = TypeOf<typeof <%= name %>IdSchema>;
 
-const <%= h.inflection.camelize(name, true) %>AllSchema = object({
+const <%= name %>AllSchema = object({
   page,
   pageSize,
   orderColumn,
@@ -19,23 +19,23 @@ const <%= h.inflection.camelize(name, true) %>AllSchema = object({
   search: string().optional(),
 });
 
-export type I<%= h.inflection.capitalize(name) %>AllSchema = TypeOf<typeof <%= h.inflection.camelize(name, true) %>AllSchema>;
+export type I<%= Name %>AllSchema = TypeOf<typeof <%= name %>AllSchema>;
 
-const <%= h.inflection.camelize(name, true) %>CreateSchema = object({
+const <%= name %>CreateSchema = object({
   // <creating-property-create-schema />
 }).strict();
 
-export type I<%= h.inflection.capitalize(name) %>CreateSchema = TypeOf<typeof <%= h.inflection.camelize(name, true) %>CreateSchema>;
+export type I<%= Name %>CreateSchema = TypeOf<typeof <%= name %>CreateSchema>;
 
-const <%= h.inflection.camelize(name, true) %>UpdateSchema = object({
+const <%= name %>UpdateSchema = object({
   // <creating-property-update-schema />
 }).strict();
 
-export type I<%= h.inflection.capitalize(name) %>UpdateSchema = TypeOf<typeof <%= h.inflection.camelize(name, true) %>UpdateSchema>;
+export type I<%= Name %>UpdateSchema = TypeOf<typeof <%= name %>UpdateSchema>;
 
 export default {
-  <%= h.inflection.camelize(name, true) %>Id: <%= h.inflection.camelize(name, true) %>IdSchema,
-  <%= h.inflection.camelize(name, true) %>All: <%= h.inflection.camelize(name, true) %>AllSchema,
-  <%= h.inflection.camelize(name, true) %>Create: <%= h.inflection.camelize(name, true) %>CreateSchema,
-  <%= h.inflection.camelize(name, true) %>Update: <%= h.inflection.camelize(name, true) %>UpdateSchema,
+  <%= name %>Id: <%= name %>IdSchema,
+  <%= name %>All: <%= name %>AllSchema,
+  <%= name %>Create: <%= name %>CreateSchema,
+  <%= name %>Update: <%= name %>UpdateSchema,
 };

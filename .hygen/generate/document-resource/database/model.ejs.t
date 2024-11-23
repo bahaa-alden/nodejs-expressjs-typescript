@@ -1,24 +1,24 @@
 ---
-to: src/database/models/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.model.ts
+to: src/database/models/<%= name %>.model.ts
 async: true
 ---
 import { model, Schema, type Document as MongooseDocument } from 'mongoose'
 import { omit } from 'lodash'
 
-export interface I<%= h.inflection.capitalize(name) %> extends MongooseDocument {
+export interface I<%= Name %> extends MongooseDocument {
   id: string
   // <creating-property-interface />
   deletedAt: Date | null
 }
 
-const <%= h.inflection.camelize(name, true) %>Schema: Schema = new Schema<I<%= h.inflection.capitalize(name) %>>({
+const <%= name %>Schema: Schema = new Schema<I<%= Name %>>({
   // <creating-property-schema />
   deletedAt: {
     type: Date,
     default: null,
   },
 }, {
-  collection: '<%= h.inflection.capitalize(name) %>',
+  collection: '<%= Name %>',
   timestamps: true,
   toJSON: {
     virtuals: true,
@@ -29,4 +29,4 @@ const <%= h.inflection.camelize(name, true) %>Schema: Schema = new Schema<I<%= h
   },
 })
 
-export default model<I<%= h.inflection.capitalize(name) %>>('<%= h.inflection.capitalize(name) %>', <%= h.inflection.camelize(name, true) %>Schema)
+export default model<I<%= Name %>>('<%= Name %>', <%= name %>Schema)

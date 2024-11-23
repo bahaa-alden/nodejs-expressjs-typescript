@@ -1,25 +1,25 @@
 ---
 inject: true
-to: src/database/models/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.model.ts
+to: src/database/models/<%= name %>.model.ts
 after:  \<creating\-property\-schema \/\>
 ---
 <% if (kind === 'reference') { -%>
   <% if (referenceType === 'oneToOne' || referenceType === 'manyToOne') { -%>
   <%= property %>Id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: '<%= h.inflection.capitalize(type) %>',
+      ref: '<%= Type %>',
     },
   <% } else if (referenceType === 'oneToMany' || referenceType === 'manyToMany') { -%>
-    <%= h.inflection.camelize(h.inflection.singularize(property), true) %>Ids: {
+    <%= property %>Ids: {
       type: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: '<%= h.inflection.capitalize(type) %>',
+        ref: '<%= Type %>',
         default: []
       }]
     },
   <% } -%>
 <% } else if (kind === 'enum') { -%>
-  <%= h.inflection.camelize(h.inflection.singularize(property), true) %>:<% if (isArray) {-%>[ <% }-%>{
+  <%= property %>:<% if (isArray) {-%>[ <% }-%>{
       type: String,
       enum: Object.values(<%= enumType %>),
     }<% if (isArray) {-%>] <% }-%>
@@ -27,7 +27,7 @@ after:  \<creating\-property\-schema \/\>
 <% } else { -%>
     <%= property %>:<% if (isArray) {-%> [ <% }-%> {
        <% if (kind === 'object') { -%>
-      // <creating-property-object-<%= h.inflection.camelize(h.inflection.singularize(property), true) %> />
+      // <creating-property-object-<%= property %> />
       <% }-%>
        <% if (kind === 'primitive') { -%>
       <% if (type === 'string') { -%>

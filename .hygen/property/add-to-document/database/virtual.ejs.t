@@ -1,20 +1,20 @@
 ---
 inject: true
-to: src/database/models/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.model.ts
+to: src/database/models/<%= name %>.model.ts
 before: export default model<I<%= name %>>
 ---
 
 <% if (kind === 'reference') { -%>
   <% if (referenceType === 'oneToOne' || referenceType === 'manyToOne') { -%>
-  <%= h.inflection.camelize(h.inflection.singularize(name), true) %>Schema.virtual('<%= h.inflection.camelize(h.inflection.singularize(property), true) %>', {
-    localField: '<%= h.inflection.camelize(h.inflection.singularize(property), true) %>Id',
+  <%= name %>Schema.virtual('<%= property %>', {
+    localField: '<%= property %>Id',
     foreignField: '_id',
     ref: '<%= type %>',
     justOne: true,
   });
   <% } else if (referenceType === 'oneToMany' || referenceType === 'manyToMany') { -%>
-  <%= h.inflection.camelize(h.inflection.singularize(name), true) %>Schema.virtual('<%= h.inflection.camelize(h.inflection.pluralize(property), true) %>', {
-    localField: '<%= h.inflection.camelize(h.inflection.singularize(property), true) %>Ids',
+  <%= name %>Schema.virtual('<%= h.inflection.pluralize(property) %>', {
+    localField: '<%= property %>Ids',
     foreignField: '_id',
     ref: '<%= type %>',
   });

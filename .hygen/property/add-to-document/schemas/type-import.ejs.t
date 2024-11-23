@@ -1,6 +1,6 @@
 ---
 inject: true
-to: src/schemas/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.schema.ts
+to: src/schemas/<%= name %>.schema.ts
 at_line: 0
 async: true
 skip_if: <% if (kind === 'enum') { -%>import { <%= enumType %><% } else { -%><%= true %><% } -%>
