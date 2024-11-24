@@ -1,6 +1,6 @@
 ---
 inject: true
-to: src/schemas/<%= name %>.schema.ts
+to: src/schemas/<%= nameDash %>.schema.ts
 after:  // <creating-property-update-schema />
 ---
 <% if (isAddToValidation) { -%>
@@ -11,7 +11,7 @@ after:  // <creating-property-update-schema />
     <%= property %>Ids: zodObjectId.array().optional()<% if (isNullable) { -%>.nullable()<% } -%>,
     <% } -%>
   <% } else if (kind === 'enum') { -%>
-    <%= property %>: z<% if (isArray) {-%>.array( z<% }-%>.nativeEnum(<%= enumType %>)<% if (isArray) {-%>) <% }-%>.optional()<% if (isNullable) { -%>.nullable()<% } -%>,
+    <%= property %>: z<% if (isArray) {-%>.array( z<% }-%>.nativeEnum(<%= EnumType %>)<% if (isArray) {-%>) <% }-%>.optional()<% if (isNullable) { -%>.nullable()<% } -%>,
   <%} else if (kind === 'object') { -%>
     <%= property %>: <% if (isArray) {-%>z.array( <% }-%><%= property %>UpdateSchema<% if (isArray) {-%>) <% }-%><% if (isOptional) { -%>.optional()<% } -%><% if (isNullable) { -%>.nullable()<% } -%>,
   <% } else { -%>       

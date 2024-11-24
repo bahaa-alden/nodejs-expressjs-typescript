@@ -1,6 +1,6 @@
 ---
 inject: true
-to: src/database/models/<%= name %>.model.ts
+to: src/database/models/<%= nameDash %>.model.ts
 after: // \<creating\-property\-interface\-<%= object %> \/\>
 ---
 <% if (kind === 'reference') { -%>
@@ -12,7 +12,7 @@ after: // \<creating\-property\-interface\-<%= object %> \/\>
   <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: Array<I<%= Type %>> <% if (isNullable) { -%> | null<% } -%>;
   <% } -%>
 <% } else if (kind === 'enum') { -%>
-  <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: <%= enumType %><% if (isArray) {-%> [ ]<% }-%> <% if (isNullable) { -%> | null<% } -%>;
+  <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: <%= EnumType %><% if (isArray) {-%> [ ]<% }-%> <% if (isNullable) { -%> | null<% } -%>;
 <% } else  { -%>
   <%= property %><% if (!isAddToValidation || isOptional) { -%>?<% } -%>: <%= type %><% if (isArray) {-%> [ ]<% }-%> <% if (isNullable) { -%> | null<% } -%>;
 <% } -%>

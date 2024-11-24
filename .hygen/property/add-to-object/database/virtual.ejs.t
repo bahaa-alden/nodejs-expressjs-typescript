@@ -1,6 +1,6 @@
 ---
 inject: true
-to: src/database/models/<%=name %>.model.ts
+to: src/database/models/<%= nameDash %>.model.ts
 before: export default model<I<%= name %>>
 ---
 <% if (kind === 'reference') { -%>

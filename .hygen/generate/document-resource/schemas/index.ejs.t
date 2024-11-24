@@ -1,5 +1,5 @@
 ---
-to: "src/schemas/<%= name %>.schema.ts"
+to: "src/schemas/<%= nameDash %>.schema.ts"
 ---
 import { object, z, string, type TypeOf } from 'zod';
 import { zodObjectId } from '../middlewares/validator';

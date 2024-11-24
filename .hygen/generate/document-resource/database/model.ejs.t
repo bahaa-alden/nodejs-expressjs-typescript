@@ -1,5 +1,5 @@
 ---
-to: src/database/models/<%= name %>.model.ts
+to: src/database/models/<%= nameDash %>.model.ts
 async: true
 ---
 import { model, Schema, type Document as MongooseDocument } from 'mongoose'

@@ -1,5 +1,5 @@
 ---
-to: "src/controllers/<%= name %>.controller.ts"
+to: "src/controllers/<%= nameDash %>.controller.ts"
 ---
 import { Response, ParsedRequest } from 'express';
 import { InternalError, NotFoundError } from '../core/ApiError';
@@ -8,13 +8,13 @@ import { NextFunction } from 'express-serve-static-core';
 import {
   <%= Name %>FindOptions,
   <%= name %>Repository,
-} from '../database/repositories/<%= name %>.repository';
+} from '../database/repositories/<%= nameDash %>.repository';
 import {
   I<%= Name %>AllSchema,
   I<%= Name %>IdSchema,
   I<%= Name %>CreateSchema,
   I<%= Name %>UpdateSchema,
-} from '../schemas/<%= name %>.schema';
+} from '../schemas/<%= nameDash %>.schema';
 import { defaultOrderParams } from '../utils/order';
 import { defaultPaginationParams } from '../utils/pagination';
 import { RoleCode } from '../utils/enum';

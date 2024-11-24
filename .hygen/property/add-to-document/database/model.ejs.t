@@ -1,6 +1,6 @@
 ---
 inject: true
-to: src/database/models/<%= name %>.model.ts
+to: src/database/models/<%= nameDash %>.model.ts
 after:  \<creating\-property\-schema \/\>
 ---
 <% if (kind === 'reference') { -%>
@@ -21,7 +21,7 @@ after:  \<creating\-property\-schema \/\>
 <% } else if (kind === 'enum') { -%>
   <%= property %>:<% if (isArray) {-%>[ <% }-%>{
       type: String,
-      enum: Object.values(<%= enumType %>),
+      enum: Object.values(<%= EnumType %>),
     }<% if (isArray) {-%>] <% }-%>
     ,
 <% } else { -%>

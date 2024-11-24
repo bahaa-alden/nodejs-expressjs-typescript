@@ -1,6 +1,6 @@
 ---
 inject: true
-to: src/schemas/<%= name %>.schema.ts
+to: src/schemas/<%= nameDash %>.schema.ts
 before: const <%= h.inflection.camelize(name, true) %>IdSchema
 ---
 <% if (kind === 'object') { -%>

@@ -4,25 +4,32 @@ const collectPromisesResults = (callback) => async (prevValues) => {
 
   return { ...prevValues, ...results };
 };
-const formatCamals = (input) => {
+const formatCamals = (input, index) => {
   let arr = input.trim().split(' ');
-  for (let i = 1; i < arr.length; i++)
+  let i = index;
+  for (i; i < arr.length; i++)
     if (arr[i]) {
       arr[i] = arr[i][0].toUpperCase() + arr[i].slice(1);
     }
   return arr.join('');
 };
 const eqValueFormat = (values, field) => {
-  values[field] = values[field]
+  values[field.charAt(0).toUpperCase() + field.slice(1)] = values[field]
     .trim()
     .split(' ')
     .map((word, index) => {
-      if (index == 0) return word;
       return word[0].toUpperCase() + word.slice(1);
     })
     .join('');
-  values[field.charAt(0).toUpperCase() + field.slice(1)] =
-    values[field].charAt(0).toUpperCase() + values[field].slice(1);
+  values[field] =
+    values[field.charAt(0).toUpperCase() + field.slice(1)]
+      .charAt(0)
+      .toLowerCase() +
+    values[field.charAt(0).toUpperCase() + field.slice(1)].slice(1);
+  values[field + 'Dash'] = values[field].map((word, index) => {
+    if (word.toUpperCase() == word) return `-${word.toLowerCase()}`;
+    return word;
+  });
   return values;
 };
 module.exports = {
@@ -31,7 +38,7 @@ module.exports = {
       .prompt({
         type: 'input',
         name: 'name',
-        message: "Entity name (e.g. 'User' or 'orderItem')",
+        message: "Entity name (e.g. 'User' or 'OrderItem')",
         validate: (input) => {
           if (!input.trim()) {
             return 'Entity name is required';
@@ -40,7 +47,7 @@ module.exports = {
           return true;
         },
         format: (input) => {
-          return formatCamals(input);
+          return formatCamals(input, 0);
         },
       })
       .then(
@@ -53,33 +60,31 @@ module.exports = {
           return prompter.prompt({
             type: 'multiselect',
             name: 'roleGet',
-            message: 'choise role for GET',
+            message: 'Choose role for GET',
             choices: Object.keys(RoleCode).map((key, index) => {
               return { name: key, value: key };
             }),
           });
         }),
       )
-
       .then(
         collectPromisesResults(() => {
           return prompter.prompt({
             type: 'multiselect',
             name: 'rolePost',
-            message: 'choise role for Post',
+            message: 'Choose role for Post',
             choices: Object.keys(RoleCode).map((key, index) => {
               return { name: key, value: key };
             }),
           });
         }),
       )
-
       .then(
         collectPromisesResults(() => {
           return prompter.prompt({
             type: 'multiselect',
             name: 'roleDelete',
-            message: 'choise role for Delete',
+            message: 'Choose role for Delete',
             choices: Object.keys(RoleCode).map((key, index) => {
               return { name: key, value: key };
             }),
@@ -91,19 +96,7 @@ module.exports = {
           return prompter.prompt({
             type: 'multiselect',
             name: 'roleUpdate',
-            message: 'choise role for update',
-            choices: Object.keys(RoleCode).map((key, index) => {
-              return { name: key, value: key };
-            }),
-          });
-        }),
-      )
-      .then(
-        collectPromisesResults(() => {
-          return prompter.prompt({
-            type: 'multiselect',
-            name: 'roleUpdate',
-            message: 'choise role for update',
+            message: 'Choose role for update',
             choices: Object.keys(RoleCode).map((key, index) => {
               return { name: key, value: key };
             }),

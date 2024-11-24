@@ -1,11 +1,11 @@
 ---
-to: src/database/repositories/<%= name %>.repository.ts
+to: src/database/repositories/<%= nameDash %>.repository.ts
 ---
 import { type FilterQuery } from 'mongoose'
 import { type PaginatedList } from '../../utils/pagination'
 import { OrderDirection, type OrderOptions } from '../../utils/order'
 import { BaseRepository, type FindOptions } from './base.repository'
-import <%= Name %>, { type I<%= Name %> } from '../models/<%= name %>.model'
+import <%= Name %>, { type I<%= Name %> } from '../models/<%= nameDash %>.model'
 
 export interface <%= Name %>FilterOptions {}
 

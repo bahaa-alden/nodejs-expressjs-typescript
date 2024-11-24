@@ -1,6 +1,6 @@
 ---
 inject: true
-to: src/database/models/<%= name %>.model.ts
+to: src/database/models/<%= nameDash %>.model.ts
 at_line: 0
 skip_if: import mongoose
 ---
