@@ -25,10 +25,13 @@ const eqValueFormat = (values, field) => {
       .charAt(0)
       .toLowerCase() +
     values[field.charAt(0).toUpperCase() + field.slice(1)].slice(1);
-  values[field + 'Dash'] = values[field].map((word, index) => {
-    if (word.toUpperCase() == word) return `-${word.toLowerCase()}`;
-    return word;
-  });
+  let dash = '';
+  for (let i = 0; values[field].length; i++) {
+    if (values[field][i].toUpperCase() == values[field][i])
+      return `-${values[field][i].toLowerCase()}`;
+    return values[field][i];
+  }
+  values[field + 'Dash'] = dash;
   return values;
 };
 module.exports = {
@@ -159,7 +162,7 @@ module.exports = {
                         return true;
                       },
                       format: (input) => {
-                        return formatCamals(input,0);
+                        return formatCamals(input, 0);
                       },
                     })
                     .then(
