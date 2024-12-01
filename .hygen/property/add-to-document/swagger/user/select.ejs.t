@@ -1,6 +1,6 @@
 ---
 inject: true
-to: "./src/swagger/routes/users.swagger.ts"
+to: "./src/swagger/routes/user.swagger.ts"
 after: // property
 ---
 <% if (name === 'user') { -%>
@@ -14,7 +14,7 @@ after: // property
 <% if (kind !== 'object') {  -%>},<% }  -%>
 <% if (kind === 'object') {  -%>
 'object',properties: {
-//  properties <%= property %>
+// properties <%= property %>
 }   
 <% if ( isArray) { -%> } <% } -%> },<% }  -%>
 <% }-%>

@@ -59,7 +59,7 @@ module.exports = {
         }),
       )
       .then(
-        collectPromisesResults(() => {
+        collectPromisesResults((values) => {
           return prompter.prompt({
             type: 'input',
             name: 'object',
@@ -214,12 +214,14 @@ module.exports = {
                     )
                     .then(
                       collectPromisesResults((values) => {
+                        values.enumValue = '';
                         if (values.isEnumDefined === 'no') {
                           return prompter.prompt({
                             type: 'input',
                             name: 'enumValue',
                             message:
                               'Enter an initial value for this enum like : VALUE1 VALUE2 ...',
+                            default: [],
                           });
                         }
                       }),

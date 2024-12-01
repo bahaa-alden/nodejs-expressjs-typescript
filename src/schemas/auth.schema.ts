@@ -16,13 +16,11 @@ const authSchema = z.object({
 
 export type IAuthSchema = TypeOf<typeof authSchema>;
 
-const signupSchema = z
-  .object({
-    name: z.string().min(3),
-    email: z.string().email(),
-    password: z.string().min(6),
-  })
-  .strict();
+const signupSchema = z.object({
+  name: z.string().min(3),
+  email: z.string().email(),
+  password: z.string().min(6),
+});
 
 export type ISignupSchema = TypeOf<typeof signupSchema>;
 
@@ -36,9 +34,8 @@ export type IForgotPasswordSchema = TypeOf<typeof forgotPasswordSchema>;
 
 const resetPasswordSchema = z
   .object({
-    email: z.string().email(),
     password: z.string(),
-    resetToken: z.string().max(6).min(6),
+    token: z.string().max(6).min(6),
   })
   .strict();
 

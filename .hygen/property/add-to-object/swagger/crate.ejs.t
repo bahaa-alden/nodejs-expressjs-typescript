@@ -1,7 +1,7 @@
 ---
 inject: true
 to: "./src/swagger/routes/<%= nameDash %>.swagger.ts"
-after: //  create  properties <%= object %>
+after: create properties <%= object %>
 ---
 <% if(!hiddenSwagger){ -%>
 <%= property %>: { type: <% if ( isArray) {-%>

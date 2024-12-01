@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 export interface IUser extends MongooseDocument {
   id: string;
   // <creating-property-interface />
+  balance: number;
   status?: UserStatus;
   name: string;
   email: string;
@@ -27,9 +28,14 @@ export interface IUser extends MongooseDocument {
 const userSchema = new Schema<IUser>(
   {
     // <creating-property-schema />
+    balance: {
+      type: Number,
+      default: 0,
+    },
     status: {
       type: String,
       enum: Object.values(UserStatus),
+      default: UserStatus.active,
     },
     name: {
       type: String,
@@ -40,12 +46,9 @@ const userSchema = new Schema<IUser>(
     email: {
       type: String,
       trim: true,
-      required: true,
     },
     password: {
       type: String,
-      select: false,
-      required: true,
     },
     role: {
       type: String,
@@ -69,8 +72,6 @@ const userSchema = new Schema<IUser>(
     },
   },
 );
-
-userSchema.index({ email: 1 });
 
 userSchema.pre('save', async function save(next) {
   // If the password is not modified, skip hashing
@@ -106,4 +107,5 @@ userSchema.methods.comparePassword = function (
     },
   );
 };
+
 export default model<IUser>('User', userSchema);

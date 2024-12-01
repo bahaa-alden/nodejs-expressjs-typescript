@@ -126,7 +126,6 @@
  *     patch:
  *       summary: reset password
  *       tags: [Auth]
- *       parameters:
  *       requestBody:
  *         required: true
  *         content:
@@ -134,9 +133,7 @@
  *             schema:
  *               type: object
  *               properties:
- *                 email:
- *                   type: string
- *                 resetToken:
+ *                 token:
  *                   type: string
  *                 password:
  *                   type: string
@@ -212,18 +209,21 @@ export const signUp = {
   type: 'object',
   required: [
     // required property
+
     'name',
     'email',
     'password',
   ],
   properties: {
     //  property signup
+
     name: { type: 'string' },
     email: { type: 'string' },
     password: { type: 'string' },
   },
   example: {
     // create property example
+
     name: 'Adel Seirafi',
     email: 'user@gmail.com',
     password: '123454321',

@@ -18,7 +18,7 @@ after: // update property example <%= object %>
 <%= property %>Id: '673c40cd59e293827f79e398',
 <% } -%>
 <% if (referenceType === 'oneToMany' || referenceType === 'manyToMany') { -%>
-<%= property %>Ids: ['673c40cd59e293827f79e398','673c40cd59e293827f79e399'],
+<%= h.inflection.camelize(h.inflection.singularize(property), true) %>Ids: ['673c40cd59e293827f79e398','673c40cd59e293827f79e399'],
 <% } -%>
 <% } -%>
 <% } -%>

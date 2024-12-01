@@ -4,19 +4,19 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
 /**
  * @swagger
  * tags:
- *   name: <%= h.inflection.pluralize(Name) %>
+ *   name: <%= h.inflection.pluralize(nameDash) %>
  *   description: <%= Name %> management and retrieval
  */
 
 /**
  * @swagger
- * /<%= h.inflection.pluralize(name) %>:
+ * /<%= h.inflection.pluralize(nameDash) %>:
  *   post:
  *     summary: Create a <%= name %>
  *     description: <%= rolePost %> can create <%= name %>.
- *     tags: [<%= h.inflection.pluralize(Name) %>]
+ *     tags: [<%= h.inflection.pluralize(nameDash) %>]
  *     security:
- *       - bearerAuth: []
+ *       - Bearer: []
  *     requestBody:
  *       required: true
  *       content:
@@ -44,12 +44,13 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all <%= h.inflection.pluralize(name) %>
- *     description: <%= roleGet %> can retrieve all <%= h.inflection.pluralize(name) %>.
- *     tags: [<%= h.inflection.pluralize(Name) %>]
+ *     summary: Get all <%= h.inflection.pluralize(nameDash) %>
+ *     description: <%= roleGet %> can retrieve all <%= h.inflection.pluralize(nameDash) %>.
+ *     tags: [<%= h.inflection.pluralize(nameDash) %>]
  *     security:
  *       - Bearer: []
  *     parameters:
+  # filters
  *       - in: query
  *         name: fields
  *         schema:
@@ -68,7 +69,7 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of <%= h.inflection.pluralize(name) %>
+ *         description: Maximum number of <%= h.inflection.pluralize(nameDash) %>
  *       - in: query
  *         name: search
  *         schema:
@@ -102,13 +103,13 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
 
 /**
  * @swagger
- * /<%= h.inflection.pluralize(name) %>/{id}:
+ * /<%= h.inflection.pluralize(nameDash) %>/{id}:
  *   get:
  *     summary: Get a <%= name %>
  *     description: <%= roleGet %> can use this router.
- *     tags: [<%= h.inflection.pluralize(Name) %>]
+ *     tags: [<%= h.inflection.pluralize(nameDash) %>]
  *     security:
- *       - bearerAuth: []
+ *       - Bearer: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -139,9 +140,9 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *   patch:
  *     summary: Update a <%= name %>
  *     description: <%= roleUpdate %> can use this router.
- *     tags: [<%= h.inflection.pluralize(Name) %>]
+ *     tags: [<%= h.inflection.pluralize(nameDash) %>]
  *     security:
- *       - bearerAuth: []
+ *       - Bearer: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -178,9 +179,9 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *   delete:
  *     summary: Delete a  <%= name %>.
  *     description: <%= roleDelete %> can use this router.
- *     tags: [<%= h.inflection.pluralize(Name) %>]
+ *     tags: [<%= h.inflection.pluralize(nameDash) %>]
  *     security:
- *       - bearerAuth: []
+ *       - Bearer: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -218,7 +219,7 @@ export const <%= Name %> = {
 // property
   },
   example: {
-    _id: '5ebac534954b54139806c112',
+    id: '5ebac534954b54139806c112',
 // property example
    createdAt: "2024-11-24T16:35:04.438Z",
    updatedAt: "2024-11-24T16:35:04.438Z"

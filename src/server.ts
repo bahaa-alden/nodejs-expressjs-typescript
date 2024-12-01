@@ -13,6 +13,7 @@ import customResponses from './middlewares/custom.middleware';
 import Logger from './core/Logger';
 import swaggerSpec from './swagger/swagger';
 import { NotFoundError } from './core/ApiError';
+import { join } from 'path';
 class Server {
   public app: express.Application;
 
@@ -26,7 +27,17 @@ class Server {
 
   public routes(): void {
     this.app.use('/api/v1/users', userRoutes.router);
-    this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+    this.app.use(express.static(join(__dirname, '..', 'public')));
+
+    this.app.use(
+      '/docs',
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerSpec, {
+        swaggerOptions: { persistAuthorization: true },
+      }),
+    );
+
     // Docs in JSON format
     this.app.get(
       '/docs.json',

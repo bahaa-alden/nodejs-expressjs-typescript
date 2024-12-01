@@ -1,4 +1,4 @@
-# nodejs-expressjs-mongo-typescript
+# cars
 
 This repo is a Node.js application built with Express.js, MongoDB, Passport.js, and JWT authentication.
 
@@ -7,17 +7,13 @@ This repo is a Node.js application built with Express.js, MongoDB, Passport.js, 
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/bahaa-alden/nodejs-expressjs-typescript.git
-   or
-   git clone https://github.com/MahamdSirafi/nodejs-expressjs-mongo-typescript.git
+   git clone https://github.com/bahaa-alden/cars.git
    ```
 
 2. **Install Dependencies**
 
    ```bash
-   cd nodejs-expressjs-typescript
-   or
-   cd nodejs-expressjs-mongo-typescript
+   cd cars
    yarn install
    ```
 

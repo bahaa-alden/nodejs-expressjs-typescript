@@ -1,33 +1,33 @@
 ---
 to: "src/schemas/<%= nameDash %>.schema.ts"
 ---
-import { object, z, string, type TypeOf } from 'zod';
-import { zodObjectId } from '../middlewares/validator';
-import { orderColumn, orderDirection, page, pageSize } from './common';
+import { z, type TypeOf } from 'zod';
+import { objectId, orderColumn, orderDirection, page, pageSize } from './common';
 
-const <%= name %>IdSchema = object({
-  id: zodObjectId,
+const <%= name %>IdSchema = z.object({
+  id: objectId,
 });
 
 export type I<%= Name %>IdSchema = TypeOf<typeof <%= name %>IdSchema>;
 
-const <%= name %>AllSchema = object({
+const <%= name %>AllSchema = z.object({
   page,
   pageSize,
   orderColumn,
   orderDirection,
-  search: string().optional(),
+  search: z.string().optional(),
+  fields: z.string().optional(),
 });
 
 export type I<%= Name %>AllSchema = TypeOf<typeof <%= name %>AllSchema>;
 
-const <%= name %>CreateSchema = object({
+const <%= name %>CreateSchema = z.object({
   // <creating-property-create-schema />
 }).strict();
 
 export type I<%= Name %>CreateSchema = TypeOf<typeof <%= name %>CreateSchema>;
 
-const <%= name %>UpdateSchema = object({
+const <%= name %>UpdateSchema = z.object({
   // <creating-property-update-schema />
 }).strict();
 

@@ -13,7 +13,7 @@
  *     description: Only admins can create other users.
  *     tags: [Users]
  *     security:
- *       - bearerAuth: []
+ *       - Bearer: []
  *     requestBody:
  *       required: true
  *       content:
@@ -47,16 +47,17 @@
  *     security:
  *       - Bearer: []
  *     parameters:
+  # filters
+ *       - in: query
+ *         name: role
+ *         schema:
+ *           type: string
+ *         description: filter for  role field
  *       - in: query
  *         name: name
  *         schema:
  *           type: string
  *         description: User name
- *       - in: query
- *         name: role
- *         schema:
- *           type: string
- *         description: User role
  *       - in: query
  *         name: sort
  *         schema:
@@ -105,7 +106,7 @@
  *     description: Logged in users can fetch only their own user information. Only admins can fetch other users.
  *     tags: [Users]
  *     security:
- *       - bearerAuth: []
+ *       - Bearer: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -138,7 +139,7 @@
  *     description: Only admins can update other users.
  *     tags: [Users]
  *     security:
- *       - bearerAuth: []
+ *       - Bearer: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -151,12 +152,7 @@
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               role:
- *                 type: string
- *             example:
- *               role: ADMIN
+ *             $ref: '#/components/schemas/updateUser'
  *     responses:
  *       "200":
  *         description: OK
@@ -182,7 +178,7 @@
  *     description: Only admins can delete other users.
  *     tags: [Users]
  *     security:
- *       - bearerAuth: []
+ *       - Bearer: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -241,7 +237,7 @@
 
 /**
  * @swagger
- * /users/deleteMe:
+ * /users/me:
  *   delete:
  *     summary: unactive your account
  *     description: Logged in users can delete only themselves.
@@ -265,13 +261,13 @@
 
 /**
  * @swagger
- * /users/updateMe:
+ * /users/me:
  *   patch:
  *     summary: Update yor account
  *     description: Logged in users can only update their own information
  *     tags: [Users]
  *     security:
- *       - bearerAuth: []
+ *       - Bearer: []
  *     requestBody:
  *       required: true
  *       content:
@@ -299,83 +295,48 @@
  *         $ref: '#/components/responses/Forbidden'
  */
 
-/**
- * @swagger
- * /users/updateMeAndUpload:
- *   patch:
- *     summary: Update yor account
- *     description: Logged in users can only update their own information
- *     tags: [Users]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               photo:
- *                 type: file
- *     responses:
- *       "200":
- *         description: OK
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: success
- *                 doc:
- *                   $ref: '#/components/schemas/User'
- *       "400":
- *         $ref: '#/components/responses/DuplicateEmail'
- *       "401":
- *         $ref: '#/components/responses/Unauthorized'
- *       "403":
- *         $ref: '#/components/responses/Forbidden'
- */
-
 const { RoleCode } = require('../../utils/enum');
 export const User = {
   type: 'object',
   properties: {
     id: { type: 'string' },
     // property
+
+    balance: { type: 'number' },
     email: { type: 'string', format: 'email' },
     name: { type: 'string' },
     role: { type: 'string', enum: Object.values(RoleCode) },
-    photo: { type: 'string' },
-    active: { type: 'string' },
+    status: { type: 'string' },
   },
   example: {
     id: '5ebac534954b54139806c112',
     // property example
+
+    balance: 2500,
     email: 'user@gmail.com',
-    name: 'adel seirafi',
+    name: 'bahaa alden abdo',
     role: 'USER',
-    photo: './public/img/dafult.jpg',
-    active: 'true',
+    status: 'true',
   },
 };
 export const createUser = {
   type: 'object',
   properties: {
     // create property
+
+    balance: { type: 'number' },
     name: { type: 'string' },
     email: { type: 'string' },
     password: { type: 'string' },
-    photo: { type: 'string' },
     role: { type: 'string', enum: Object.values(RoleCode) },
   },
   example: {
     // create property example
-    name: 'Mohammed Seirafi',
-    email: 'adel@gmail.com',
+
+    balance: 2500,
+    name: 'Bahaa abdo',
+    email: 'bad@gmail.com',
     password: '123454321',
-    photo: './public/img/users/dafult.jpg',
     role: 'USER',
   },
 };
@@ -384,14 +345,34 @@ export const updateMe = {
   type: 'object',
   properties: {
     // update property
+
     name: { type: 'string' },
     email: { type: 'string' },
-    photo: { type: 'string' },
   },
   example: {
     // update property example
-    name: 'Mohammed Seirafi',
-    email: 'adel@gmail.com',
-    photo: './public/img/users/dafult.jpg',
+
+    name: 'Bahaa alden',
+    email: 'bah@gmail.com',
+  },
+};
+
+export const updateUser = {
+  type: 'object',
+  properties: {
+    // update property
+    status: { type: 'string', enum: ['active', 'disactive'] },
+    name: { type: 'string' },
+    email: { type: 'string' },
+    role: { type: 'string', enum: Object.values(RoleCode) },
+    balance: { type: 'number' },
+  },
+  example: {
+    // update property example
+    status: 'active',
+    name: 'Bahaa alden',
+    email: 'ba@gmail.com',
+    role: 'USER',
+    balance: 2500,
   },
 };

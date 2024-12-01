@@ -8,7 +8,7 @@ import {
   Unauthorized,
   Error,
 } from './components';
-import { createUser, updateMe, User } from './routes/users.swagger';
+import { createUser, updateMe, updateUser, User } from './routes/user.swagger';
 const options = {
   url: '',
   definition: {
@@ -21,7 +21,11 @@ const options = {
     },
     servers: [
       {
-        url: `http://localhost:${env_vars.port}/api/v1`,
+        url: `${
+          env_vars.env === 'development'
+            ? `http://localhost:${env_vars.port}`
+            : env_vars.apiUrl
+        }/api/v1`,
         description: 'Development server',
       },
     ],
@@ -30,6 +34,7 @@ const options = {
         signUp,
         createUser,
         updateMe,
+        updateUser,
         User,
         Error,
       },
@@ -67,7 +72,7 @@ const options = {
       },
     },
   },
-  apis: ['./dist/swagger/routes/*.js'],
+  apis: [__dirname + '/routes/*.js'],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
