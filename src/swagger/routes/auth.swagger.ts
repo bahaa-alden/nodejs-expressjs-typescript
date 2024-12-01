@@ -35,6 +35,8 @@
  *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MWQ4ZDJjZjBkMmM5NWNiOTM5OTgyZSIsImlhdCI6MTcxMzIxMjcxNywiZXhwIjoxNzIwOTg4NzE3fQ.FbARIC4jDWtOb0koNJK69F2MTu8j9LeS3RaFrT-AP7c
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
+ *       "500":
+ *         $ref: '#/components/responses/InternalError'
  */
 
 //                                                      login
@@ -90,6 +92,8 @@
  *             example:
  *               status: error
  *               message: Invalid email or password
+ *       "500":
+ *         $ref: '#/components/responses/InternalError'
  */
 
 //NOTE                                                        forgotPassword
@@ -112,11 +116,13 @@
  *                   type: string
  *       responses:
  *         "400":
- *           $ref: '#/components/responses/400'
+ *           $ref: '#/components/responses/BadRequest'
  *         "200":
  *           description: reset password token has been sent
  *           contents:
  *             application/json
+ *         "500":
+ *           $ref: '#/components/responses/InternalError'
  */
 
 //NOTE                                              resetpassword
@@ -160,6 +166,10 @@
  *                example:
  *                  status: error
  *                  message: Password reset failed
+ *          "400":
+ *            $ref: '#/components/responses/BadRequest'
+ *          "500":
+ *            $ref: '#/components/responses/InternalError'
  */
 
 //NOTE                                       updateMyPassword
@@ -185,9 +195,11 @@
  *                   type: string
  *       responses:
  *         "400":
- *           $ref: '#/components/responses/400'
+ *           $ref: '#/components/responses/BadRequest'
  *         "401":
- *           $ref: '#/components/responses/401'
+ *           $ref: '#/components/responses/Unauthorized'
+ *         "500":
+ *           $ref: '#/components/responses/InternalError'
  *         "200":
  *           description: Created
  *           content:
@@ -215,15 +227,15 @@ export const signUp = {
     'password',
   ],
   properties: {
-    //  property signup
-
+    //  property _signup
+    phone: { type: 'string' },
     name: { type: 'string' },
     email: { type: 'string' },
     password: { type: 'string' },
   },
   example: {
-    // create property example
-
+    // create property _example
+    phone: '+963955555555',
     name: 'Adel Seirafi',
     email: 'user@gmail.com',
     password: '123454321',

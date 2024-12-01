@@ -25,6 +25,7 @@ export enum Env {
 }
 
 // <creating-enum-type />
+
 export enum BooleanString {
   true = 'true',
   false = 'false',

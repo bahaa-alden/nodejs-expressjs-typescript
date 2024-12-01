@@ -37,11 +37,15 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *                 data:
  *                     $ref: '#/components/schemas/<%= Name %>'
  *       "400":
- *         $ref: '#/components/responses/DuplicateEmail'
+ *         $ref: '#/components/responses/BadRequest'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ *       "500":
+ *         $ref: '#/components/responses/InternalError'
  *
  *   get:
  *     summary: Get all <%= h.inflection.pluralize(nameDash) %>
@@ -99,6 +103,10 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
+ *       "400":
+ *         $ref: '#/components/responses/BadRequest'
+ *       "500":
+ *         $ref: '#/components/responses/InternalError'
  */
 
 /**
@@ -136,6 +144,10 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
+ *       "400":
+ *         $ref: '#/components/responses/BadRequest'
+ *       "500":
+ *         $ref: '#/components/responses/InternalError'
  *
  *   patch:
  *     summary: Update a <%= name %>
@@ -175,6 +187,10 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
+ *       "400":
+ *         $ref: '#/components/responses/BadRequest'
+ *       "500":
+ *         $ref: '#/components/responses/InternalError'
  *
  *   delete:
  *     summary: Delete a  <%= name %>.
@@ -209,6 +225,10 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
+ *       "400":
+ *         $ref: '#/components/responses/BadRequest'
+ *       "500":
+ *         $ref: '#/components/responses/InternalError'
  */
 
 

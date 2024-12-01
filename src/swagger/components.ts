@@ -50,3 +50,29 @@ export const NotFound = {
     },
   },
 };
+
+export const BadRequest = {
+  description: 'BadRequest',
+  content: {
+    'application/json': {
+      schema: { $ref: '#/components/schemas/Error' },
+      example: {
+        status: 'error',
+        message: 'Please send acceptable data',
+      },
+    },
+  },
+};
+
+export const InternalError = {
+  description: 'Internal error',
+  content: {
+    'application/json': {
+      schema: { $ref: '#/components/schemas/Error' },
+      example: {
+        status: 'error',
+        message: 'something went very wrong',
+      },
+    },
+  },
+};

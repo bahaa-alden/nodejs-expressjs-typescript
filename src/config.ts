@@ -29,6 +29,13 @@ const envVarsSchema = object({
   SMTP_SECURE: string()
     .transform((data: string) => data === 'true')
     .default('false'),
+  CLOUDINARY_CLOUD_NAME: string({
+    message: 'CLOUDINARY_CLOUD_NAME is required',
+  }),
+  CLOUDINARY_API_KEY: string({ message: 'CLOUDINARY_API_KEY is required' }),
+  CLOUDINARY_API_SECRET: string({
+    message: 'CLOUDINARY_API_SECRET is required',
+  }),
 }).passthrough();
 
 const envVars = envVarsSchema.parse(process.env);
@@ -54,5 +61,10 @@ export const env_vars = {
     user: envVars.SMTP_USER,
     pass: envVars.SMTP_PASS,
     secure: envVars.SMTP_SECURE,
+  },
+  cloudinary: {
+    cloud_name: envVars.CLOUDINARY_CLOUD_NAME,
+    api_key: envVars.CLOUDINARY_API_KEY,
+    api_secret: envVars.CLOUDINARY_API_SECRET,
   },
 };

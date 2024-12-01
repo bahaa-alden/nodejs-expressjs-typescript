@@ -7,6 +7,8 @@ import {
   NotFound,
   Unauthorized,
   Error,
+  BadRequest,
+  InternalError,
 } from './components';
 import { createUser, updateMe, updateUser, User } from './routes/user.swagger';
 const options = {
@@ -51,6 +53,8 @@ const options = {
         Forbidden,
         NotFound,
         Unauthorized,
+        BadRequest,
+        InternalError,
         201: {
           description: 'created',
         },

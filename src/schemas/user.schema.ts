@@ -9,6 +9,28 @@ import {
   stringToDate,
 } from './common';
 
+const addressCreateSchema = z.object({
+  // <creating-property-create-schema-address />
+
+  street: z.string().optional(),
+
+  city: z.string().optional(),
+
+  country: z.string().optional(),
+});
+export type IAddressCreateSchema = TypeOf<typeof addressCreateSchema>;
+
+const addressUpdateSchema = z.object({
+  // <creating-property-update-schema-address />
+
+  street: z.string().optional(),
+
+  city: z.string().optional(),
+
+  country: z.string().optional(),
+});
+export type IAddressUpdateSchema = TypeOf<typeof addressUpdateSchema>;
+
 const userIdSchema = z.object({
   id: objectId,
 });
@@ -18,6 +40,8 @@ export type IUserIdSchema = TypeOf<typeof userIdSchema>;
 const userUpdateSchema = z
   .object({
     // <creating-property-update-schema />
+    address: addressUpdateSchema.optional(),
+    phone: z.string().optional().optional(),
     balance: z.number().optional().optional(),
     status: z.nativeEnum(UserStatus).optional(),
     name: z.string().optional(),
@@ -31,6 +55,8 @@ export type IUserUpdateSchema = TypeOf<typeof userUpdateSchema>;
 const userUpdateMeSchema = z
   .object({
     // <creating-property-update-schema />
+    address: addressUpdateSchema.optional(),
+    phone: z.string().optional(),
     name: z.string().optional(),
     email: z.string().email().optional(),
   })
@@ -40,6 +66,9 @@ const userUpdateMeSchema = z
 export type IUserUpdateMeSchema = TypeOf<typeof userUpdateMeSchema>;
 
 const createUserSchema = z.object({
+  // <creating-property-create-schema />
+  address: addressCreateSchema.optional(),
+  phone: z.string().optional(),
   name: z.string().min(3),
   email: z.string().email(),
   password: z.string().min(6),

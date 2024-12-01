@@ -4,9 +4,22 @@ import { omit } from 'lodash';
 import { Error } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
+export interface IAddress extends MongooseDocument {
+  // <creating-property-interface-address />
+  street?: string;
+
+  city?: string;
+
+  country?: string;
+}
+
 export interface IUser extends MongooseDocument {
   id: string;
   // <creating-property-interface />
+  address?: IAddress;
+
+  phone?: string;
+
   balance: number;
   status?: UserStatus;
   name: string;
@@ -28,6 +41,27 @@ export interface IUser extends MongooseDocument {
 const userSchema = new Schema<IUser>(
   {
     // <creating-property-schema />
+    address: {
+      type: {
+        // <creating-property-object-address />
+        street: {
+          type: String,
+          index: 'text',
+        },
+        city: {
+          type: String,
+          index: 'text',
+        },
+        country: {
+          type: String,
+          index: 'text',
+        },
+      },
+    },
+    phone: {
+      type: String,
+      index: 'text',
+    },
     balance: {
       type: Number,
       default: 0,
