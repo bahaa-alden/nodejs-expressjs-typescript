@@ -26,10 +26,10 @@ const eqValueFormat = (values, field) => {
       .toLowerCase() +
     values[field.charAt(0).toUpperCase() + field.slice(1)].slice(1);
   let dash = '';
-  for (let i = 0; values[field].length; i++) {
+  for (let i = 0; i < values[field].length; i++) {
     if (values[field][i].toUpperCase() == values[field][i])
-      return `-${values[field][i].toLowerCase()}`;
-    return values[field][i];
+      dash += `-${values[field][i].toLowerCase()}`;
+    else dash += values[field][i];
   }
   values[field + 'Dash'] = dash;
   return values;
