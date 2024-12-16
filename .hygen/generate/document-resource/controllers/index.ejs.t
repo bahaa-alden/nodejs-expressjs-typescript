@@ -1,34 +1,34 @@
 ---
-to: "src/controllers/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.controller.ts"
+to: "src/controllers/<%= nameDash %>.controller.ts"
 ---
 import { Response, ParsedRequest } from 'express';
 import { InternalError, NotFoundError } from '../core/ApiError';
 import asyncHandler from '../middlewares/asyncHandler';
 import { NextFunction } from 'express-serve-static-core';
 import {
-  <%= h.inflection.capitalize(name) %>FindOptions,
-  <%= h.inflection.camelize(name, true) %>Repository,
-} from '../database/repositories/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.repository';
+  <%= Name %>FindOptions,
+  <%= name %>Repository,
+} from '../database/repositories/<%= nameDash %>.repository';
 import {
-  I<%= h.inflection.capitalize(name) %>AllSchema,
-  I<%= h.inflection.capitalize(name) %>IdSchema,
-  I<%= h.inflection.capitalize(name) %>CreateSchema,
-  I<%= h.inflection.capitalize(name) %>UpdateSchema,
-} from '../schemas/<%= h.inflection.transform(name, ['underscore', 'dasherize']) %>.schema';
+  I<%= Name %>AllSchema,
+  I<%= Name %>IdSchema,
+  I<%= Name %>CreateSchema,
+  I<%= Name %>UpdateSchema,
+} from '../schemas/<%= nameDash %>.schema';
 import { defaultOrderParams } from '../utils/order';
 import { defaultPaginationParams } from '../utils/pagination';
 import { RoleCode } from '../utils/enum';
 import { needRecord } from '../utils/record';
 
-export class <%= h.inflection.capitalize(name) %>Controller {
-  // Get all <%= h.inflection.camelize(name, true) %>s by author
-  public get<%= h.inflection.capitalize(name) %>s = asyncHandler(
+export class <%= Name %>Controller {
+  // Get all <%= name %>s by author
+  public get<%= Name %>s = asyncHandler(
     async (
-      req: ParsedRequest<void, I<%= h.inflection.capitalize(name) %>AllSchema>,
+      req: ParsedRequest<void, I<%= Name %>AllSchema>,
       res: Response,
       next: NextFunction,
     ): Promise<void> => {
-      const options: <%= h.inflection.capitalize(name) %>FindOptions = {
+      const options: <%= Name %>FindOptions = {
         filter: {
           search: req.valid.query.search,
         },
@@ -41,84 +41,84 @@ export class <%= h.inflection.capitalize(name) %>Controller {
           req.valid.query.pageSize,
         ),
       };
-      const <%= h.inflection.camelize(name, true) %>s = await <%= h.inflection.camelize(name, true) %>Repository.findForAdmin(options);
+      const <%= name %>s = await <%= name %>Repository.findForAdmin(options);
 
-      res.ok({ message: 'success', data: <%= h.inflection.camelize(name, true) %>s });
+      res.ok({ message: 'success', data: <%= name %>s });
     },
   );
 
-  // Get <%= h.inflection.camelize(name, true) %> by Id for authenticated user
-  public get<%= h.inflection.capitalize(name) %> = asyncHandler(
+  // Get <%= name %> by Id for authenticated user
+  public get<%= Name %> = asyncHandler(
     async (
-      req: ParsedRequest<void, void, I<%= h.inflection.capitalize(name) %>IdSchema>,
+      req: ParsedRequest<void, void, I<%= Name %>IdSchema>,
       res: Response,
     ): Promise<void> => {
-      const <%= h.inflection.camelize(name, true) %> = needRecord(
-        await <%= h.inflection.camelize(name, true) %>Repository.findById(
+      const <%= name %> = needRecord(
+        await <%= name %>Repository.findById(
           req.valid.params.id,
         ),
-        new NotFoundError('<%= h.inflection.capitalize(name) %> not found'),
+        new NotFoundError('<%= Name %> not found'),
       );
 
-      res.ok({ message: 'success', data: <%= h.inflection.camelize(name, true) %> });
+      res.ok({ message: 'success', data: <%= name %> });
     },
   );
 
-  // Create <%= h.inflection.camelize(name, true) %> handler
-  public create<%= h.inflection.capitalize(name) %> = asyncHandler(
+  // Create <%= name %> handler
+  public create<%= Name %> = asyncHandler(
     async (
-      req: ParsedRequest<I<%= h.inflection.capitalize(name) %>CreateSchema>,
+      req: ParsedRequest<I<%= Name %>CreateSchema>,
       res: Response,
       next: NextFunction,
     ): Promise<void> => {
-      const new<%= h.inflection.capitalize(name) %> = req.valid.body;
-      const <%= h.inflection.camelize(name, true) %> = await <%= h.inflection.camelize(name, true) %>Repository.insert(new<%= h.inflection.capitalize(name) %>);
-      if (<%= h.inflection.camelize(name, true) %> === null) {
+      const new<%= Name %> = req.valid.body;
+      const <%= name %> = await <%= name %>Repository.insert(new<%= Name %>);
+      if (<%= name %> === null) {
         throw new InternalError();
       }
-      res.created({ message: '<%= h.inflection.capitalize(name) %> has been created', data: <%= h.inflection.camelize(name, true) %> });
+      res.created({ message: '<%= Name %> has been created', data: <%= name %> });
     },
   );
 
-  // Update <%= h.inflection.camelize(name, true) %> by Id for authenticated user
-  public update<%= h.inflection.capitalize(name) %> = asyncHandler(
+  // Update <%= name %> by Id for authenticated user
+  public update<%= Name %> = asyncHandler(
     async (
-      req: ParsedRequest<I<%= h.inflection.capitalize(name) %>UpdateSchema, void, I<%= h.inflection.capitalize(name) %>IdSchema>,
+      req: ParsedRequest<I<%= Name %>UpdateSchema, void, I<%= Name %>IdSchema>,
       res: Response,
       next: NextFunction,
     ): Promise<void> => {
       const updateBody = req.valid.body;
 
-      const <%= h.inflection.camelize(name, true) %> = needRecord(
-        await <%= h.inflection.camelize(name, true) %>Repository.findById(
+      const <%= name %> = needRecord(
+        await <%= name %>Repository.findById(
           req.valid.params.id,
         ),
-        new NotFoundError('<%= h.inflection.capitalize(name) %> not found'),
+        new NotFoundError('<%= Name %> not found'),
       );
 
-      const data = await <%= h.inflection.camelize(name, true) %>Repository.patchById(<%= h.inflection.camelize(name, true) %>.id, updateBody);
+      const data = await <%= name %>Repository.patchById(<%= name %>.id, updateBody);
 
-      res.ok({ message: '<%= h.inflection.capitalize(name) %> has been updated', data });
+      res.ok({ message: '<%= Name %> has been updated', data });
     },
   );
 
-  // Delete <%= h.inflection.camelize(name, true) %> by Id for authenticated user
-  public delete<%= h.inflection.capitalize(name) %> = asyncHandler(
+  // Delete <%= name %> by Id for authenticated user
+  public delete<%= Name %> = asyncHandler(
     async (
-      req: ParsedRequest<void, void, I<%= h.inflection.capitalize(name) %>IdSchema>,
+      req: ParsedRequest<void, void, I<%= Name %>IdSchema>,
       res: Response,
     ): Promise<void> => {
-      const <%= h.inflection.camelize(name, true) %> = needRecord(
-        await <%= h.inflection.camelize(name, true) %>Repository.findById(
+      const <%= name %> = needRecord(
+        await <%= name %>Repository.findById(
           req.valid.params.id,
         ),
-        new NotFoundError('<%= h.inflection.capitalize(name) %> not found'),
+        new NotFoundError('<%= Name %> not found'),
       );
 
-      await <%= h.inflection.camelize(name, true) %>Repository.deleteById(<%= h.inflection.camelize(name, true) %>.id);
-      res.noContent({ message: '<%= h.inflection.capitalize(name) %> deleted successfully' });
+      await <%= name %>Repository.deleteById(<%= name %>.id);
+      res.noContent({ message: '<%= Name %> deleted successfully' });
     },
   );
 }
 
-export const <%= h.inflection.camelize(name, true) %>Controller = new <%= h.inflection.capitalize(name) %>Controller();
+export const <%= name %>Controller = new <%= Name %>Controller();

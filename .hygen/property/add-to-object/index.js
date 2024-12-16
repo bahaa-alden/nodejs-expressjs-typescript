@@ -3,6 +3,37 @@ const collectPromisesResults = (callback) => async (prevValues) => {
 
   return { ...prevValues, ...results };
 };
+const formatCamals = (input, index) => {
+  let arr = input.trim().split(' ');
+  let i = index;
+  for (i; i < arr.length; i++)
+    if (arr[i]) {
+      arr[i] = arr[i][0].toUpperCase() + arr[i].slice(1);
+    }
+  return arr.join('');
+};
+const eqValueFormat = (values, field) => {
+  values[field.charAt(0).toUpperCase() + field.slice(1)] = values[field]
+    .trim()
+    .split(' ')
+    .map((word, index) => {
+      return word[0].toUpperCase() + word.slice(1);
+    })
+    .join('');
+  values[field] =
+    values[field.charAt(0).toUpperCase() + field.slice(1)]
+      .charAt(0)
+      .toLowerCase() +
+    values[field.charAt(0).toUpperCase() + field.slice(1)].slice(1);
+  let dash = '';
+  for (let i = 0; values[field].length; i++) {
+    if (values[field][i].toUpperCase() == values[field][i])
+      return `-${values[field][i].toLowerCase()}`;
+    return values[field][i];
+  }
+  values[field + 'Dash'] = dash;
+  return values;
+};
 
 module.exports = {
   prompt: ({ prompter, args }) =>
@@ -19,9 +50,14 @@ module.exports = {
           return true;
         },
         format: (input) => {
-          return input.trim();
+          return formatCamals(input, 0);
         },
       })
+      .then(
+        collectPromisesResults((values) => {
+          return eqValueFormat(values, 'name');
+        }),
+      )
       .then(
         collectPromisesResults(() => {
           return prompter.prompt({
@@ -35,9 +71,14 @@ module.exports = {
               return true;
             },
             format: (input) => {
-              return input.trim();
+              return formatCamals(input, 1);
             },
           });
+        }),
+      )
+      .then(
+        collectPromisesResults((values) => {
+          return eqValueFormat(values, 'object');
         }),
       )
       .then(
@@ -54,9 +95,14 @@ module.exports = {
               return true;
             },
             format: (input) => {
-              return input.trim();
+              return formatCamals(input, 1);
             },
           });
+        }),
+      )
+      .then(
+        collectPromisesResults((values) => {
+          return eqValueFormat(values, 'property');
         }),
       )
       .then(
@@ -73,19 +119,11 @@ module.exports = {
                 },
                 { message: 'Enum type', value: 'enum' },
                 { message: 'Reference to entity', value: 'reference' },
-                { message: 'Empty object', value: 'object' },
-                // {
-                //   message: 'Duplication data from entity',
-                //   value: 'duplication',
-                // },
               ],
             })
             .then(
               collectPromisesResults((values) => {
-                if (
-                  values.kind === 'reference'
-                  // || values.kind === 'duplication'
-                ) {
+                if (values.kind === 'reference') {
                   return prompter
                     .prompt({
                       type: 'input',
@@ -99,9 +137,14 @@ module.exports = {
                         return true;
                       },
                       format: (input) => {
-                        return input.trim();
+                        return formatCamals(input, 0);
                       },
                     })
+                    .then(
+                      collectPromisesResults((values) => {
+                        return eqValueFormat(values, 'type');
+                      }),
+                    )
                     .then(
                       collectPromisesResults((referenceValues) => {
                         return prompter.prompt({
@@ -110,19 +153,19 @@ module.exports = {
                           message: 'Select type of reference',
                           choices: [
                             {
-                              message: `One to one (${rootValues.name} contains only one instance of ${referenceValues.type}, and ${referenceValues.type} contains only one instance of ${rootValues.name}. ${rootValues.property}: ${referenceValues.type})`,
+                              message: `One to one (${rootValues.object} contains only one instance of ${referenceValues.type}, and ${referenceValues.type} contains only one instance of ${rootValues.object}. ${rootValues.property}: ${referenceValues.type})`,
                               value: 'oneToOne',
                             },
                             {
-                              message: `One to many (${rootValues.name} contains multiple instances of ${referenceValues.type}, but ${referenceValues.type} contains only one instance of ${rootValues.name}. ${rootValues.property}: ${referenceValues.type}[])`,
+                              message: `One to many (${rootValues.object} contains multiple instances of ${referenceValues.type}, but ${referenceValues.type} contains only one instance of ${rootValues.object}. ${rootValues.property}: ${referenceValues.type}[])`,
                               value: 'oneToMany',
                             },
                             {
-                              message: `Many to one (${rootValues.name} contains only one instance of ${referenceValues.type}, but ${referenceValues.type} contains multiple instances of ${rootValues.name}. ${rootValues.property}: ${referenceValues.type})`,
+                              message: `Many to one (${rootValues.object} contains only one instance of ${referenceValues.type}, but ${referenceValues.type} contains multiple instances of ${rootValues.object}. ${rootValues.property}: ${referenceValues.type})`,
                               value: 'manyToOne',
                             },
                             {
-                              message: `Many to many (${rootValues.name} contains multiple instances of ${referenceValues.type}, and ${referenceValues.type} contains multiple instances of ${rootValues.name}. ${rootValues.property}: ${referenceValues.type}[])`,
+                              message: `Many to many (${rootValues.object} contains multiple instances of ${referenceValues.type}, and ${referenceValues.type} contains multiple instances of ${rootValues.object}. ${rootValues.property}: ${referenceValues.type}[])`,
                               value: 'manyToMany',
                             },
                           ],
@@ -142,9 +185,14 @@ module.exports = {
                         return true;
                       },
                       format: (input) => {
-                        return input.trim();
+                        return formatCamals(input, 0);
                       },
                     })
+                    .then(
+                      collectPromisesResults((values) => {
+                        return eqValueFormat(values, 'enumType');
+                      }),
+                    )
                     .then(
                       collectPromisesResults((referenceValues) => {
                         return prompter.prompt({
