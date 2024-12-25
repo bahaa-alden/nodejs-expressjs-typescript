@@ -21,8 +21,8 @@ import { RoleCode } from '../utils/enum';
 import { needRecord } from '../utils/record';
 
 export class <%= Name %>Controller {
-  // Get all <%= name %>s by author
-  public get<%= Name %>s = asyncHandler(
+  // Get all <%= h.inflection.pluralize(Name) %> by author
+  public get<%= h.inflection.pluralize(Name) %> = asyncHandler(
     async (
       req: ParsedRequest<void, I<%= Name %>AllSchema>,
       res: Response,
@@ -41,9 +41,9 @@ export class <%= Name %>Controller {
           req.valid.query.pageSize,
         ),
       };
-      const <%= name %>s = await <%= name %>Repository.findForAdmin(options);
+      const <%= h.inflection.pluralize(name) %> = await <%= name %>Repository.findForAdmin(options);
 
-      res.ok({ message: 'success', data: <%= name %>s });
+      res.ok({ message: 'success', data: <%= h.inflection.pluralize(name) %> });
     },
   );
 

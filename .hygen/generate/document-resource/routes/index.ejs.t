@@ -33,7 +33,7 @@ export class <%= Name %>Routes {
       restrict(<%= roleGet %>),
       authorizationMiddleware.authorization,
       validator({ query: <%= name %>Schema.<%= name %>All }),
-      <%= name %>Controller.get<%= Name %>s,
+      <%= name %>Controller.get<%= h.inflection.pluralize(Name) %>,
     );
 
     // GET <%= name.toUpperCase() %> BY ID

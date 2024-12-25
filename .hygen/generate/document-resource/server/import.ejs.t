@@ -1,6 +1,6 @@
 ---
 inject: true
 to: "./src/server.ts"
-after: //R
+prepend: true
 ---
 import { <%= name %>Routes } from './routes/<%= nameDash %>.routes';
