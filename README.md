@@ -1,6 +1,6 @@
-# Tasks Manager
+# nodejs-expressjs-mongo-typescript
 
-Tasks Manager is a Node.js application built with Express.js, MongoDB, Passport.js, and JWT authentication. It provides endpoints for managing tasks and user authentication.
+This repo is a Node.js application built with Express.js, MongoDB, Passport.js, and JWT authentication.
 
 ## Setup Instructions
 
@@ -8,12 +8,16 @@ Tasks Manager is a Node.js application built with Express.js, MongoDB, Passport.
 
    ```bash
    git clone https://github.com/bahaa-alden/nodejs-expressjs-typescript.git
+   or
+   git clone https://github.com/MahamdSirafi/nodejs-expressjs-mongo-typescript.git
    ```
 
 2. **Install Dependencies**
 
    ```bash
    cd nodejs-expressjs-typescript
+   or
+   cd nodejs-expressjs-mongo-typescript
    yarn install
    ```
 
@@ -55,183 +59,16 @@ or
 yarn watch
 ```
 
-## API Endpoints
+## Contributors
 
-### Authentication
-
-- **Register User**
-
-  - URL: /api/v1/users/register
-  - Method: POST
-  - Request Body:
-
-  ```json
-  {
-    "email": "example@example.com",
-    "password": "password",
-    "name": "John Doe"
-  }
-  ```
-
-  - Response:
-
-    ```json
-    {
-      "token": "your_jwt_token",
-      "user": {
-        "_id": "user_id",
-        "name": "John Doe",
-        "email": "example@example.com"
-      }
-    }
-    ```
-
-- **Login User**
-
-  - URL: /api/v1/users/login
-  - Method: POST
-  - Request Body:
-
-    ```json
-    {
-      "email": "example@example.com",
-      "password": "password"
-    }
-    ```
-
-  - Response:
-
-    ```json
-    {
-      "token": "your_jwt_token",
-      "user": {
-        "_id": "user_id",
-        "name": "John Doe",
-        "email": "example@example.com"
-      }
-    }
-    ```
-
-### Tasks
-
-- **Get All Tasks**
-
-  - URL: /api/v1/tasks
-  - Method: GET
-  - Headers: Authorization: Bearer your_jwt_token
-  - Query Parameters: page, limit
-  - Response:
-
-  - ```json
-    [
-      {
-        "_id": "task_id",
-        "title": "Task Title",
-        "description": "Task Description",
-        "completed": "true",
-        "createdAt": "2024-03-15T12:00:00.000Z",
-        "updatedAt": "2024-03-15T12:00:00.000Z",
-        "author": {
-          "_id": "user_id",
-          "name": "John Doe",
-          "email": "example@example.com"
-        }
-      }
-    ]
-    ```
-
-- **Get Task by ID**
-
-  - URL: /api/tasks/:id
-  - Method: GET
-  - Headers: Authorization: Bearer your_jwt_token
-  - Response:
-
-    ```json
-    {
-      "_id": "task_id",
-      "title": "Task Title",
-      "description": "Task Description",
-      "completed": "true",
-      "createdAt": "2024-03-15T12:00:00.000Z",
-      "updatedAt": "2024-03-15T12:00:00.000Z",
-      "author": {
-        "_id": "user_id",
-        "name": "John Doe",
-        "email": "example@example.com"
-      }
-    }
-    ```
-
-- **Create Task**
-
-  - URL: /api/tasks
-  - Method: POST
-  - Headers: Authorization: Bearer your_jwt_token
-  - Request Body:
-
-  ```json
-  {
-    "title": "Task Title",
-    "description": "Task Description"
-  }
-  ```
-
-  - Response:
-
-    ```json
-    {
-      "_id": "task_id",
-      "title": "Task Title",
-      "description": "Task Description",
-      "completed": "false",
-      "createdAt": "2024-03-15T12:00:00.000Z",
-      "updatedAt": "2024-03-15T12:00:00.000Z",
-      "author": {
-        "_id": "user_id",
-        "name": "John Doe",
-        "email": "example@example.com"
-      }
-    }
-    ```
-
-- **Update Task by ID**
-
-  - URL: /api/tasks/:id
-  - Method: PUT
-  - Headers: Authorization: Bearer your_jwt_token
-  - Request Body:
-
-    ```json
-    {
-      "title": "Updated Task Title",
-      "description": "Updated Task Description"
-    }
-    ```
-
-  - Response:
-
-    ```json
-    {
-      "_id": "task_id",
-      "title": "Updated Task Title",
-      "description": "Updated Task Description",
-      "completed": "true",
-      "createdAt": "2024-03-15T12:00:00.000Z",
-      "updatedAt": "2024-03-15T12:00:00.000Z",
-      "author": {
-        "_id": "user_id",
-        "name": "John Doe",
-        "email": "example@example.com"
-      }
-    }
-    ```
-
-- **Delete Task by ID**
-  - URL: /api/tasks/:id
-  - Method: DELETE
-  - Headers: Authorization: Bearer your_jwt_token
-  - Response: No Content
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/bahaa-alden"><img src="https://avatars.githubusercontent.com/u/114233768?v=4" width="100px;" alt="Bahaa alden abdo"/><br /><sub><b>Bahaa alden abdo</b></sub></a><br /><a href="#maintenance-Shchepotin" title="Maintenance">🚧</a> <a href="#doc-Shchepotin" title="Documentation">📖</a> <a href="#code-Shchepotin" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/MahamdSirafi"><img src="https://mahamdsirafi.github.io/Portfolio/assets/img/person.jpg" width="100px;" alt="Mohammed Adel Seirafi"/><br /><sub><b>Mohammed Adel Seirafi</b></sub></a><br /><a href="#maintenance-Shchepotin" title="Maintenance">🚧</a> <a href="#doc-Shchepotin" title="Documentation">📖</a> <a href="#code-Shchepotin" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
 
 ## License
 
