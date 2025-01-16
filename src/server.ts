@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as mongoose from 'mongoose';
 import * as compression from 'compression';
 import * as cors from 'cors';
+import * as swaggerUi from 'swagger-ui-express';
 //R <dont remove this line>
 import { userRoutes } from './routes/user.routes';
 import { env_vars } from './config';
@@ -10,7 +11,8 @@ import * as passport from 'passport';
 import errHandler from './middlewares/errHandler';
 import customResponses from './middlewares/custom.middleware';
 import Logger from './core/Logger';
-
+import swaggerSpec from './swagger/swagger';
+import { NotFoundError } from './core/ApiError';
 class Server {
   public app: express.Application;
 
@@ -24,7 +26,28 @@ class Server {
 
   public routes(): void {
     this.app.use('/api/v1/users', userRoutes.router);
+    this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    // Docs in JSON format
+    this.app.get(
+      '/docs.json',
+      (req: express.Request, res: express.Response) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(swaggerSpec);
+      },
+    );
     //ROUTES <dont remove this line>
+    this.app.all(
+      '*',
+      (
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction,
+      ) => {
+        next(
+          new NotFoundError(`Can't find ${req.originalUrl} on this server!`),
+        );
+      },
+    );
     this.app.use(errHandler);
   }
 
@@ -70,8 +93,9 @@ class Server {
 
   public start(): void {
     this.app.listen(this.app.get('port'), () => {
+      Logger.info(`API is running at http://localhost:${this.app.get('port')}`);
       Logger.info(
-        `API is running at http://localhost: ${this.app.get('port')}`,
+        `swagger is running at http://localhost:${this.app.get('port')}/docs`,
       );
     });
   }

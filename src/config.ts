@@ -8,6 +8,8 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 const numericIdRegex = /^\d+$/u;
 
 const envVarsSchema = object({
+  EMAIL_FROM: string({ message: 'EMAIL FROM  is required' }),
+  EMAIL_API_KEY: string({ message: 'EMAIL API KEY is required' }),
   NODE_ENV: nativeEnum(Env).default(Env.development),
   LOG_DIR: string(),
   PORT: string().regex(numericIdRegex).default('3000'),
@@ -21,6 +23,8 @@ const envVarsSchema = object({
 const envVars = envVarsSchema.parse(process.env);
 
 export const env_vars = {
+  email_key: envVars.EMAIL_API_KEY,
+  sender: envVars.EMAIL_FROM,
   env: envVars.NODE_ENV,
   port: envVars.PORT,
   log_dir: envVars.LOG_DIR,

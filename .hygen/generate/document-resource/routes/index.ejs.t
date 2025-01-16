@@ -9,6 +9,7 @@ import { RoleCode } from '../utils/enum';
 import { authorizationMiddleware } from '../auth/authorization';
 import { <%= name %>Controller } from '../controllers/<%= nameDash %>.controller';
 import authSchema from '../schemas/auth.schema';
+import { authMiddleware } from '../middlewares/authJwt';
 import { authController } from '../controllers/auth.controller';
 const {<%=  allRole %>}= RoleCode; 
 
@@ -24,7 +25,7 @@ export class <%= Name %>Routes {
     // PROTECTED ROUTES
     this.router.use(
       validator({ headers: authSchema.auth }),
-      authController.authenticateJWT,
+      authMiddleware.authenticateJWT,
     );
 
     // GET ALL <%= h.inflection.pluralize(name).toUpperCase() %>

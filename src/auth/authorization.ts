@@ -1,7 +1,6 @@
 import { ParsedRequest } from 'express';
 import { AuthFailureError } from '../core/ApiError';
 import asyncHandler from '../middlewares/asyncHandler';
-import { roleRepository } from '../database/repositories/role.repository';
 
 // Authorization by role
 export class AuthorizationMiddleware {
@@ -10,11 +9,11 @@ export class AuthorizationMiddleware {
       throw new AuthFailureError('Permission denied');
 
     const { user } = req;
-    const roles = await roleRepository.findByCodes(req.currentRoleCodes);
+    const roles = req.currentRoleCodes;
     if (!roles) throw new AuthFailureError('Permission denied');
     let authorized = false;
     roles.forEach((role) => {
-      if (role.code === user.role.code) {
+      if (role === user.role) {
         authorized = true;
         return;
       }

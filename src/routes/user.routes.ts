@@ -6,6 +6,7 @@ import userSchema from '../schemas/user.schema';
 import { RoleCode } from '../utils/enum';
 import restrict from '../middlewares/restrict';
 import { authorizationMiddleware } from '../auth/authorization';
+import { authMiddleware } from '../middlewares/authJwt';
 import { authController } from '../controllers/auth.controller';
 
 export class UserRoutes {
@@ -20,20 +21,38 @@ export class UserRoutes {
     this.router.post(
       '/register',
       validator({ body: authSchema.signup }),
-      userController.registerUser,
+      authController.registerUser,
     );
 
     // LOGIN
     this.router.post(
       '/login',
       validator({ body: authSchema.credential }),
-      userController.authenticateUser,
+      authController.authenticateUser,
+    );
+
+    this.router.post(
+      '/forgotPassword',
+      validator({ body: authSchema.forgotPassword }),
+      authController.forgotPassword,
+    );
+
+    this.router.patch(
+      '/resetPassword',
+      validator({ body: authSchema.resetPassword }),
+      authController.resetPassword,
     );
 
     // protect routes
     this.router.use(
       validator({ headers: authSchema.auth }),
-      authController.authenticateJWT,
+      authMiddleware.authenticateJWT,
+    );
+
+    this.router.patch(
+      '/updateMyPassword',
+      validator({ body: authSchema.updateMyPassword }),
+      authController.updateMyPassword,
     );
 
     // ME

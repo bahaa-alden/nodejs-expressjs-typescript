@@ -65,7 +65,7 @@ export class UserRepository extends BaseRepository<IUser> {
     return await this.model
       .findById(id)
       .where({ deletedAt: null })
-      .select('+email +password +roleId')
+      .select('+email +password')
       .populate({
         path: 'role',
         match: { status: true },
@@ -77,7 +77,7 @@ export class UserRepository extends BaseRepository<IUser> {
     return await this.model
       .findOne({ email: email })
       .where({ deletedAt: null })
-      .select('+email +password +roleId +name')
+      .select('+email +password +name')
       .populate({
         path: 'role',
         match: { status: true },
