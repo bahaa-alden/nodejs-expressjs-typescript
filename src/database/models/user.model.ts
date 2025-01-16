@@ -3,7 +3,6 @@ import { model, Schema, type Document as MongooseDocument } from 'mongoose';
 import { omit } from 'lodash';
 import { Error } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { Types } from 'mongoose';
 
 export interface IUser extends MongooseDocument {
   id: string;

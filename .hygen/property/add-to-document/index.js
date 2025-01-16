@@ -267,5 +267,37 @@ module.exports = {
             initial: true,
           });
         }),
+      )
+      .then(
+        collectPromisesResults((values) => {
+          return prompter.prompt({
+            type: 'confirm',
+            name: 'hiddenSwagger',
+            message: 'do you want a hidden field.',
+            initial: false,
+          });
+        }),
+      )
+      .then(
+        collectPromisesResults((values) => {
+          if (values.kind === 'primitive')
+            return prompter.prompt({
+              type: 'input',
+              name: 'example',
+              message: 'set example for swagger :',
+            });
+          return;
+        }),
+      )
+      .then(
+        collectPromisesResults((values) => {
+          if (!values.type) {
+            values.type = 'user';
+          }
+          if (!values.isArray) {
+            values.isArray = false;
+          }
+          return;
+        }),
       ),
 };
