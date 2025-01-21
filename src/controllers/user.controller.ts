@@ -8,7 +8,6 @@ import {
   FindUserOptions,
   userRepository,
 } from '../database//repositories/user.repository';
-import { roleRepository } from '../database/repositories/role.repository';
 import { RoleCode } from '../utils/enum';
 import { ISignupSchema, ICredentialSchema } from '../schemas/auth.schema';
 import {
@@ -22,69 +21,6 @@ import { existRecord, needRecord } from '../utils/record';
 import { IUser } from '../database/models/user.model';
 
 export class UserController {
-  // SignUp user handler
-  public registerUser = asyncHandler(
-    async (
-      req: ParsedRequest<ISignupSchema>,
-      res: Response,
-      next: NextFunction,
-    ) => {
-      const { email, password, name } = req.valid.body;
-
-      existRecord(
-        await userRepository.exists(email),
-        new ConflictError('User already exist'),
-      );
-
-      const role = await roleRepository.findOneBy({ code: RoleCode.USER });
-
-      if (!role) throw new InternalError('Role must be defined');
-
-      const user = await userRepository.insert({
-        name,
-        email,
-        password,
-        roleId: role.id,
-      });
-
-      const token = jwt.sign({ email: req.body.email }, env_vars.jwt.secret, {
-        expiresIn: env_vars.jwt.accessExpiration,
-      });
-      res.created({
-        message: 'user created',
-        data: {
-          token,
-          user,
-        },
-      });
-    },
-  );
-
-  // passport local strategy handler
-  public authenticateUser(
-    req: ParsedRequest<ICredentialSchema>,
-    res: Response,
-    next: NextFunction,
-  ) {
-    passport.authenticate(
-      'local',
-      { session: false },
-      function (err, user: IUser, info) {
-        if (err) return next(err);
-        if (user) {
-          const token = jwt.sign(
-            { email: req.valid.body.email },
-            env_vars.jwt.secret,
-            {
-              expiresIn: env_vars.jwt.accessExpiration,
-            },
-          );
-          res.ok({ message: 'loggenin', data: { token, user } });
-        }
-      },
-    )(req, res, next);
-  }
-
   // return authenticated user details
   public me(req: Request, res: Response, next: NextFunction) {
     res.ok({ message: 'success', data: req.user });

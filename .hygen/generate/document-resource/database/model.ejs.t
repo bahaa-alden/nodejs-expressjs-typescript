@@ -8,7 +8,9 @@ import { omit } from 'lodash'
 export interface I<%= Name %> extends MongooseDocument {
   id: string
   // <creating-property-interface />
-  deletedAt: Date | null
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
 }
 
 const <%= name %>Schema: Schema = new Schema<I<%= Name %>>({

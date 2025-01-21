@@ -1,10 +1,8 @@
-import { UserStatus } from './../../utils/enum';
+import { RoleCode, UserStatus } from './../../utils/enum';
 import { model, Schema, type Document as MongooseDocument } from 'mongoose';
 import { omit } from 'lodash';
 import { Error } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { IRole } from './role.model';
-import { Types } from 'mongoose';
 
 export interface IUser extends MongooseDocument {
   id: string;
@@ -13,8 +11,10 @@ export interface IUser extends MongooseDocument {
   name: string;
   email: string;
   password: string;
-  role: IRole;
-  roleId: IRole['_id'];
+  role: RoleCode;
+  passwordChangedAt?: Date;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: null | Date;
@@ -47,11 +47,14 @@ const userSchema = new Schema<IUser>(
       select: false,
       required: true,
     },
-    roleId: {
-      type: Types.ObjectId,
-      ref: 'Role',
-      required: true,
+    role: {
+      type: String,
+      enum: Object.values(RoleCode),
+      default: RoleCode.USER,
     },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
     deletedAt: {
       type: Date,
       default: null,
@@ -84,6 +87,12 @@ userSchema.pre('save', async function save(next) {
   }
 });
 
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+  this.passwordChangedAt = new Date();
+  next();
+});
+
 // check password
 userSchema.methods.comparePassword = function (
   candidatePassword: string,
@@ -97,12 +106,4 @@ userSchema.methods.comparePassword = function (
     },
   );
 };
-
-userSchema.virtual('role', {
-  localField: 'roleId',
-  foreignField: '_id',
-  ref: 'Role',
-  justOne: true,
-});
-
 export default model<IUser>('User', userSchema);

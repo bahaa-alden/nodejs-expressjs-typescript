@@ -26,8 +26,38 @@ const signupSchema = z
 
 export type ISignupSchema = TypeOf<typeof signupSchema>;
 
+const forgotPasswordSchema = z
+  .object({
+    email: z.string().email(),
+  })
+  .strict();
+
+export type IForgotPasswordSchema = TypeOf<typeof forgotPasswordSchema>;
+
+const resetPasswordSchema = z
+  .object({
+    email: z.string().email(),
+    password: z.string(),
+    resetToken: z.string().max(6).min(6),
+  })
+  .strict();
+
+export type IResetPasswordSchema = TypeOf<typeof resetPasswordSchema>;
+
+const updateMyPasswordSchema = z
+  .object({
+    passwordCurrent: z.string(),
+    password: z.string(),
+  })
+  .strict();
+
+export type IUpdateMyPasswordSchema = TypeOf<typeof updateMyPasswordSchema>;
+
 export default {
   credential: credentialSchema,
   auth: authSchema,
   signup: signupSchema,
+  forgotPassword: forgotPasswordSchema,
+  resetPassword: resetPasswordSchema,
+  updateMyPassword: updateMyPasswordSchema,
 };
