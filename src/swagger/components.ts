@@ -11,6 +11,7 @@ export const DuplicateEmail = {
     },
   },
 };
+
 export const Unauthorized = {
   description: 'Unauthorized',
   content: {
@@ -23,6 +24,7 @@ export const Unauthorized = {
     },
   },
 };
+
 export const Forbidden = {
   description: 'Forbidden',
   content: {

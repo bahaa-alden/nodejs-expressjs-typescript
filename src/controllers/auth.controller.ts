@@ -103,12 +103,11 @@ export class AuthController {
       await user.save({ validateBeforeSave: false });
       // 3) Send it to user's email
       try {
-        // await new Email(user, '').sendPasswordReset(resetToken);
+        await new Email(user, '').sendPasswordReset(resetToken);
         res.ok({
           message: 'Token sent to email!',
           data: {
             message: 'Token sent to email!',
-            resetToken,
           },
         });
       } catch (err) {
@@ -132,10 +131,14 @@ export class AuthController {
         await userRepository.findByEmail(req.valid.body.email),
         new NotFoundError('user not found'),
       );
-      if (user.passwordResetToken !== req.valid.body.resetToken)
-        return next(new BadTokenError());
+
+      if (user.passwordResetToken !== req.valid.body.resetToken) {
+        throw new BadTokenError();
+      }
+
       if (user.passwordResetExpires && user.passwordResetExpires < new Date())
-        return next(new TokenExpiredError());
+        throw new TokenExpiredError();
+
       user.password = req.valid.body.password;
       user.passwordResetToken = undefined;
       user.passwordResetExpires = undefined;

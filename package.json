@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/swagger-jsdoc": "^6.0.4",
     "concurrently": "^7.6.0",
     "tslint": "^5.12.1"
   },

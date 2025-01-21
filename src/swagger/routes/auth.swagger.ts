@@ -124,7 +124,7 @@
  * @swagger
  *   /users/resetPassword:
  *     patch:
- *       summary: forgot password
+ *       summary: reset password
  *       tags: [Auth]
  *       parameters:
  *       requestBody:

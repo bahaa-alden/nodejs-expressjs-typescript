@@ -40,17 +40,10 @@ This repo is a Node.js application built with Express.js, MongoDB, Passport.js, 
      JWT_ACCESS_EXPIRATION=jwt_expire_time
      ```
 
-5. **Seed the Roles**
-
-   ```bash
-   yarn seed:roles
-   ```
-
-6. **Run the Application**
+5. **Run the Application**
 
 ```bash
-yarn build
-yarn start
+yarn serve
 ```
 
 or
