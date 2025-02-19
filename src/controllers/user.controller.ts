@@ -1,15 +1,10 @@
 import { NextFunction, Request, Response, ParsedRequest } from 'express';
-import * as jwt from 'jsonwebtoken';
-import * as passport from 'passport';
-import { ConflictError, InternalError, NotFoundError } from '../core/ApiError';
+import { ConflictError, NotFoundError } from '../core/ApiError';
 import asyncHandler from '../middlewares/asyncHandler';
-import { env_vars } from '../config';
 import {
   FindUserOptions,
   userRepository,
 } from '../database//repositories/user.repository';
-import { RoleCode } from '../utils/enum';
-import { ISignupSchema, ICredentialSchema } from '../schemas/auth.schema';
 import {
   IUserAllSchema,
   IUserIdSchema,
@@ -18,7 +13,6 @@ import {
 import { defaultOrderParams } from '../utils/order';
 import { defaultPaginationParams } from '../utils/pagination';
 import { existRecord, needRecord } from '../utils/record';
-import { IUser } from '../database/models/user.model';
 
 export class UserController {
   // return authenticated user details

@@ -239,7 +239,6 @@
  *         $ref: '#/components/responses/Unauthorized'
  */
 
-
 /**
  * @swagger
  * /users/deleteMe:
