@@ -231,8 +231,6 @@ export const create<%= Name %> = {
   },
   example: {
 // create property example
-  createdAt: "2024-11-24T16:35:04.438Z",
-  updatedAt: "2024-11-24T16:35:04.438Z"
   },
   required:[
 // required property
@@ -245,8 +243,7 @@ export const update<%= Name %> = {
   },
   example: {
 // update property example
- createdAt: "2024-11-24T16:35:04.438Z",
- updatedAt: "2024-11-24T16:35:04.438Z"
+ 
   },
 };
 
