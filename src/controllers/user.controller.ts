@@ -1,49 +1,91 @@
 import { NextFunction, Request, Response, ParsedRequest } from 'express';
-import * as jwt from 'jsonwebtoken';
-import * as passport from 'passport';
-import { ConflictError, InternalError, NotFoundError } from '../core/ApiError';
+import { ConflictError, NotFoundError } from '../core/ApiError';
 import asyncHandler from '../middlewares/asyncHandler';
-import { env_vars } from '../config';
 import {
   FindUserOptions,
   userRepository,
 } from '../database//repositories/user.repository';
+<<<<<<< HEAD
 import { RoleCode } from '../utils/enum';
 import { ISignupSchema, ICredentialSchema } from '../schemas/auth.schema';
+=======
+>>>>>>> origin/main
 import {
+  ICreateUserSchema,
   IUserAllSchema,
   IUserIdSchema,
+  IUserUpdateMeSchema,
   IUserUpdateSchema,
 } from '../schemas/user.schema';
 import { defaultOrderParams } from '../utils/order';
 import { defaultPaginationParams } from '../utils/pagination';
 import { existRecord, needRecord } from '../utils/record';
-import { IUser } from '../database/models/user.model';
 
 export class UserController {
   // return authenticated user details
+<<<<<<< HEAD
+=======
+
+  public registerUser = asyncHandler(
+    async (
+      req: ParsedRequest<ICreateUserSchema>,
+      res: Response,
+      next: NextFunction,
+    ) => {
+      const { email, password, name, role } = req.valid.body;
+      existRecord(
+        await userRepository.exists(email),
+        new ConflictError('User already exist'),
+      );
+      const user = await userRepository.insert({
+        name,
+        email,
+        password,
+        role,
+      });
+      res.created({
+        message: 'user created',
+        data: {
+          user,
+        },
+      });
+      existRecord(
+        await userRepository.findByUsername(name),
+        new ConflictError('User already exist'),
+      );
+    },
+  );
+
+>>>>>>> origin/main
   public me(req: Request, res: Response, next: NextFunction) {
     res.ok({ message: 'success', data: req.user });
   }
 
-  public async updateMe(
-    req: ParsedRequest<IUserUpdateSchema>,
-    res: Response,
-    next: NextFunction,
-  ) {
-    const updateBody = req.valid.body;
+  public updateMe = asyncHandler(
+    async (
+      req: ParsedRequest<IUserUpdateMeSchema>,
+      res: Response,
+      next: NextFunction,
+    ) => {
+      const updateBody = req.valid.body;
 
-    if (updateBody.email) {
-      existRecord(
-        await userRepository.exists(updateBody.email),
-        new ConflictError('User already exist'),
+      const user = needRecord(
+        await userRepository.findById(req.user.id),
+        new NotFoundError('user not found'),
       );
-    }
 
-    const data = await userRepository.patchById(req.user.id, updateBody);
+      if (updateBody.email && user.email !== updateBody.email) {
+        existRecord(
+          await userRepository.exists(updateBody.email),
+          new ConflictError('User already exist'),
+        );
+      }
 
-    res.ok({ message: 'User has been updated', data });
-  }
+      const data = await userRepository.patchById(user.id, updateBody);
+
+      res.ok({ message: 'User has been updated', data });
+    },
+  );
 
   public deleteMe = asyncHandler(
     async (req: ParsedRequest<void>, res: Response, next: NextFunction) => {
@@ -60,7 +102,13 @@ export class UserController {
       next: NextFunction,
     ): Promise<void> => {
       const options: FindUserOptions = {
-        filter: {},
+        filter: {
+          //filters
+          role: req.valid.query.role,
+          dateFrom: req.valid.query.dateFrom,
+          dateTo: req.valid.query.dateTo,
+        },
+
         order: defaultOrderParams(
           req.valid.query.orderColumn,
           req.valid.query.orderDirection,
@@ -105,14 +153,17 @@ export class UserController {
         new NotFoundError('user not found'),
       );
 
-      if (updateBody.email) {
+      if (updateBody.email && user.email !== updateBody.email) {
         existRecord(
           await userRepository.exists(updateBody.email),
           new ConflictError('User already exist'),
         );
       }
 
-      const data = await userRepository.patchById(req.user.id, updateBody);
+      const data = needRecord(
+        await userRepository.patchById(req.valid.params.id, updateBody),
+        new NotFoundError('user not found'),
+      );
 
       res.ok({ message: 'User has been updated', data });
     },
@@ -135,4 +186,5 @@ export class UserController {
     },
   );
 }
+
 export const userController = new UserController();

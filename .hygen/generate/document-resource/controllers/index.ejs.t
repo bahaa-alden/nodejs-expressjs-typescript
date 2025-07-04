@@ -17,7 +17,6 @@ import {
 } from '../schemas/<%= nameDash %>.schema';
 import { defaultOrderParams } from '../utils/order';
 import { defaultPaginationParams } from '../utils/pagination';
-import { RoleCode } from '../utils/enum';
 import { needRecord } from '../utils/record';
 
 export class <%= Name %>Controller {
@@ -30,8 +29,10 @@ export class <%= Name %>Controller {
     ): Promise<void> => {
       const options: <%= Name %>FindOptions = {
         filter: {
-          search: req.valid.query.search,
+        // filters
         },
+        search: req.valid.query.search,
+        fields: req.valid.query.fields,
         order: defaultOrderParams(
           req.valid.query.orderColumn,
           req.valid.query.orderDirection,

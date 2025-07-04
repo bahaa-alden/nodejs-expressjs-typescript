@@ -7,8 +7,15 @@ import {
   NotFound,
   Unauthorized,
   Error,
+<<<<<<< HEAD
 } from './components';
 import { createUser, updateMe, User } from './routes/users.swagger';
+=======
+  BadRequest,
+  InternalError,
+} from './components';
+import { createUser, updateMe, updateUser, User } from './routes/user.swagger';
+>>>>>>> origin/main
 const options = {
   url: '',
   definition: {
@@ -21,7 +28,15 @@ const options = {
     },
     servers: [
       {
+<<<<<<< HEAD
         url: `http://localhost:${env_vars.port}/api/v1`,
+=======
+        url: `${
+          env_vars.env === 'development'
+            ? `http://localhost:${env_vars.port}`
+            : env_vars.apiUrl
+        }/api/v1`,
+>>>>>>> origin/main
         description: 'Development server',
       },
     ],
@@ -30,6 +45,10 @@ const options = {
         signUp,
         createUser,
         updateMe,
+<<<<<<< HEAD
+=======
+        updateUser,
+>>>>>>> origin/main
         User,
         Error,
       },
@@ -46,6 +65,11 @@ const options = {
         Forbidden,
         NotFound,
         Unauthorized,
+<<<<<<< HEAD
+=======
+        BadRequest,
+        InternalError,
+>>>>>>> origin/main
         201: {
           description: 'created',
         },
@@ -67,7 +91,11 @@ const options = {
       },
     },
   },
+<<<<<<< HEAD
   apis: ['./dist/swagger/routes/*.js'],
+=======
+  apis: [__dirname + '/routes/*.js'],
+>>>>>>> origin/main
 };
 
 const swaggerSpec = swaggerJsdoc(options);

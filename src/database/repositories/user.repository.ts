@@ -1,14 +1,21 @@
+import { RoleCode } from './../../utils/enum';
 import { BaseRepository, FindOptions } from './base.repository';
 import { OrderDirection, OrderOptions } from '../../utils/order';
 import { FilterQuery } from 'mongoose';
 import User, { IUser } from '../models/user.model';
+import { startOfDay, endOfDay } from 'date-fns';
 
 export interface UserOrderOptions extends OrderOptions {
   column: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface UserFilterOptions {}
+export interface UserFilterOptions {
+  //filters
+  dateFrom?: Date;
+  dateTo?: Date;
+  role?: RoleCode;
+}
 
 export interface FindUserOptions extends FindOptions<UserFilterOptions> {
   order: UserOrderOptions;
@@ -20,8 +27,22 @@ export class UserRepository extends BaseRepository<IUser> {
   }
 
   async findForUser(options: FindUserOptions): Promise<IUser[]> {
-    const { pagination, order, search } = options;
+    const { pagination, order, search, filter } = options;
     const query: FilterQuery<IUser> = { deletedAt: null };
+
+    if (filter?.role) {
+      query.role = filter.role;
+    }
+
+    if (filter?.dateFrom ?? filter?.dateTo) {
+      query.createdAt = {};
+      if (filter.dateFrom) {
+        query.createdAt.$gte = startOfDay(filter.dateFrom);
+      }
+      if (filter.dateTo) {
+        query.createdAt.$lte = endOfDay(filter.dateTo);
+      }
+    }
 
     if (search) {
       query.$or = [
@@ -34,16 +55,21 @@ export class UserRepository extends BaseRepository<IUser> {
       .find(query)
       .skip(pagination.pageSize * (pagination.page - 1))
       .limit(pagination.pageSize)
-      .populate('role')
       .sort({
         [order.column]: order.direction === OrderDirection.asc ? 1 : -1,
       });
   }
 
   async exists(email: string): Promise<boolean> {
-    const doc = await this.model
-      .findOne({ email: email })
-      .where({ deletedAt: null });
+    const doc = await this.model.findOne({ email }).where({ deletedAt: null });
+    if (doc === null) {
+      return false;
+    }
+    return true;
+  }
+
+  async existsName(name: string): Promise<boolean> {
+    const doc = await this.model.findOne({ name }).where({ deletedAt: null });
     if (doc === null) {
       return false;
     }
@@ -51,17 +77,11 @@ export class UserRepository extends BaseRepository<IUser> {
   }
 
   async findPrivateProfileById(id: string): Promise<IUser | null> {
-    return await this.model
-      .findById(id)
-      .where({ deletedAt: null })
-      .populate({
-        path: 'role',
-        match: { status: true },
-        select: { code: 1 },
-      });
+    return await this.model.findById(id).where({ deletedAt: null });
   }
 
   async findOneById(id: string): Promise<IUser | null> {
+<<<<<<< HEAD
     return await this.model
       .findById(id)
       .where({ deletedAt: null })
@@ -70,10 +90,14 @@ export class UserRepository extends BaseRepository<IUser> {
         path: 'role',
         match: { status: true },
       });
+=======
+    return await this.model.findById(id).where({ deletedAt: null });
+>>>>>>> origin/main
   }
 
   // find user by email
   async findByEmail(email: string): Promise<IUser | null> {
+<<<<<<< HEAD
     return await this.model
       .findOne({ email: email })
       .where({ deletedAt: null })
@@ -83,6 +107,13 @@ export class UserRepository extends BaseRepository<IUser> {
         match: { status: true },
         select: { code: 1 },
       });
+=======
+    return await this.model.findOne({ email }).where({ deletedAt: null });
+  }
+
+  async findByUsername(name: string): Promise<IUser | null> {
+    return await this.model.findOne({ name }).where({ deletedAt: null });
+>>>>>>> origin/main
   }
 }
 export const userRepository = new UserRepository();

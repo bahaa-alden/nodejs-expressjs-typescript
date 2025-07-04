@@ -25,8 +25,8 @@ const <%= name %>Schema: Schema = new Schema<I<%= Name %>>({
   toJSON: {
     virtuals: true,
     transform: (_, ret) => omit(
-      ['deletedAt', '__v', '_id'],
       ret,
+      ['deletedAt', '__v', '_id']
     ),
   },
 })

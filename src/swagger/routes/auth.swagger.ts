@@ -35,6 +35,11 @@
  *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MWQ4ZDJjZjBkMmM5NWNiOTM5OTgyZSIsImlhdCI6MTcxMzIxMjcxNywiZXhwIjoxNzIwOTg4NzE3fQ.FbARIC4jDWtOb0koNJK69F2MTu8j9LeS3RaFrT-AP7c
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
+<<<<<<< HEAD
+=======
+ *       "500":
+ *         $ref: '#/components/responses/InternalError'
+>>>>>>> origin/main
  */
 
 //                                                      login
@@ -90,6 +95,11 @@
  *             example:
  *               status: error
  *               message: Invalid email or password
+<<<<<<< HEAD
+=======
+ *       "500":
+ *         $ref: '#/components/responses/InternalError'
+>>>>>>> origin/main
  */
 
 //NOTE                                                        forgotPassword
@@ -112,11 +122,20 @@
  *                   type: string
  *       responses:
  *         "400":
+<<<<<<< HEAD
  *           $ref: '#/components/responses/400'
+=======
+ *           $ref: '#/components/responses/BadRequest'
+>>>>>>> origin/main
  *         "200":
  *           description: reset password token has been sent
  *           contents:
  *             application/json
+<<<<<<< HEAD
+=======
+ *         "500":
+ *           $ref: '#/components/responses/InternalError'
+>>>>>>> origin/main
  */
 
 //NOTE                                              resetpassword
@@ -124,9 +143,14 @@
  * @swagger
  *   /users/resetPassword:
  *     patch:
+<<<<<<< HEAD
  *       summary: forgot password
  *       tags: [Auth]
  *       parameters:
+=======
+ *       summary: reset password
+ *       tags: [Auth]
+>>>>>>> origin/main
  *       requestBody:
  *         required: true
  *         content:
@@ -134,9 +158,13 @@
  *             schema:
  *               type: object
  *               properties:
+<<<<<<< HEAD
  *                 email:
  *                   type: string
  *                 resetToken:
+=======
+ *                 token:
+>>>>>>> origin/main
  *                   type: string
  *                 password:
  *                   type: string
@@ -163,6 +191,13 @@
  *                example:
  *                  status: error
  *                  message: Password reset failed
+<<<<<<< HEAD
+=======
+ *          "400":
+ *            $ref: '#/components/responses/BadRequest'
+ *          "500":
+ *            $ref: '#/components/responses/InternalError'
+>>>>>>> origin/main
  */
 
 //NOTE                                       updateMyPassword
@@ -188,9 +223,17 @@
  *                   type: string
  *       responses:
  *         "400":
+<<<<<<< HEAD
  *           $ref: '#/components/responses/400'
  *         "401":
  *           $ref: '#/components/responses/401'
+=======
+ *           $ref: '#/components/responses/BadRequest'
+ *         "401":
+ *           $ref: '#/components/responses/Unauthorized'
+ *         "500":
+ *           $ref: '#/components/responses/InternalError'
+>>>>>>> origin/main
  *         "200":
  *           description: Created
  *           content:
@@ -212,18 +255,32 @@ export const signUp = {
   type: 'object',
   required: [
     // required property
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
     'name',
     'email',
     'password',
   ],
   properties: {
+<<<<<<< HEAD
     //  property signup
+=======
+    //  property _signup
+    phone: { type: 'string' },
+>>>>>>> origin/main
     name: { type: 'string' },
     email: { type: 'string' },
     password: { type: 'string' },
   },
   example: {
+<<<<<<< HEAD
     // create property example
+=======
+    // create property _example
+    phone: '+963955555555',
+>>>>>>> origin/main
     name: 'Adel Seirafi',
     email: 'user@gmail.com',
     password: '123454321',

@@ -5,7 +5,11 @@ import { userController } from '../controllers/user.controller';
 import userSchema from '../schemas/user.schema';
 import { RoleCode } from '../utils/enum';
 import restrict from '../middlewares/restrict';
+<<<<<<< HEAD
 import { authorizationMiddleware } from '../auth/authorization';
+=======
+import { authorizationMiddleware } from '../middlewares/authorization';
+>>>>>>> origin/main
 import { authMiddleware } from '../middlewares/authJwt';
 import { authController } from '../controllers/auth.controller';
 
@@ -61,22 +65,28 @@ export class UserRoutes {
     // UPDATE ME
     this.router.patch(
       '/me',
-      validator({ body: userSchema.updateUser }),
+      validator({ body: userSchema.updateMeSchema }),
       userController.updateMe,
     );
 
     // DELETE ME
     this.router.delete('/me', userController.deleteMe);
 
-    // only for admins
-    this.router.use(restrict(RoleCode.ADMIN));
-    this.router.use(authorizationMiddleware.authorization);
-
     // Get All Users
     this.router.get(
       '/',
       validator({ query: userSchema.userAll }),
       userController.get,
+    );
+
+    // only for admins
+    this.router.use(restrict(RoleCode.ADMIN));
+    this.router.use(authorizationMiddleware.authorization);
+
+    this.router.post(
+      '/',
+      validator({ body: userSchema.createUser }),
+      userController.registerUser,
     );
 
     // Get User BY ID
