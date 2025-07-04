@@ -1,5 +1,4 @@
 import { NextFunction, Response, ParsedRequest } from 'express';
-import { isValidObjectId } from 'mongoose';
 import { AnyZodObject, string, ZodEffects } from 'zod';
 import asyncHandler from './asyncHandler';
 import { BadRequestError } from '../core/ApiError';
@@ -17,11 +16,6 @@ export type ValidProps = {
   headers?: AnyZodObject | ZodEffects<AnyZodObject>;
   body?: AnyZodObject | ZodEffects<AnyZodObject>;
 };
-
-// Custom Zod validators
-export const zodObjectId = string().refine((value) => isValidObjectId(value), {
-  message: 'Invalid ObjectId',
-});
 
 export const zodAuthBearer = string().refine(
   (value) => {

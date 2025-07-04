@@ -3,10 +3,27 @@ import { model, Schema, type Document as MongooseDocument } from 'mongoose';
 import { omit } from 'lodash';
 import { Error } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+<<<<<<< HEAD
+=======
+
+export interface IAddress extends MongooseDocument {
+  // <creating-property-interface-address />
+  street?: string;
+
+  city?: string;
+
+  country?: string;
+}
+>>>>>>> origin/main
 
 export interface IUser extends MongooseDocument {
   id: string;
   // <creating-property-interface />
+  address?: IAddress;
+
+  phone?: string;
+
+  balance: number;
   status?: UserStatus;
   name: string;
   email: string;
@@ -27,9 +44,35 @@ export interface IUser extends MongooseDocument {
 const userSchema = new Schema<IUser>(
   {
     // <creating-property-schema />
+    address: {
+      type: {
+        // <creating-property-object-address />
+        street: {
+          type: String,
+          index: 'text',
+        },
+        city: {
+          type: String,
+          index: 'text',
+        },
+        country: {
+          type: String,
+          index: 'text',
+        },
+      },
+    },
+    phone: {
+      type: String,
+      index: 'text',
+    },
+    balance: {
+      type: Number,
+      default: 0,
+    },
     status: {
       type: String,
       enum: Object.values(UserStatus),
+      default: UserStatus.active,
     },
     name: {
       type: String,
@@ -40,12 +83,9 @@ const userSchema = new Schema<IUser>(
     email: {
       type: String,
       trim: true,
-      required: true,
     },
     password: {
       type: String,
-      select: false,
-      required: true,
     },
     role: {
       type: String,
@@ -69,8 +109,6 @@ const userSchema = new Schema<IUser>(
     },
   },
 );
-
-userSchema.index({ email: 1 });
 
 userSchema.pre('save', async function save(next) {
   // If the password is not modified, skip hashing
@@ -106,4 +144,8 @@ userSchema.methods.comparePassword = function (
     },
   );
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
 export default model<IUser>('User', userSchema);

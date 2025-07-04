@@ -6,11 +6,15 @@ import validator from '../middlewares/validator';
 import <%= name %>Schema from '../schemas/<%= nameDash %>.schema';
 import restrict from '../middlewares/restrict';
 import { RoleCode } from '../utils/enum';
-import { authorizationMiddleware } from '../auth/authorization';
+import { authorizationMiddleware } from '../middlewares/authorization';
 import { <%= name %>Controller } from '../controllers/<%= nameDash %>.controller';
 import authSchema from '../schemas/auth.schema';
 import { authMiddleware } from '../middlewares/authJwt';
+<<<<<<< HEAD
 import { authController } from '../controllers/auth.controller';
+=======
+
+>>>>>>> origin/main
 const {<%=  allRole %>}= RoleCode; 
 
 export class <%= Name %>Routes {

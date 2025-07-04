@@ -10,7 +10,7 @@ after: // \<creating\-property\-object\-<%= object %> \/\>
       ref: '<%= Type %>',
     },
   <% } else if (referenceType === 'oneToMany' || referenceType === 'manyToMany') { -%>
-    <%= property %>Ids: {
+    <%= h.inflection.camelize(h.inflection.singularize(property), true) %>Ids: {
       type: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: '<%= Type %>',
@@ -25,21 +25,21 @@ after: // \<creating\-property\-object\-<%= object %> \/\>
     }<% if (isArray) {-%>] <% }-%>
     ,
 <% } else { -%>
-    <%= property %>:<% if (isArray) {-%> [ <% }-%> {
+    <%= property %>:{
        <% if (kind === 'primitive') { -%>
       <% if (type === 'string') { -%>
-      type: String,
+      type: <% if (isArray) {-%> [ <% }-%>String<% if (isArray) {-%>] <% }-%>,
       <% if (isText) { -%>
        index: 'text',
       <% } -%>
 
       <% } else if (type === 'number') { -%>
-      type: Number,
+      type: <% if (isArray) {-%> [ <% }-%>Number<% if (isArray) {-%>] <% }-%>,
     <% } else if (type === 'boolean') { -%>
-      type: Boolean,
+      type: <% if (isArray) {-%> [ <% }-%> Boolean<% if (isArray) {-%>] <% }-%>,
       <% } -%>
       <% }-%>
+      <% if (isArray) {-%>default: []<% }-%>
     }
-    <% if (isArray) {-%>] <% }-%>
     ,
 <% } -%>

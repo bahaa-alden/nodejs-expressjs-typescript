@@ -10,7 +10,7 @@ after:  \<creating\-property\-schema \/\>
       ref: '<%= Type %>',
     },
   <% } else if (referenceType === 'oneToMany' || referenceType === 'manyToMany') { -%>
-    <%= property %>Ids: {
+    <%= h.inflection.camelize(h.inflection.singularize(property), true) %>Ids: {
       type: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: '<%= Type %>',
@@ -18,31 +18,41 @@ after:  \<creating\-property\-schema \/\>
       }]
     },
   <% } -%>
+<% } else if (kind === 'local') { -%>
+      <%= h.inflection.camelize(property, true) %>: {
+        type: <% if (isArray) {-%>[<% }-%>localStringSchema<% if (isArray) {-%>]<% }-%>,
+        of: String,
+        <% if (isArray) {-%>default: [],<% }-%>
+      },
 <% } else if (kind === 'enum') { -%>
-  <%= property %>:<% if (isArray) {-%>[ <% }-%>{
-      type: String,
+  <%= property %>: {
+      type: <% if (isArray) {-%>[ <% }-%>String<% if (isArray) {-%>] <% }-%>,
       enum: Object.values(<%= EnumType %>),
-    }<% if (isArray) {-%>] <% }-%>
+    }
     ,
 <% } else { -%>
-    <%= property %>:<% if (isArray) {-%> [ <% }-%> {
+    <%= property %>: {
        <% if (kind === 'object') { -%>
-      // <creating-property-object-<%= property %> />
+      type: <% if (isArray) {-%> [ <% }-%>{
+        // <creating-property-object-<%= property %> />
+      }<% if (isArray) {-%>] <% }-%>,
       <% }-%>
        <% if (kind === 'primitive') { -%>
       <% if (type === 'string') { -%>
-      type: String,
+      type: <% if (isArray) {-%> [ <% }-%>String<% if (isArray) {-%>] <% }-%>,
       <% if (isText) { -%>
        index: 'text',
       <% } -%>
 
       <% } else if (type === 'number') { -%>
-      type: Number,
+      type: <% if (isArray) {-%> [ <% }-%>Number<% if (isArray) {-%>] <% }-%>,
     <% } else if (type === 'boolean') { -%>
-      type: Boolean,
-      <% } -%>
-      <% }-%>
+      type: <% if (isArray) {-%> [ <% }-%>Boolean<% if (isArray) {-%>] <% }-%>,
+    <% } else if (type === 'date') { -%>
+          type: <% if (isArray) {-%> [ <% }-%>Date<% if (isArray) {-%>] <% }-%>,
+    <% } -%>
+   <% }-%>
+    <% if (isArray) {-%>default: []<% }-%>
     }
-    <% if (isArray) {-%>] <% }-%>
     ,
 <% } -%>

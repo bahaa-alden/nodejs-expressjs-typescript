@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { OrderDirection } from '../utils/order';
+import { BooleanString } from '../utils/enum';
 
 const numericIdRegex = /^\d+$/u;
 
@@ -40,7 +41,13 @@ export const orderDirection = z
   .optional()
   .default(OrderDirection.desc);
 
-export const localStringSchema = z.object({
+export const localString = z.object({
   ar: z.string().optional(),
   en: z.string().optional(),
 });
+
+export const stringToDate = z.string().transform<Date>((el) => new Date(el));
+
+export const booleanString = z
+  .nativeEnum(BooleanString)
+  .transform((value) => value === BooleanString.true);

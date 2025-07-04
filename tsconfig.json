@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "target": "ES2022",
     "lib": ["es5", "es6"],
     "module": "commonjs",
     "declaration": true,
@@ -7,7 +8,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es6",
     "sourceMap": true,
     "outDir": "./dist",
     "incremental": true,

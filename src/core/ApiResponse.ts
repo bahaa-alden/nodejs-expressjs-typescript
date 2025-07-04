@@ -24,6 +24,7 @@ enum ResponseStatus {
 }
 
 abstract class ApiResponse {
+  type: 'form' | 'default';
   constructor(
     protected statusCode: StatusCode,
     protected status: ResponseStatus,
@@ -49,6 +50,11 @@ abstract class ApiResponse {
 
   private static sanitize<T extends ApiResponse>(response: T): T {
     const clone: T = {} as T;
+    if (!response.status.toString().startsWith('2')) {
+      if (response.errors) {
+        response.type = 'form';
+      } else response.type = 'default';
+    }
     Object.assign(clone, response);
     // @ts-ignore
     delete clone.status;
@@ -87,7 +93,12 @@ export class UnprocessableEntityResponse extends ApiResponse {
 
 export class BadRequestResponse extends ApiResponse {
   constructor(message = 'Bad Parameters', errors?: ZodIssue[]) {
-    super(StatusCode.FAILURE, ResponseStatus.BAD_REQUEST, message, errors);
+    super(
+      StatusCode.FAILURE,
+      ResponseStatus.BAD_REQUEST,
+      message,
+      errors?.length ? errors : undefined,
+    );
   }
 }
 

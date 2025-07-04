@@ -12,6 +12,7 @@ const formatCamals = (input, index) => {
     }
   return arr.join('');
 };
+
 const eqValueFormat = (values, field) => {
   values[field.charAt(0).toUpperCase() + field.slice(1)] = values[field]
     .trim()
@@ -34,6 +35,7 @@ const eqValueFormat = (values, field) => {
   values[field + 'Dash'] = dash;
   return values;
 };
+
 module.exports = {
   prompt: ({ prompter, args }) =>
     prompter
@@ -78,6 +80,7 @@ module.exports = {
       )
       .then(
         collectPromisesResults((values) => {
+          values.referenceType = undefined;
           return eqValueFormat(values, 'property');
         }),
       )
@@ -93,6 +96,7 @@ module.exports = {
                   message: 'Primitive (string, number, etc)',
                   value: 'primitive',
                 },
+                { message: 'LocalString type', value: 'local' },
                 { message: 'Enum type', value: 'enum' },
                 { message: 'Reference to entity', value: 'reference' },
                 { message: 'Empty object', value: 'object' },
@@ -207,7 +211,7 @@ module.exports = {
                     type: 'select',
                     name: 'type',
                     message: 'Property type',
-                    choices: ['string', 'number', 'boolean'],
+                    choices: ['string', 'number', 'boolean', 'date'],
                   });
               }),
             );
@@ -280,7 +284,11 @@ module.exports = {
       )
       .then(
         collectPromisesResults((values) => {
+<<<<<<< HEAD
           if (values.kind === 'primitive')
+=======
+          if (values.kind === 'primitive' && values.type !== 'date')
+>>>>>>> origin/main
             return prompter.prompt({
               type: 'input',
               name: 'example',

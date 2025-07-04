@@ -84,7 +84,7 @@ export class UnprocessableEntityError extends ApiError {
 }
 
 export class BadRequestError extends ApiError {
-  constructor(message = 'Bad Request', errors: ZodIssue[]) {
+  constructor(message = 'Bad Request', errors: ZodIssue[] = []) {
     super(ErrorType.BAD_REQUEST, message, errors);
   }
 }
