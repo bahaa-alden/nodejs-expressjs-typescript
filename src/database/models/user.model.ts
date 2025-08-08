@@ -3,18 +3,15 @@ import { model, Schema, type Document as MongooseDocument } from 'mongoose';
 import { omit } from 'lodash';
 import { Error } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-<<<<<<< HEAD
-=======
 
 export interface IAddress extends MongooseDocument {
   // <creating-property-interface-address />
+  country?: string;
+
   street?: string;
 
   city?: string;
-
-  country?: string;
 }
->>>>>>> origin/main
 
 export interface IUser extends MongooseDocument {
   id: string;
@@ -47,6 +44,10 @@ const userSchema = new Schema<IUser>(
     address: {
       type: {
         // <creating-property-object-address />
+        country: {
+          type: String,
+          index: 'text',
+        },
         street: {
           type: String,
           index: 'text',
@@ -55,11 +56,8 @@ const userSchema = new Schema<IUser>(
           type: String,
           index: 'text',
         },
-        country: {
-          type: String,
-          index: 'text',
-        },
       },
+      _id: false,
     },
     phone: {
       type: String,
@@ -144,8 +142,5 @@ userSchema.methods.comparePassword = function (
     },
   );
 };
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/main
 export default model<IUser>('User', userSchema);

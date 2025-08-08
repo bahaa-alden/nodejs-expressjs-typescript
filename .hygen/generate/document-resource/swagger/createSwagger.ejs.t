@@ -4,25 +4,12 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
 /**
  * @swagger
  * tags:
-<<<<<<< HEAD
- *   name: <%= h.inflection.pluralize(Name) %>
-=======
  *   name: <%= h.inflection.pluralize(nameDash) %>
->>>>>>> origin/main
  *   description: <%= Name %> management and retrieval
  */
 
 /**
  * @swagger
-<<<<<<< HEAD
- * /<%= h.inflection.pluralize(name) %>:
- *   post:
- *     summary: Create a <%= name %>
- *     description: <%= rolePost %> can create <%= name %>.
- *     tags: [<%= h.inflection.pluralize(Name) %>]
- *     security:
- *       - bearerAuth: []
-=======
  * /<%= h.inflection.pluralize(nameDash) %>:
  *   post:
  *     summary: Create a <%= name %>
@@ -30,7 +17,6 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *     tags: [<%= h.inflection.pluralize(nameDash) %>]
  *     security:
  *       - Bearer: []
->>>>>>> origin/main
  *     requestBody:
  *       required: true
  *       content:
@@ -51,29 +37,11 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *                 data:
  *                     $ref: '#/components/schemas/<%= Name %>'
  *       "400":
-<<<<<<< HEAD
  *         $ref: '#/components/responses/DuplicateEmail'
-=======
- *         $ref: '#/components/responses/BadRequest'
->>>>>>> origin/main
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
-<<<<<<< HEAD
- *
- *   get:
- *     summary: Get all <%= h.inflection.pluralize(name) %>
- *     description: <%= roleGet %> can retrieve all <%= h.inflection.pluralize(name) %>.
- *     tags: [<%= h.inflection.pluralize(Name) %>]
- *     security:
- *       - Bearer: []
- *     parameters:
-=======
- *       "404":
- *         $ref: '#/components/responses/NotFound'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
  *
  *   get:
  *     summary: Get all <%= h.inflection.pluralize(nameDash) %>
@@ -83,7 +51,6 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *       - Bearer: []
  *     parameters:
   # filters
->>>>>>> origin/main
  *       - in: query
  *         name: fields
  *         schema:
@@ -102,11 +69,7 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *           type: integer
  *           minimum: 1
  *         default: 10
-<<<<<<< HEAD
- *         description: Maximum number of <%= h.inflection.pluralize(name) %>
-=======
  *         description: Maximum number of <%= h.inflection.pluralize(nameDash) %>
->>>>>>> origin/main
  *       - in: query
  *         name: search
  *         schema:
@@ -136,26 +99,10 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
-<<<<<<< HEAD
-=======
- *       "400":
- *         $ref: '#/components/responses/BadRequest'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
->>>>>>> origin/main
  */
 
 /**
  * @swagger
-<<<<<<< HEAD
- * /<%= h.inflection.pluralize(name) %>/{id}:
- *   get:
- *     summary: Get a <%= name %>
- *     description: <%= roleGet %> can use this router.
- *     tags: [<%= h.inflection.pluralize(Name) %>]
- *     security:
- *       - bearerAuth: []
-=======
  * /<%= h.inflection.pluralize(nameDash) %>/{id}:
  *   get:
  *     summary: Get a <%= name %>
@@ -163,7 +110,6 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *     tags: [<%= h.inflection.pluralize(nameDash) %>]
  *     security:
  *       - Bearer: []
->>>>>>> origin/main
  *     parameters:
  *       - in: path
  *         name: id
@@ -190,26 +136,13 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
-<<<<<<< HEAD
-=======
- *       "400":
- *         $ref: '#/components/responses/BadRequest'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
->>>>>>> origin/main
  *
  *   patch:
  *     summary: Update a <%= name %>
  *     description: <%= roleUpdate %> can use this router.
-<<<<<<< HEAD
- *     tags: [<%= h.inflection.pluralize(Name) %>]
- *     security:
- *       - bearerAuth: []
-=======
  *     tags: [<%= h.inflection.pluralize(nameDash) %>]
  *     security:
  *       - Bearer: []
->>>>>>> origin/main
  *     parameters:
  *       - in: path
  *         name: id
@@ -242,26 +175,13 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
-<<<<<<< HEAD
-=======
- *       "400":
- *         $ref: '#/components/responses/BadRequest'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
->>>>>>> origin/main
  *
  *   delete:
  *     summary: Delete a  <%= name %>.
  *     description: <%= roleDelete %> can use this router.
-<<<<<<< HEAD
- *     tags: [<%= h.inflection.pluralize(Name) %>]
- *     security:
- *       - bearerAuth: []
-=======
  *     tags: [<%= h.inflection.pluralize(nameDash) %>]
  *     security:
  *       - Bearer: []
->>>>>>> origin/main
  *     parameters:
  *       - in: path
  *         name: id
@@ -289,13 +209,6 @@ to: ./src/swagger/routes/<%=  nameDash %>.swagger.ts
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
-<<<<<<< HEAD
-=======
- *       "400":
- *         $ref: '#/components/responses/BadRequest'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
->>>>>>> origin/main
  */
 
 
@@ -306,11 +219,7 @@ export const <%= Name %> = {
 // property
   },
   example: {
-<<<<<<< HEAD
-    _id: '5ebac534954b54139806c112',
-=======
     id: '5ebac534954b54139806c112',
->>>>>>> origin/main
 // property example
    createdAt: "2024-11-24T16:35:04.438Z",
    updatedAt: "2024-11-24T16:35:04.438Z"
@@ -323,11 +232,6 @@ export const create<%= Name %> = {
   },
   example: {
 // create property example
-<<<<<<< HEAD
-  createdAt: "2024-11-24T16:35:04.438Z",
-  updatedAt: "2024-11-24T16:35:04.438Z"
-=======
->>>>>>> origin/main
   },
   required:[
 // required property
@@ -340,12 +244,7 @@ export const update<%= Name %> = {
   },
   example: {
 // update property example
-<<<<<<< HEAD
- createdAt: "2024-11-24T16:35:04.438Z",
- updatedAt: "2024-11-24T16:35:04.438Z"
-=======
  
->>>>>>> origin/main
   },
 };
 

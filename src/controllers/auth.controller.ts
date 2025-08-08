@@ -14,10 +14,6 @@ import * as jwt from 'jsonwebtoken';
 import { userRepository } from '../database/repositories/user.repository';
 import {
   AuthFailureError,
-<<<<<<< HEAD
-  BadTokenError,
-=======
->>>>>>> origin/main
   ConflictError,
   InternalError,
   NotFoundError,
@@ -26,11 +22,7 @@ import {
 import { existRecord, needRecord } from '../utils/record';
 import asyncHandler from '../middlewares/asyncHandler';
 import { IUser } from '../database/models/user.model';
-<<<<<<< HEAD
-import Email from '../config/email';
-=======
 import Email from '../config/email-node';
->>>>>>> origin/main
 // import { InternalErrorResponse } from '../core/ApiResponse';
 
 export class AuthController {
@@ -110,19 +102,11 @@ export class AuthController {
       await user.save({ validateBeforeSave: false });
       // 3) Send it to user's email
       try {
-<<<<<<< HEAD
-        // await new Email(user, '').sendPasswordReset(resetToken);
-=======
         await new Email(user, '').sendPasswordReset(resetToken);
->>>>>>> origin/main
         res.ok({
           message: 'Token sent to email!',
           data: {
             message: 'Token sent to email!',
-<<<<<<< HEAD
-            resetToken,
-=======
->>>>>>> origin/main
           },
         });
       } catch (err) {
@@ -143,27 +127,6 @@ export class AuthController {
     ) => {
       // 1) Get user based on POSTed email
       const user = needRecord(
-<<<<<<< HEAD
-        await userRepository.findByEmail(req.valid.body.email),
-        new NotFoundError('user not found'),
-      );
-      if (user.passwordResetToken !== req.valid.body.resetToken)
-        return next(new BadTokenError());
-      if (user.passwordResetExpires && user.passwordResetExpires < new Date())
-        return next(new TokenExpiredError());
-      user.password = req.valid.body.password;
-      user.passwordResetToken = undefined;
-      user.passwordResetExpires = undefined;
-      await user.save();
-      const token = jwt.sign(
-        { email: req.valid.body.email },
-        env_vars.jwt.secret,
-        {
-          expiresIn: env_vars.jwt.accessExpiration,
-        },
-      );
-      res.ok({ message: 'reset password is succesed', data: { token, user } });
-=======
         await userRepository.findOneBy({
           passwordResetToken: req.valid.body.token,
         }),
@@ -181,7 +144,6 @@ export class AuthController {
         expiresIn: env_vars.jwt.accessExpiration,
       });
       res.ok({ message: 'reset password is succeed', data: { token, user } });
->>>>>>> origin/main
     },
   );
 

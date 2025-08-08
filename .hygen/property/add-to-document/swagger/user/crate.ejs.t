@@ -1,10 +1,6 @@
 ---
 inject: true
-<<<<<<< HEAD
-to: "./src/swagger/routes/users.swagger.ts"
-=======
 to: "./src/swagger/routes/user.swagger.ts"
->>>>>>> origin/main
 after: // create property
 ---
 <% if (name === 'user') { -%>
@@ -19,11 +15,7 @@ after: // create property
 <% if (kind !== 'object') {  -%>},<% }  -%>
 <% if (kind === 'object') {  -%>
 'object',properties: {
-<<<<<<< HEAD
-//  create  properties <%= property %>
-=======
 // create  properties <%= property %>
->>>>>>> origin/main
 }   
 <% if ( isArray) { -%> } <% } -%> },<% }  -%>
 <% } -%>

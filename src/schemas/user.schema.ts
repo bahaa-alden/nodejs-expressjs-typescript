@@ -11,24 +11,19 @@ import {
 
 const addressCreateSchema = z.object({
   // <creating-property-create-schema-address />
-
-  street: z.string().optional(),
-
-  city: z.string().optional(),
-
   country: z.string().optional(),
+  street: z.string().optional(),
+  city: z.string().optional(),
 });
 export type IAddressCreateSchema = TypeOf<typeof addressCreateSchema>;
 
 const addressUpdateSchema = z.object({
   // <creating-property-update-schema-address />
-
-  street: z.string().optional(),
-
-  city: z.string().optional(),
-
   country: z.string().optional(),
+  street: z.string().optional(),
+  city: z.string().optional(),
 });
+
 export type IAddressUpdateSchema = TypeOf<typeof addressUpdateSchema>;
 
 const userIdSchema = z.object({
@@ -55,10 +50,10 @@ export type IUserUpdateSchema = TypeOf<typeof userUpdateSchema>;
 const userUpdateMeSchema = z
   .object({
     // <creating-property-update-schema />
-    address: addressUpdateSchema.optional(),
-    phone: z.string().optional(),
     name: z.string().optional(),
     email: z.string().email().optional(),
+    phone: z.string().optional(),
+    address: addressCreateSchema.optional(),
   })
 
   .strict();
@@ -66,14 +61,13 @@ const userUpdateMeSchema = z
 export type IUserUpdateMeSchema = TypeOf<typeof userUpdateMeSchema>;
 
 const createUserSchema = z.object({
-  // <creating-property-create-schema />
-  address: addressCreateSchema.optional(),
-  phone: z.string().optional(),
   name: z.string().min(3),
   email: z.string().email(),
   password: z.string().min(6),
   role: z.nativeEnum(RoleCode).optional(),
   balance: z.number().optional(),
+  phone: z.string().optional(),
+  address: addressCreateSchema.optional(),
 });
 
 export type ICreateUserSchema = TypeOf<typeof createUserSchema>;

@@ -13,12 +13,8 @@ import customResponses from './middlewares/custom.middleware';
 import Logger from './core/Logger';
 import swaggerSpec from './swagger/swagger';
 import { NotFoundError } from './core/ApiError';
-<<<<<<< HEAD
-=======
-import { imageRoutes } from './routes/image.routes';
 import { join } from 'path';
-
->>>>>>> origin/main
+import { imageRoutes } from './routes/image.routes';
 class Server {
   public app: express.Application;
 
@@ -34,9 +30,6 @@ class Server {
     this.app.use('/api/v1/images', imageRoutes.router);
 
     this.app.use('/api/v1/users', userRoutes.router);
-<<<<<<< HEAD
-    this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-=======
 
     this.app.use(express.static(join(__dirname, '..', 'public')));
 
@@ -48,7 +41,6 @@ class Server {
       }),
     );
 
->>>>>>> origin/main
     // Docs in JSON format
     this.app.get(
       '/docs.json',

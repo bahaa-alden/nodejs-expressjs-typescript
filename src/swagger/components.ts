@@ -11,10 +11,7 @@ export const DuplicateEmail = {
     },
   },
 };
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/main
 export const Unauthorized = {
   description: 'Unauthorized',
   content: {
@@ -27,10 +24,7 @@ export const Unauthorized = {
     },
   },
 };
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/main
 export const Forbidden = {
   description: 'Forbidden',
   content: {
@@ -56,32 +50,3 @@ export const NotFound = {
     },
   },
 };
-<<<<<<< HEAD
-=======
-
-export const BadRequest = {
-  description: 'BadRequest',
-  content: {
-    'application/json': {
-      schema: { $ref: '#/components/schemas/Error' },
-      example: {
-        status: 'error',
-        message: 'Please send acceptable data',
-      },
-    },
-  },
-};
-
-export const InternalError = {
-  description: 'Internal error',
-  content: {
-    'application/json': {
-      schema: { $ref: '#/components/schemas/Error' },
-      example: {
-        status: 'error',
-        message: 'something went very wrong',
-      },
-    },
-  },
-};
->>>>>>> origin/main

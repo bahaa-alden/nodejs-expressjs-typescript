@@ -39,8 +39,6 @@
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
  *
  *   get:
  *     summary: Get all users
@@ -98,8 +96,6 @@
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
  */
 
 /**
@@ -137,8 +133,6 @@
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
  *
  *   patch:
  *     summary: Update a user
@@ -178,10 +172,6 @@
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
- *       "400":
- *         $ref: '#/components/responses/BadRequest'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
  *
  *   delete:
  *     summary: Delete a user.
@@ -216,10 +206,6 @@
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
- *       "400":
- *         $ref: '#/components/responses/BadRequest'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
  */
 
 /**
@@ -247,8 +233,6 @@
  *                     $ref: '#/components/schemas/User'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
  */
 
 /**
@@ -273,8 +257,6 @@
  *                   example: success
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
  */
 
 /**
@@ -311,10 +293,6 @@
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
- *       "404":
- *         $ref: '#/components/responses/NotFound'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
  */
 
 const { RoleCode } = require('../../utils/enum');
@@ -323,22 +301,14 @@ export const User = {
   properties: {
     id: { type: 'string' },
     // property
+
     address: {
       type: 'object',
       properties: {
         // properties address
-
-        street: {
-          type: 'string',
-        },
-
-        city: {
-          type: 'string',
-        },
-
-        country: {
-          type: 'string',
-        },
+        country: { type: 'string' },
+        street: { type: 'string' },
+        city: { type: 'string' },
       },
     },
     phone: { type: 'string' },
@@ -351,15 +321,14 @@ export const User = {
   example: {
     id: '5ebac534954b54139806c112',
     // property example
+
     address: {
       // property example address
-      street: 'ibn zaher',
-
-      city: 'aleppo',
-
       country: 'syria',
+      street: 'ibn-zaher',
+      city: 'aleppo',
     },
-    phone: '+963955555555',
+    phone: '0950513333',
     balance: 2500,
     email: 'user@gmail.com',
     name: 'bahaa alden abdo',
@@ -371,22 +340,14 @@ export const createUser = {
   type: 'object',
   properties: {
     // create property
+
     address: {
       type: 'object',
       properties: {
         // create properties address
-
-        street: {
-          type: 'string',
-        },
-
-        city: {
-          type: 'string',
-        },
-
-        country: {
-          type: 'string',
-        },
+        country: { type: 'string' },
+        street: { type: 'string' },
+        city: { type: 'string' },
       },
     },
     phone: { type: 'string' },
@@ -398,15 +359,15 @@ export const createUser = {
   },
   example: {
     // create property example
+
     address: {
       // create property example address
-      street: 'ibn zaher',
-
-      city: 'aleppo',
-
       country: 'syria',
+      street: 'ibn-zaher',
+      city: 'aleppo',
     },
-    phone: '+963955555555',
+
+    phone: '0950513333',
     balance: 2500,
     name: 'Bahaa abdo',
     email: 'bad@gmail.com',
@@ -419,28 +380,14 @@ export const updateMe = {
   type: 'object',
   properties: {
     // update property
+
     address: {
-      address: {
-        type: 'object',
-        properties: {
-          // update properties address
-
-          street: {
-            type: 'string',
-          },
-
-          city: {
-            type: 'string',
-          },
-
-          country: {
-            type: 'string',
-          },
-        },
-      },
       type: 'object',
       properties: {
         // update properties address
+        country: { type: 'string' },
+        street: { type: 'string' },
+        city: { type: 'string' },
       },
     },
     phone: { type: 'string' },
@@ -449,15 +396,14 @@ export const updateMe = {
   },
   example: {
     // update property example
+
     address: {
       // update property example address
-      street: 'ibn zaher',
-
-      city: 'aleppo',
-
       country: 'syria',
+      street: 'ibn-zaher',
+      city: 'aleppo',
     },
-    phone: '+963955555555',
+    phone: '0950513333',
     name: 'Bahaa alden',
     email: 'bah@gmail.com',
   },
@@ -467,30 +413,35 @@ export const updateUser = {
   type: 'object',
   properties: {
     // update property
-    address: {
-      type: 'object',
-      properties: {
-        // update properties address
-        country: 'syria',
-      },
-    },
-    phone: { type: 'string' },
     status: { type: 'string', enum: ['active', 'disactive'] },
     name: { type: 'string' },
     email: { type: 'string' },
     role: { type: 'string', enum: Object.values(RoleCode) },
     balance: { type: 'number' },
+    address: {
+      type: 'object',
+      properties: {
+        // update properties address
+        country: { type: 'string' },
+        street: { type: 'string' },
+        city: { type: 'string' },
+      },
+    },
+    phone: { type: 'string' },
   },
   example: {
     // update property example
-    address: {
-      // update property example address
-    },
-    phone: '+963955555555',
     status: 'active',
     name: 'Bahaa alden',
     email: 'ba@gmail.com',
     role: 'USER',
     balance: 2500,
+    address: {
+      // update property example address
+      country: 'syria',
+      street: 'ibn-zaher',
+      city: 'aleppo',
+    },
+    phone: '0950513333',
   },
 };

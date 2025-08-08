@@ -8,13 +8,9 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 const numericIdRegex = /^\d+$/u;
 
 const envVarsSchema = object({
-<<<<<<< HEAD
-  EMAIL_FROM: string({ message: 'EMAIL FROM  is required' }),
-=======
   API_URL: string({ message: 'API_URL is required' }),
   APP_NAME: string({ message: 'APP NAME is required' }),
   EMAIL_FROM: string({ message: 'EMAIL FROM is required' }),
->>>>>>> origin/main
   EMAIL_API_KEY: string({ message: 'EMAIL API KEY is required' }),
   NODE_ENV: nativeEnum(Env).default(Env.development),
   LOG_DIR: string(),
@@ -45,11 +41,8 @@ const envVarsSchema = object({
 const envVars = envVarsSchema.parse(process.env);
 
 export const env_vars = {
-<<<<<<< HEAD
-=======
   apiUrl: envVars.API_URL,
   app_name: envVars.APP_NAME,
->>>>>>> origin/main
   email_key: envVars.EMAIL_API_KEY,
   sender: envVars.EMAIL_FROM,
   env: envVars.NODE_ENV,

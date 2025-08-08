@@ -284,11 +284,7 @@ module.exports = {
       )
       .then(
         collectPromisesResults((values) => {
-<<<<<<< HEAD
-          if (values.kind === 'primitive')
-=======
           if (values.kind === 'primitive' && values.type !== 'date')
->>>>>>> origin/main
             return prompter.prompt({
               type: 'input',
               name: 'example',

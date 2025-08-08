@@ -5,11 +5,6 @@ import {
   FindUserOptions,
   userRepository,
 } from '../database//repositories/user.repository';
-<<<<<<< HEAD
-import { RoleCode } from '../utils/enum';
-import { ISignupSchema, ICredentialSchema } from '../schemas/auth.schema';
-=======
->>>>>>> origin/main
 import {
   ICreateUserSchema,
   IUserAllSchema,
@@ -23,8 +18,6 @@ import { existRecord, needRecord } from '../utils/record';
 
 export class UserController {
   // return authenticated user details
-<<<<<<< HEAD
-=======
 
   public registerUser = asyncHandler(
     async (
@@ -56,7 +49,6 @@ export class UserController {
     },
   );
 
->>>>>>> origin/main
   public me(req: Request, res: Response, next: NextFunction) {
     res.ok({ message: 'success', data: req.user });
   }

@@ -26,6 +26,38 @@ export enum Env {
 
 // <creating-enum-type />
 
+export enum OrderItemStatus {
+  returned = 'returned',
+  notreturned = 'notreturned',
+}
+
+export enum ProductType {
+  piece = 'piece',
+  car = 'car',
+}
+
+export enum ItemType {
+  rent = 'rent',
+  purchase = 'purchase',
+}
+
+export enum QuestionSessionStatus {
+  failed = 'failed',
+  passed = 'passed',
+  started = 'started',
+}
+
+export enum SessionStatus {
+  pending = 'pending',
+  started = 'started',
+  completed = 'completed',
+}
+
+export enum QuizStatus {
+  active = 'active',
+  disactive = 'disactive',
+}
+
 export enum BooleanString {
   true = 'true',
   false = 'false',

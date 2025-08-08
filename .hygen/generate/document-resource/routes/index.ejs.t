@@ -10,11 +10,7 @@ import { authorizationMiddleware } from '../middlewares/authorization';
 import { <%= name %>Controller } from '../controllers/<%= nameDash %>.controller';
 import authSchema from '../schemas/auth.schema';
 import { authMiddleware } from '../middlewares/authJwt';
-<<<<<<< HEAD
-import { authController } from '../controllers/auth.controller';
-=======
 
->>>>>>> origin/main
 const {<%=  allRole %>}= RoleCode; 
 
 export class <%= Name %>Routes {

@@ -47,6 +47,5 @@
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
- *       "500":
- *         $ref: '#/components/responses/InternalError'
+ *
  */

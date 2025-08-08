@@ -1,4 +1,9 @@
-import { Model, Document as MongooseDocument, FilterQuery } from 'mongoose';
+import {
+  Model,
+  Document as MongooseDocument,
+  FilterQuery,
+  UpdateQuery,
+} from 'mongoose';
 import { PaginationOptions } from '../../utils/pagination';
 import { OrderOptions } from '../../utils/order';
 
@@ -46,7 +51,7 @@ export class BaseRepository<T extends MongooseDocument> {
     return await this.model.find({ ...query, deletedAt: null });
   }
 
-  async patchById(id: string, data: object): Promise<T | null> {
+  async patchById(id: string, data: UpdateQuery<T>): Promise<T | null> {
     return await this.model.findByIdAndUpdate(id, data, { new: true });
   }
 

@@ -5,11 +5,7 @@ import { BadRequestError } from '../core/ApiError';
 // type FilePhoto
 const multerStorage = multer.memoryStorage();
 
-const multerFilter: any = (
-  req: Request,
-  file: Express.Multer.File,
-  cb: any,
-): void => {
+const multerFilter: any = (req: Request, file: any, cb: any): void => {
   if (file.mimetype.startsWith('image')) cb(null, true);
   else
     cb(new BadRequestError('Not an image! Please upload only images.'), false);

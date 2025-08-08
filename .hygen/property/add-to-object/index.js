@@ -102,7 +102,6 @@ module.exports = {
       )
       .then(
         collectPromisesResults((values) => {
-          values.referenceType = '';
           return eqValueFormat(values, 'property');
         }),
       )
