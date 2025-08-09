@@ -112,27 +112,28 @@ module.exports = {
       .then(
         collectPromisesResults((values) => {
           if (values.kind !== 'fromTo') {
-            return prompter.prompt({
-              type: 'input',
-              name: 'property',
-              message: "Property name (e.g. 'firstName')",
-              validate: (input) => {
-                if (!input.trim()) {
-                  return 'Property name is required';
-                }
-                return true;
-              },
-              format: (input) => {
-                return formatCamals(input, 1);
-              },
-            });
+            return prompter
+              .prompt({
+                type: 'input',
+                name: 'property',
+                message: "Property name (e.g. 'firstName')",
+                validate: (input) => {
+                  if (!input.trim()) {
+                    return 'Property name is required';
+                  }
+                  return true;
+                },
+                format: (input) => {
+                  return formatCamals(input, 1);
+                },
+              })
+              .then(
+                collectPromisesResults((values) => {
+                  values.referenceType = undefined;
+                  return eqValueFormat(values, 'property');
+                }),
+              );
           }
-        }),
-      )
-      .then(
-        collectPromisesResults((values) => {
-          values.referenceType = undefined;
-          return eqValueFormat(values, 'property');
         }),
       ),
 };

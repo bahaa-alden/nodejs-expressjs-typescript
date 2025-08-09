@@ -19,6 +19,8 @@
     "postadd:property:document": "yarn format",
     "add:property:object": "hygen property add-to-object",
     "postadd:property:object": "npm run format",
+    "add:filter:document": "hygen filter add-to-document",
+    "postadd:filter:document": "yarn format",
     "add:admin": "node ./dist/data/import-dev-data.js --import",
     "drop:admin": "node ./dist/data/import-dev-data.js --delete",
     "preseed:admin": "yarn build",
